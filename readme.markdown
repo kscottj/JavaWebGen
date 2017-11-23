@@ -4,16 +4,16 @@ This classes where inspired by the Python Django Project.  It will create a web 
 In Addition it can rener itself as valid HTML5 using a bootstrap based sytlesheet by default.
 
 ##Java WebController or Servlet code
-`		BookForm form= new BookForm(req);
-		Book databean=getDataBean(req);
-		form.setData(databean,req);
-		req.setAttribute(WebConst.FORM, form);
-		if(form.isValid() ){  //check for valid input
-			busRule.save( (Book)form.getData() );
-			return ServerAction.updateAction("/admin/Book/list");
-		}else{
-			return ServerAction.viewAction("/admin/BookDetail.jsp");
-		`
+`BookForm form= new BookForm(req);
+Book databean=getDataBean(req);
+form.setData(databean,req);
+req.setAttribute(WebConst.FORM, form);
+if(form.isValid() ){  //check for valid input
+    busRule.save( (Book)form.getData() );
+    return ServerAction.updateAction("/admin/Book/list");
+}else{
+    return ServerAction.viewAction("/admin/BookDetail.jsp");`
+    
 ###Simple WebForm Model.
 This class will provide the following features without adding extra code to your project:
 * JavaScript Client validations(using JQuery validate)
@@ -25,21 +25,21 @@ This class will provide the following features without adding extra code to your
 
 `public class BookForm extends HtmlForm{
 
- 	/*form fields*/
-   	private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
-	private HtmlTextField  isbn= new HtmlTextField("isbn" ,false);
-	private HtmlDateTimeField  createDate= new HtmlDateTimeField("createDate" ,false);
-	private HtmlDateTimeField  updateDate= new HtmlDateTimeField("updateDate" ,false);
-	private HtmlTextField  updateBy= new HtmlTextField("updateBy" ,false);
- 
-  /**constructor that builds form*/
- 	public BookForm(){
-		this.addField(bookId);
-		this.addField(isbn);
-		this.addField(createDate);
-		this.addField(updateDate);
-		this.addField(updateBy);
-	}`
+/*form fields*/
+private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
+private HtmlTextField  isbn= new HtmlTextField("isbn" ,false);
+private HtmlDateTimeField  createDate= new HtmlDateTimeField("createDate" ,false);
+private HtmlDateTimeField  updateDate= new HtmlDateTimeField("updateDate" ,false);
+private HtmlTextField  updateBy= new HtmlTextField("updateBy" ,false);
+
+/**constructor that builds form*/
+public BookForm(){
+    this.addField(bookId);
+    this.addField(isbn);
+    this.addField(createDate);
+    this.addField(updateDate);
+    this.addField(updateBy);
+}`
 
     
 ###Base custom TAG(WEB-INF/tags/base.tag)
@@ -50,21 +50,20 @@ This class will provide the following features without adding extra code to your
 <%@attribute name="bodyScript" fragment="true" %>
 <%@attribute name="title" fragment="true" %>
 <html lang="en">
-	<head>
-    <!-- Bootstrap -->
-	<link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css'	rel='stylesheet'>
-    <link href='<c:url value="/static/css/bootstrap-datepicker.min.css"/>'	rel='stylesheet'>
-    <link href='<c:url value="/static/css/bootstrap-timepicker.min.css"/>' rel='stylesheet'>
-	<link href='<c:url value="/static/css/webApp.css"/>' rel='stylesheet'>
-	<script>
-  	function init(){
-		<jsp:invoke fragment='initJSFunction'/>
-	}
-	</script>
- 	 <script><jsp:invoke fragment='script' /></script>
-  	<title><jsp:invoke fragment='title'/></title> 
-   	</head>
-    	  
+<head>
+<!-- Bootstrap -->
+<link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css'	rel='stylesheet'>
+<link href='<c:url value="/static/css/bootstrap-datepicker.min.css"/>'	rel='stylesheet'>
+<link href='<c:url value="/static/css/bootstrap-timepicker.min.css"/>' rel='stylesheet'>
+<link href='<c:url value="/static/css/webApp.css"/>' rel='stylesheet'>
+<script>
+function init(){
+    <jsp:invoke fragment='initJSFunction'/>
+}
+</script>
+ <script><jsp:invoke fragment='script' /></script>
+<title><jsp:invoke fragment='title'/></title> 
+</head>
 <body onLoad="init()">
 <div class='container'>
 <div class='col-m'>	
@@ -82,7 +81,7 @@ This class will provide the following features without adding extra code to your
 <jsp:invoke fragment='bodyScript'/> 
 </script>
 </body>
-</html>'
+</html>`
 
 ###basic JSP
 `<%@taglib prefix="t" tagdir="/WEB-INF/tags/" %> 
