@@ -1,6 +1,6 @@
 /*
  * =================================================================== *
- * Copyright (c) 2009 Kevin Scott All rights  reserved.
+ * Copyright (c) 2017 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -37,7 +37,6 @@
  * SUCH DAMAGE.
  * ====================================================================
  */
-
 package org.javaWebGen.generator;
 
 import java.text.DateFormat;
