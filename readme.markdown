@@ -1,11 +1,13 @@
 # JavaWebGen
 
 ## Webform
+
 This classes where inspired by the Python Django Project.  It will create a web form that is can provide client(JQuery validate) and Server validation. 
 In Addition it can rener itself as valid HTML5 using a bootstrap based sytlesheet by default.
 
 ###Java WebController or Servlet code
-`
+
+```
 BookForm form= new BookForm(req);
 Book databean=getDataBean(req);
 form.setData(databean,req);
@@ -15,9 +17,10 @@ if(form.isValid() ){  //check for valid input
     return ServerAction.updateAction("/admin/Book/list");
 }else{
     return ServerAction.viewAction("/admin/BookDetail.jsp");
-`
-    
+```
+
 ###Simple WebForm Model
+
 This class will provide the following features without adding extra code to your project:
 * JavaScript Client validations(using JQuery validate)
 * Server Validation (using Apache Commons validate)
@@ -26,7 +29,7 @@ This class will provide the following features without adding extra code to your
 * renders a TimePicker(uses bootstrap-timepicker)
 * renders Read only fields
 
-`
+```
 public class BookForm extends HtmlForm{
 /*form fields*/
 private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
@@ -42,11 +45,13 @@ public BookForm(){
     this.addField(createDate);
     this.addField(updateDate);
     this.addField(updateBy);
-}`
+}
+```
 
     
 ###Base custom TAG(WEB-INF/tags/base.tag)
-`
+
+```
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@attribute name="style" fragment="true" %>
 <%@attribute name="script" fragment="true" %>
@@ -86,10 +91,11 @@ function init(){
 </script>
 </body>
 </html>
-`
+```
 
 ###basic JSP
-`
+
+```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h1>Detail Book</h1>
@@ -97,11 +103,11 @@ __${form}__
 </div> 
 </jsp:body>
 </t:base>
-`
+```
  
-
 ###Basic DIV TAG using Boostrap CSS
-`
+
+```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h1>Detail Book</h1>
@@ -116,10 +122,11 @@ ${form.updateBy.divTag}
 </form-group>
 </jsp:body>
 </t:base>
-`
+```
 
 ###Basic Table Form
-`
+
+```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/admin/" %> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h1>Detail Book</h1>
@@ -133,7 +140,7 @@ ${form.updateBy.tableTag}
 <button id='button.update' class='btn btn-primary  btn-large' name='updateBut' >Save</button>
 </form></jsp:body>
 </t:base>
-`
+```
 
 ##Code Generator 
 Collection of Ant build script can generate a compled CRUD application including webforms clases based on a Torque XML file.
