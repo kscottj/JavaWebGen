@@ -2,11 +2,12 @@
 
 ## Webform
 
-This classes where inspired by the Python Django Project.  It will create a web form that is can provide client(JQuery validate) and Server validation. 
-In Addition it can rener itself as valid HTML5 using a bootstrap based sytlesheet by default.
+This classes where inspired by the Python Django Project.  It will create a web form that provide client(JQuery validate) and Server validation. 
+In Addition, it can rener itself as valid HTML5 using a bootstrap based sytlesheet by default.
 
 ###Java WebController or Servlet code
 
+Example
 ```
 BookForm form= new BookForm(req);
 Book databean=getDataBean(req);
@@ -51,6 +52,7 @@ public BookForm(){
     
 ###Base custom TAG(WEB-INF/tags/base.tag)
 
+Example Custom TAG(The Java way to setup a page template)
 ```
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@attribute name="style" fragment="true" %>
@@ -95,11 +97,13 @@ function init(){
 
 ###basic JSP
 
+Example Form page notice not much to it.  the `${form} will render the form as HTML.
+
 ```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <h1>Detail Book</h1>
-__${form}__
+${form}
 </div> 
 </jsp:body>
 </t:base>
@@ -107,6 +111,7 @@ __${form}__
  
 ###Basic DIV TAG using Boostrap CSS
 
+Allows more control.  You provide the `<form>` tag it rendes the fields as bootscap `<div>` tags.
 ```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -126,6 +131,7 @@ ${form.updateBy.divTag}
 
 ###Basic Table Form
 
+Allows more control.  You provide the `<form>` tag and `<table>` tag.  The form will render page with `<tr><td>` tags.
 ```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/admin/" %> 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -143,4 +149,18 @@ ${form.updateBy.tableTag}
 ```
 
 ##Code Generator 
-Collection of Ant build script can generate a compled CRUD application including webforms clases based on a Torque XML file.
+
+Collection of Ant build script that can generate a compled CRUD application including webforms clases based on a Torque XML file.
+
+###Simplistic Config
+
+
+
+###XMLHelper
+
+Helps deal with XML DOM API.  IMHO Java should provide somthing like this.
+
+###Simple embeded Web framework
+
+Servlet Filter will route traffic to correct WebController method based on the URI.  Simple and initializes fast.  
+I wrote this because Spring MVC takes too long to start in a cloud envirement that has dynamic instances.
