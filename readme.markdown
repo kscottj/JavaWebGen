@@ -5,7 +5,7 @@
 This classes where inspired by the Python Django Project.  It will create a web form that provide client(JQuery validate) and Server validation. 
 In Addition, it can rener itself as valid HTML5 using a bootstrap based sytlesheet by default.
 
-###Java WebController or Servlet code
+### Java WebController or Servlet code
 
 Example
 ```
@@ -20,7 +20,7 @@ if(form.isValid() ){  //check for valid input
     return ServerAction.viewAction("/admin/BookDetail.jsp");
 ```
 
-###Simple WebForm Model
+### Simple WebForm Model
 
 This class will provide the following features without adding extra code to your project:
 * JavaScript Client validations(using JQuery validate)
@@ -50,7 +50,7 @@ public BookForm(){
 ```
 
     
-###Base custom TAG(WEB-INF/tags/base.tag)
+### Base custom TAG(WEB-INF/tags/base.tag)
 
 Example Custom TAG(The Java way to setup a page template)
 ```
@@ -95,9 +95,9 @@ function init(){
 </html>
 ```
 
-###basic JSP
+### Basic view deail JSP
 
-Example Form page notice not much to it.  the `${form} will render the form as HTML.
+Example Form page.  the `${form} will render the form as HTML with all values and validations.
 
 ```
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/" %> 
@@ -109,7 +109,7 @@ ${form}
 </t:base>
 ```
  
-###Basic DIV TAG using Boostrap CSS
+### Basic DIV TAG using Boostrap CSS
 
 Allows more control.  You provide the `<form>` tag it rendes the fields as bootscap `<div>` tags.
 ```
@@ -129,7 +129,7 @@ ${form.updateBy.divTag}
 </t:base>
 ```
 
-###Basic Table Form
+### Basic Table Form
 
 Allows more control.  You provide the `<form>` tag and `<table>` tag.  The form will render page with `<tr><td>` tags.
 ```
@@ -148,19 +148,15 @@ ${form.updateBy.tableTag}
 </t:base>
 ```
 
-##Code Generator 
+## Code Generator 
 
 Collection of Ant build script that can generate a compled CRUD application including webforms clases based on a Torque XML file.
 
-###Simplistic Config
+## XMLHelper
 
+Static class helps deal with XML DOM API.  IMHO Java should provide somthing like this.
 
-
-###XMLHelper
-
-Helps deal with XML DOM API.  IMHO Java should provide somthing like this.
-
-###Simple embeded Web framework
+## Simple embeded Web framework
 
 Servlet Filter will route traffic to correct WebController method based on the URI.  Simple and initializes fast.  
 I wrote this because Spring MVC takes too long to start in a cloud envirement that has dynamic instances.
