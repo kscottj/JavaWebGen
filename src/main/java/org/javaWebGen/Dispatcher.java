@@ -252,7 +252,6 @@ public class Dispatcher extends HttpServlet {
 	 */
 	protected void dispatch(String page,String cmd,HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 		
-		this.getSession(req);
 		ServerAction action = null;
 	
 		String hash =req.getParameter(WebConst.LINK_HASH);
@@ -469,40 +468,14 @@ public class Dispatcher extends HttpServlet {
 		
 	}
 	 /**
-	   * return current session. If new sesion set the following
+	   * return current session. If new session set the following
 	   * <ul><li>random seed</li>
 	   * 	<li>IP</li>
 	   * 	<li>"User-Agent</li></ul>
 	   * @param req HTTP
 	   * @return current session
 	   */
-	public HttpSession getSession(HttpServletRequest req) {
-		if (req == null) {
-			return null;
-		}
-		HttpSession session = req.getSession(false);
-		if (session == null) {
-			log.debug("========begin new session=========");
-			session = req.getSession(true);
-			RandomStringGenerator generator = new RandomStringGenerator.Builder()
-					// .withinRange('a', 'z')
-					.build();
-			String randomLetters = generator.generate(20);
-			String userAgent = req.getHeader("User-Agent");
-			String ip = req.getLocalAddr();
-			session.setAttribute(WebConst.CSRF_SEED, randomLetters);
-			// log.debug("sead="+randomLetters);
-			session.setAttribute(WebConst.CSRF_IP, ip);
 
-			session.setAttribute(WebConst.CSRF_AGENT, userAgent);
-			log.debug("ip=" + ip + "agent=" + userAgent);
-			log.debug("========end new session=========" + req.getRequestedSessionId());
-			// log.error("null session How did that happen?");
-			// maybe should redirect to homepage
-		}
-
-		return session;
-	}
 	/**
 	 * 
 	 * @param classPrefix class prefix

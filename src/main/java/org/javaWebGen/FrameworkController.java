@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 @Deprecated 
-public class FrameworkController extends HttpServlet {
+public class FrameworkController extends Dispatcher {
 	/**
 	 * 
 	 */
@@ -79,17 +79,19 @@ public class FrameworkController extends HttpServlet {
 	public FrameworkController() {
 		// register controllers
 		// mapping.put("Login",new LoginProcessor() );
+		
+		//this.jspRoot="";
 	}
  
 
-	public void setProd(boolean isProd) {
+	/*public void setProd(boolean isProd) {
 		this.isProd = isProd;
 	}
 
 
 	public void setClassPrefix(String classPrefix) {
 		this.classPrefix = classPrefix;
-	}
+	}*/
 
 
 	protected boolean requiresAdmin(String url){
@@ -101,7 +103,7 @@ public class FrameworkController extends HttpServlet {
 	 * @param config
 	 * @throws ServletException
 	 */
-	public void init(ServletConfig config) throws ServletException {
+	/*public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		String isProdStr=config.getInitParameter(IS_PROD);
 		
@@ -115,7 +117,7 @@ public class FrameworkController extends HttpServlet {
 		if( prefix!=null && prefix.length()>1 ){
 			this.classPrefix=prefix;
 		}
-	}
+	}*/
 	
 	/**
 	 * 
@@ -153,9 +155,27 @@ public class FrameworkController extends HttpServlet {
 		log.info("req.ContextPath="+req.getContextPath() );
 		log.info("req.getPathInfo="+req.getPathInfo() );
 		log.info("req.getServletPath="+req.getServletPath() );*/
-		
+		log.debug("serviceRequest");
 		String page=req.getParameter("page");
 		String cmd=req.getParameter("cmd");
+		//this.getSession(req);//set up CSRF
+		Object temp = req.getAttribute(WebConst.WEB_SESSION);
+		WebSession ws = null;
+		ServerAction action = null;
+		
+		if (temp != null) {
+			ws = (WebSession) temp;
+		} else {
+			ws = defaultWebSession;
+		}
+		
+		req.setAttribute(WebConst.WEB_SESSION, ws);
+		//session.setAttribute(WebConst.WEB_SESSION,ws);
+		String hash =req.getParameter("hash");
+		if(hash!=null)
+			req.setAttribute("hash",hash);
+
+		ws.setError("");
 		dispatch(page,cmd,req,res);
 	}
 	/**
@@ -168,9 +188,11 @@ public class FrameworkController extends HttpServlet {
 	 * @throws ServletException 
 	 */
 	public void dispatch(String page,String cmd,HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+	
 		Object temp = req.getAttribute(WebConst.WEB_SESSION);
 		WebSession ws = null;
 		ServerAction action = null;
+		
 		if (temp != null) {
 			ws = (WebSession) temp;
 		} else {
@@ -216,16 +238,17 @@ public class FrameworkController extends HttpServlet {
 			action=new ServerAction(ERROR_PAGE);
 			//ws.setError("Unable handle URL", we);
 			log.error("WebController Unable handle URL",we);
-			res.sendError(HttpServletResponse.SC_NOT_FOUND);
-			return;
+			
+			//res.sendError(HttpServletResponse.SC_NOT_FOUND);
+			//return action;
+			redirect(res,action);
 		} catch (Exception e) {// deal with unknown Exceptions like
 			// NullPointers
 			action=new ServerAction(ERROR_PAGE);
 			//ws.setError(e.getMessage(), e);
 			throw new ServletException("Uknown Error",e);
 		}
-		/*
-		if(action==null){
+		/*if(action==null){
 			log.error("queryStr="+req.getQueryString());
 			log.error("user="+req.getUserPrincipal() );
 			log.error("req.uri="+req.getRequestURI() );
@@ -361,7 +384,7 @@ public class FrameworkController extends HttpServlet {
 	 * Warning use for unit testing only.  This is not thread safe
 	 * @return current URL the router will return.  W
 	 */
-	public String currentTestUrl(){
+	/*public String currentTestUrl(){
 		return this.currentUrl;
-	}
+	}*/
 }

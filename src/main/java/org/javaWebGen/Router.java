@@ -52,6 +52,7 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.javaWebGen.form.CsrfFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,12 +69,13 @@ import org.slf4j.LoggerFactory;
         	@WebInitParam(name = "adminUri", value = "/admin"),	
         }
 )
-public class Router  implements Filter{
+public class Router  extends CsrfFilter{
 
 	//private FilterConfig filterConfig;
 	private String controller="/Controller";
 	private String staticDir="/static/";
 	private String adminUri="/admin";
+	private String extensionURI=null;
 
 	private static final Logger log = LoggerFactory.getLogger(Router.class);
 	
@@ -92,7 +94,7 @@ public class Router  implements Filter{
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest   httpRequest  = (HttpServletRequest)  req;
 		HttpServletResponse   httpResponse  = (HttpServletResponse)  res;
-		
+		this.setupSession(httpRequest);
 		String uri =  httpRequest.getServletPath();
 		//log.info("doFilter.uri="+uri);
 		//boolean isAdmin=isAdminController(uri);
@@ -121,7 +123,12 @@ public class Router  implements Filter{
 	 */
 	private void route(String uri,  HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
  
-		
+		if(extensionURI!=null) {
+			String parms[]=uri.split(extensionURI);
+			if(parms[0]!=null) {
+				uri=parms[0];
+			}
+		}
 		String action="";
 		String method="";
 		//log.debug(">route.uri="+uri);	
@@ -270,6 +277,10 @@ public class Router  implements Filter{
 		 if(filterConfig.getInitParameter("prodMode")!=null &&  filterConfig.getInitParameter("prodMode").equals("true") ){
 			 isProd=true;
 		 }	
+		 if(filterConfig.getInitParameter("ext")!=null ){
+			 
+			 extensionURI=filterConfig.getInitParameter("ext");
+		 }
 
 	}
 	/*private boolean isController(String url){

@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * Construct object that can generate HTML based on data fields Automatically.
  * Adds @see CsrfHtmlFild field to form to protect against request forging.
  * Requires @see WebConst#CSRF value be available in the session otherwise
- * validation will fail.  The session values will be setup by the @see Dispatcher automatically.
+ * validation will fail.  The session values will be setup by a filter @see CsrfFilter or a subclass like the router @see org.javaWebGen.Router.
  * 
  * @author kevin
  *

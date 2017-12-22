@@ -115,37 +115,17 @@ public abstract class WebController {
 
   /**
    * get WebSession object from session
-   * @param session http
-   * @return web session
-   */
-  @Deprecated
-  protected WebSession getWebSession(HttpSession session) {
-    Object temp = session.getAttribute(WebConst.WEB_SESSION);
-    WebSession ws = null;
-    if (temp != null) {
-      ws = (WebSession) temp;
-      ws.clearError();
-      log.debug("ws="+ws.toXml() );
-    }else{
-    	ws = new WebSession();
-    	session.setAttribute(WebConst.WEB_SESSION,ws);
-    }
-    log.debug("WebSession="+ws.toXml() );
-    return ws;
-  }
-
-  /**
-   * get WebSession object from session
    * @param req HTTP request
    * @return web session
    */
   @Deprecated
   protected WebSession getWebSession(HttpServletRequest req) {
-	  HttpSession session=getSession(req);
-	  Object temp=session.getAttribute(WebConst.WEB_SESSION);
+	 // HttpSession session=getSession(req);
+	  Object temp=req.getAttribute(WebConst.WEB_SESSION);
 	  if(temp!=null){
 		  return (WebSession) temp;
 	  }else{
+		  
 		  return new WebSession();
 	  }
   }
@@ -189,7 +169,7 @@ public abstract class WebController {
 		String userAgent = req.getHeader("User-Agent");
 		String ip=req.getLocalAddr();
 		if(!userAgent.equals(sagent)) {
-			//log.info("user agent session does not match kick them out");
+			log.info("user agent session does not match kick them out");
 			//session.invalidate();
 			return false;
 		}
@@ -203,7 +183,7 @@ public abstract class WebController {
 		return true;
   }
   /**
-   * validate CSRF hash from request against value in sesion
+   * validate CSRF hash from request against value in session
    * @param req HTTP
    * @return true if valid else false
    */
