@@ -117,7 +117,7 @@ public class HtmlForm implements  WebFormAware, Serializable{
 	private FormBeanAware databean=null;
 	private String action=null;
 	private String htmlName="dataFormId";
-	 
+	private boolean isFormValid=true; 
 	private String buttonLabel="Submit";
 	private HashMap<String,String> reqMap=null;
 	private LinkedHashMap<String,HtmlField> fieldMap=new LinkedHashMap<String,HtmlField>();
@@ -328,15 +328,15 @@ public class HtmlForm implements  WebFormAware, Serializable{
 		setData(req);
 	}
 	/**
-	 * Add Form Error Message.  This is error is not related to a specific error on this page
-	 * @param errorMessage error message to display on the form attempts look up by message bundle
+	 * Add Form Error Message.  This is error is not related to a specific field on this page
+	 * @param errorMessage error message to display 
 	 */
 	public void addError(String errorMessage){
 		 
 		this.formErrors.add(errorMessage);
 	}
 	/**
-	 *  Add Form Error Message.  This is error is not related to a specific error on this page
+	 *  Add Form Error Message.  This is error is not related to a specific field on this page
 	 * @param messageKey key to look up error in message bundle
 	 * @param defaultError default error message if key not found in message bundle 
 	 */
@@ -358,6 +358,14 @@ public class HtmlForm implements  WebFormAware, Serializable{
 	 */
 	public List<String> getErrors(){
 		return this.formErrors;
+	}
+	/**
+	 * return a list of error messages that are not related to a specific bound field
+	 * @see HtmlForm.getErrors
+	 * @return list of generic form errors
+	 */
+	public List<String> getFormErrors(){
+		return getErrors();
 	}
 	/**
 	 * Get error messages that bound to a field on the form. IE To be able to highlight the error field in the JSP
@@ -405,38 +413,8 @@ public class HtmlForm implements  WebFormAware, Serializable{
 	public void setButtonLabel(String label){
 		this.buttonLabel=label;
 	}
-	/**
-	 * Is this form valid
-	 * @return true if no validations errors are found in any field
-	 */
-	public boolean isValid(){
-		boolean valid=false; 
-		this.clean();
-		valid=this.validate();
-		
-		Iterator<String> i=errorMap.keySet().iterator();
-		while(i.hasNext() ) {
-			String fieldKey=i.next();
-			HtmlField field=fieldMap.get(fieldKey);
-			field.addCustomError(errorMap.get(fieldKey) );
-			field.isFieldValid=false;
-			return false;
-		}
-		Collection <HtmlField> c=fieldMap.values();
-		for(HtmlField field:c){
-			if(!field.isValid()){
-				log.warn("invalid web form field="+field.getName()+" value="+field.getValue() );
-				errorMap.put(field.getName(), field.getErrorMessage() );
-			}
-		}
-		if(errorMap.size()>0 || this.formErrors.size()>0){
-			valid= false;
-		}else{
-			valid= true;
-		}
 	
-		return valid;
-	}
+
 	/**
 	 * Get FormBeanAware JavaBean that populated the form 
 	 * @return dataBean that poulated the form
@@ -634,12 +612,48 @@ public class HtmlForm implements  WebFormAware, Serializable{
 
 	}
 	/**
+	 * Is this form valid
+	 * @return true if no validations errors are found in any field
+	 */
+	public boolean isValid(){
+		if(isFormValid){
+			this.isFormValid=this.validate();
+		}
+		if(errorMap.size()>0 || this.formErrors.size()>0){
+			this.isFormValid= false;
+			log.debug("form.err"+formErrors.size());
+			if(this.formErrors.size()>0) {
+				log.debug("form.err"+formErrors.get(0));
+			}
+			log.debug("field.err"+errorMap.size());
+			
+		}
+		return this.isFormValid;
+	}
+	/**
 	 * Perform custom validation a data bound form.  Subclasses should override this
 	 * method if they need to perform custom validation.
 	 * @return true if form is valid
 	 */
 	public boolean validate() {
-		return true;
+		log.debug(" begin isValid");
+		this.clean();
+		boolean valid=true;
+			
+		Collection <HtmlField> c=fieldMap.values();
+		for(HtmlField field:c){
+			if(!field.validate(field.getValue() ) ){
+				log.warn("invalid web form field="+field.getName()+" value="+field.getValue() );
+				this.addFieldErrors(field.getName(), field.getErrorMessage());
+				//errorMap.put(field.getName(), field.getErrorMessage() );
+				valid=false;
+			}
+			log.debug(field.getName()+" isValid:"+field.isValid() );
+		}
+		
+
+		log.debug(" end isValid:"+valid);
+		return valid;
 	}
 	/**
 	 * clean the data that will be displayed

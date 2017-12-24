@@ -137,7 +137,9 @@ public class HtmlSelectField extends HtmlField{
 	}
 	@Override
 	public boolean validate(String value){ //maybe check for odd encoding?
-		return true;
+		boolean val=super.validate(value);
+		this.isFieldValid=val;
+		return val;
 		
 	}
 	@Override

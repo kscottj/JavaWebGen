@@ -159,25 +159,29 @@ public class CsrfHtmlField extends HtmlField{
 	 * @param value
 	 * @return true if csrf hash is valid
 	 */
-	//@TODO may have JavaScipt populate hash in field to try and trick bots
+	 
 	@Override
 	public boolean validate(String value) {
+		boolean val=super.validate(value);
 		log.debug("validate>"+value );
 		if(this.req==null) {
 			log.debug("Request is null in CSRF Field "+this.getName());
-			return false;
+			val= false;
+			this.isFieldValid=false;
 		}
 		HttpSession session=this.req.getSession(false);
 		if(session==null) {
 			log.error("Session is null in CSRF Field "+this.getName());
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
-			return false;
+			val= false;
+			this.isFieldValid=false;
 		}
 		String sead=(String) session.getAttribute(WebConst.CSRF_SEED);
 		if(sead==null) {
 			log.error("Random SEED for CSRF field not set in session"+this.getName());
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
-			return false;
+			val= false;
+			this.isFieldValid=false;
 		}
 		//log.debug("session sead="+sead);
 		//log.debug("time="+time);
@@ -185,12 +189,14 @@ public class CsrfHtmlField extends HtmlField{
 		//log.debug("hash="+hash);
 		if(hash.equals(this.getValue() )){
 			log.debug("<<<<<validate"+value +" hash is valid");  
-			return true;	
+			val= true;	
 		}else {
 			log.warn(hash+"?value="+value );
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
-			return false;
+			val= false;
+			this.isFieldValid=false;
 		} 
+		return val;
 	}
  
 	

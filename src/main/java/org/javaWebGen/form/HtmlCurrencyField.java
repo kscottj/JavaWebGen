@@ -40,7 +40,7 @@
 package org.javaWebGen.form;
 
 
-import org.apache.commons.validator.routines.PercentValidator;
+import org.apache.commons.validator.routines.CurrencyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,6 +80,7 @@ public class HtmlCurrencyField extends HtmlTextField{
 
 	@Override
 	public boolean validate(String value){
+		boolean val=super.validate(value);
 		//log.info(this+".validate("+value+")");
 		/*try{
 			new BigDecimal(this.getValue() );
@@ -95,9 +96,10 @@ public class HtmlCurrencyField extends HtmlTextField{
 		
 		return isValid;*/
 	 
-		boolean val=PercentValidator.getInstance().isValid(value);
+		val=CurrencyValidator.getInstance().isValid(value);
 		if(!val){
-			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) );  
+			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
+			this.isFieldValid=false;
 		}
 		log.trace(this.getName()+".isValid()"+val);
 		return val;

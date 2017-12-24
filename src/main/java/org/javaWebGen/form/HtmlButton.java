@@ -63,6 +63,7 @@ public class HtmlButton extends HtmlField{
 	}
 	@Override
 	public boolean validate(String value) {
+		super.validate(value);
 		return true;
 	}
 	@Override

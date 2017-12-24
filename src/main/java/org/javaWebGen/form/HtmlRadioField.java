@@ -109,6 +109,7 @@ public class HtmlRadioField extends HtmlField{
 	
 	@Override
 	public boolean validate(String value){ //maybe check for odd encoding?
+		//boolean val=super.validate(value);
 		return true;
 		
 	}

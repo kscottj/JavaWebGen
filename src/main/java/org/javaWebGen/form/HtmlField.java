@@ -82,6 +82,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	private String errorMessage="";
 	protected StyleAware style=new BootstrapStyle();
 	private boolean isViewOnly;
+	
 
 	//id="exampleInputEmail1" placeholder="Enter email"
 	/**
@@ -469,12 +470,25 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	 * @return true if field is valid
 	 */
 	public boolean isValid() {
-		isFieldValid=true;
-		this.cleanField();
-		
+
 		if(this.isViewOnly){ //do not validate view only
 			return true; 
 		}
+
+		/*if(this.getValue()!=null && this.getValue().trim().length()>0){		 
+			this.isFieldValid= validate(this.getValue());
+				//this.errorMessage="Required Field";
+		}*/
+
+	
+		//log.debug(this.getName()+".isValid()"+this.isFieldValid);
+
+		//log.debug(this.getName()+".isValid="+isFieldValid);
+		return isFieldValid;
+	}
+	public boolean validate(String value) {
+		log.debug("value="+value);
+		this.cleanField();
 		if(this.required){ 
 			if(this.getValue()==null || this.getValue().trim().length()<1 ){
 				this.errorMessage="Required Field";
@@ -483,14 +497,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 			}
 			
 		}
-		if(this.getValue()!=null && this.getValue().trim().length()>0){		 
-			this.isFieldValid= validate(this.getValue());
-				//this.errorMessage="Required Field";
-		}
-		//log.debug(this.getName()+".isValid()"+this.isFieldValid);
-
-
-		return isFieldValid;
+		return true;
 	}
 	
 	/**
@@ -543,7 +550,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	 */
 	public void setErrorMessage(String errorMessage) {
  
-		
+		this.isFieldValid=false;
 		this.errorMessage = errorMessage;
 	}
 
@@ -576,6 +583,10 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		tableBuffer.append("</tr>\n"); 
 		return tableBuffer.toString();
 		 
+	}
+	
+	public boolean hasErrors() {
+		return this.isFieldValid;
 	}
 	
 }

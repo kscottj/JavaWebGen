@@ -39,8 +39,9 @@
  */
 package org.javaWebGen.form;
 
+import java.text.ParseException;
 import java.util.Date;
-import org.apache.commons.validator.routines.DateValidator;
+import org.apache.commons.validator.routines.TimeValidator;
 import org.javaWebGen.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,7 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	//private StringBuffer htmlBuffer =new StringBuffer();
 	private static final Logger log=LoggerFactory.getLogger(HtmlTimeField.class);//begin exec
 	private static final String INPUT_TYPE="type='text'";
-	public static final String INVALID_MESSAGE="Invalid date use the "+StringUtil.TIME_PATTERN+" format";
+	public static final String INVALID_MESSAGE="Invalid time use the "+StringUtil.TIME_PATTERN+" format";
 	public static final String INVALID_MSG_KEY="form.error.time";
 	//private static final String INVALID_DATE_KEY="type='error.date.field'";
 	private java.util.Date date=null;
@@ -132,11 +133,22 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	@Override
 	public boolean validate(String value){
 	 
-		boolean val=DateValidator.getInstance().isValid(value);
-		if(!val){
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+		
+		boolean val=super.validate(value);
+		
+		 
+		try {
+			StringUtil.convertToTime(value);
+		} catch (ParseException e) {
+			log.warn(value+"is invalid datetime"+e.getMessage());
+			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+			this.isFieldValid=false;
+			val=false;			
 		}
-		return val;
+
+ 
+	return val;	 
+
 	}
 
 	@Override

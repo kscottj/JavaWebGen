@@ -102,15 +102,17 @@ public class HtmlNumberField extends HtmlField{
 	 */
 	@Override
 	public boolean validate(String value){
+		boolean val=super.validate(value);
 		log.info(this+".validate("+value+")");
 		try{
 			Long.parseLong(this.getValue() );
 		}catch(NumberFormatException e){ //not a number
 			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
 			 
-			return false;
+			val=false;
+			this.isFieldValid=false;
 		}
-		return true;
+		return val;
 	}
 	@Override
 	public void cleanField() {

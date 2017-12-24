@@ -82,7 +82,7 @@ public class InventoryAction extends InventoryActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction delete(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		Inventory databean =getDataBean(req);
+		//Inventory databean =getDataBean(req);
 		//getModel().remove(databean);
 		//overide with custom code to handle multiple primary keys 
 		return ServerAction.updateAction("/admin/Inventory/list");

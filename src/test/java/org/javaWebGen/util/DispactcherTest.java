@@ -26,7 +26,7 @@ public class DispactcherTest {
 	 HttpServletResponse res = Mockito.mock(HttpServletResponse.class);
 	 FilterChain chain = Mockito.mock(FilterChain.class);
 	 router.doFilter(req,res,chain) ;
-	 Assert.assertEquals("/index.jsp", router.currentTestUrl()); 
+	 Assert.assertEquals("/", router.currentTestUrl()); 
 	 
 	 
  }

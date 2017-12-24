@@ -84,7 +84,7 @@ public class HtmlCheckboxField extends HtmlField{
 			}
 			htmlBuffer.append("/>");
 			if(this.isFieldValid){
-				 
+				htmlBuffer.append("<!--"+this.getName()+" valid-->"); 
 			}else{
 				htmlBuffer.append("<label class='help-block has-error' for='"+this.getName()+"'> "+this.getErrorMessage()+"</label>");
 			}
@@ -94,13 +94,20 @@ public class HtmlCheckboxField extends HtmlField{
 	}
 	 
 	@Override
-	public boolean validate(String value){ //maybe check for odd encoding?
-		if(value!=null){
-			return true;
-		}else{
-			return false;
-		}
-		
+	public boolean validate(String value){ 
+		boolean val=super.validate(value);
+//		if(this.isRequired()) {
+//			if(value!=null&&value.length()>1){
+//				return true;
+//			}else{
+//				this.setErrorMessage(MsgConst.);
+//				return false;
+//			}
+//		}else {
+//			return true;
+//		}
+
+		return val;
 	}
 	@Override
 	public void cleanField() {

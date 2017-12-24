@@ -132,6 +132,7 @@ public class HtmlDateField extends HtmlField implements DateFieldAware{
 	
 	@Override
 	public boolean validate(String value)  {
+		boolean val=super.validate(value);
 		log.debug("validate>"+value);
 		try {
 			//DateUtils.parseDate(value);
@@ -139,10 +140,11 @@ public class HtmlDateField extends HtmlField implements DateFieldAware{
 		} catch (ParseException e) {
 			log.warn(value+"is invalid date"+e.getMessage());
 			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
-			return false;
+			this.isFieldValid=false;
+			val= false;
 		}
 	 
-		return true;
+		return val;
  
 		
 	/*	try {

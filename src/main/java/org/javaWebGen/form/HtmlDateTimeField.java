@@ -41,6 +41,9 @@ package org.javaWebGen.form;
 
 
 import java.text.ParseException;
+
+
+import org.apache.commons.validator.routines.DateValidator;
 import org.javaWebGen.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +63,7 @@ public class HtmlDateTimeField extends HtmlDateField implements DateFieldAware{
 	private static final Logger log=LoggerFactory.getLogger(HtmlDateField.class);//begin exec
 
 	//public static final String DATEPATTERN = "DATE_TIME_PATTERN";
-	public static final String INVALID_MESSAGE="Invalid date use the "+StringUtil.DATE_TIME_PATTERN+" format";
+	public static final String INVALID_MESSAGE="Invalid date and time use the "+StringUtil.DATE_TIME_PATTERN+" format";
 	public static final String INVALID_MSG_KEY="form.error.datetime";
 	//private static final String INVALID_DATE_KEY="type='error.date.field'";
 	private java.util.Date date=null;
@@ -99,16 +102,20 @@ public class HtmlDateTimeField extends HtmlDateField implements DateFieldAware{
 	
 	@Override
 	public boolean validate(String value)  {
-		log.debug("validate>"+value);
-		try {
-			StringUtil.convertToTime(value);
-		} catch (ParseException e) {
-			log.warn(value+"is invalid date"+e.getMessage());
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
-			return false;
-		}
+		boolean val=super.validate(value);
+		
+ 
+			try {
+				StringUtil.convertToDateTime(value);
+			} catch (ParseException e) {
+				log.warn(value+" invalid datetime "+e.getMessage());
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+				this.isFieldValid=false;
+				val=false;			
+			}
+ 
 	 
-		return true;	 
+		return val;	 
 	 
 	}
 	@Override

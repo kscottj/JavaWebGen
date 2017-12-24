@@ -178,7 +178,7 @@ static{
     }
     
     /**
-     * parse ISO date format yyyy-mm-dd
+     * parse ISO date format MM/dd/yyyy
      * @param dateStr
      * @return java date object
      * @throws ParseException  invalid date
@@ -193,7 +193,22 @@ static{
  
     	return date;
     }
-    
+    /**
+     * parse ISO date format MM/dd/yyyy HH:mm:ss
+     * @param dateStr text to be converted
+     * @return java date object
+     * @throws ParseException  invalid date
+     */
+    public static Date convertToDateTime(String dateStr) throws ParseException {
+    	Date date=null;
+    	if(dateStr==null || dateStr.equals("null")|| dateStr.equals("")){
+    		 
+    		return null;
+    	}
+		date=DateUtils.parseDateStrictly(dateStr,DATE_TIME_PATTERN);
+ 
+    	return date;
+    }   
     /**
      * parse ISO time format 'T'HH:mm:ss
      * @param dateStr
