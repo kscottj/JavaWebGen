@@ -142,13 +142,13 @@ public class GenerateWebForm extends GenerateModel {
 			switch (colTypes[i]) {
 			
 			case Types.DATE:
-				text += "\tprivate HtmlDateField "+fieldName+"= new HtmlDateField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlField "+fieldName+"= new HtmlDateField(\""+fieldName+"\" ";
 			break;
 			case Types.TIMESTAMP:
-				text += "\tprivate HtmlDateTimeField  "+fieldName+"= new HtmlDateTimeField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlField  "+fieldName+"= new HtmlDateTimeField(\""+fieldName+"\" ";
 			break;
 			case Types.TIME:
-				text += "\tprivate HtmlTimeField  "+fieldName+"= new HtmlTimeField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlField  "+fieldName+"= new HtmlTimeField(\""+fieldName+"\" ";
 			break;
 			case Types.BIGINT:
 			case Types.INTEGER:
@@ -158,10 +158,10 @@ public class GenerateWebForm extends GenerateModel {
 			case Types.DECIMAL:
 			case Types.FLOAT:
 			case Types.DOUBLE:	
-				text += "\tprivate HtmlDecimalField "+fieldName+"= new HtmlDecimalField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlField "+fieldName+"= new HtmlDecimalField(\""+fieldName+"\" ";
 			break;					
 			default:
-				text += "\tprivate HtmlTextField  "+fieldName+"= new HtmlTextField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlField  "+fieldName+"= new HtmlTextField(\""+fieldName+"\" ";
 			}
 			if (isKey){
 				text+=",false);\n";   //primary keys are not editable anyway
@@ -242,10 +242,10 @@ public class GenerateWebForm extends GenerateModel {
 			switch (colTypes[i]) {
 			
 			case Types.DATE:
-				text += "\tpublic HtmlDateField get"+className+"(){\n\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlField get"+className+"(){\n\t return "+fieldName+";\n\t}\n";
 			break;
 			case Types.TIMESTAMP:
-				text += "\tpublic HtmlDateField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
 			break;
 			case Types.BIGINT:
 			case Types.INTEGER:
@@ -256,10 +256,10 @@ public class GenerateWebForm extends GenerateModel {
 			case Types.FLOAT:
 			case Types.DOUBLE:	
 
-				text += "\tpublic HtmlDecimalField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
 			break;					
 			default:
-				text += "\tpublic HtmlTextField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
 			}
 			
 		} //end for loop

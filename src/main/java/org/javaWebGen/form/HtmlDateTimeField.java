@@ -41,9 +41,7 @@ package org.javaWebGen.form;
 
 
 import java.text.ParseException;
-
-
-import org.apache.commons.validator.routines.DateValidator;
+import java.util.Date;
 import org.javaWebGen.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,10 +52,9 @@ import org.slf4j.LoggerFactory;
  * @author home
  *
  */
-public class HtmlDateTimeField extends HtmlDateField implements DateFieldAware{
- 	/**
-	 * 
-	 */
+public class HtmlDateTimeField extends HtmlField implements DateFieldAware{
+	
+	private static final String INPUT_TYPE="type='text'";
 	private static final long serialVersionUID = -1029740496998524968L;
 	//private StringBuffer htmlBuffer =new StringBuffer();
 	private static final Logger log=LoggerFactory.getLogger(HtmlDateField.class);//begin exec
@@ -139,6 +136,43 @@ public class HtmlDateTimeField extends HtmlDateField implements DateFieldAware{
 		json.append("},\n");
 	return json.toString();
 
+	}
+	@Override
+	public String getField(){
+		StringBuffer htmlBuffer=new StringBuffer();
+			htmlBuffer.append("<input "+this.getDefaultAttributes()+INPUT_TYPE); 
+			htmlBuffer.append(" placeholder='"+this.getToolTip()+"' ");
+			if(this.isRequired()){
+				htmlBuffer.append(" required");
+			}
+			if(this.isViewOnly()){
+				htmlBuffer.append(" readonly");
+			}
+			htmlBuffer.append(" />\n");
+			if(this.isFieldValid){
+				 
+			}else{
+				htmlBuffer.append("<label class='help-block has-error'> "+this.getErrorMessage()+"</label>");
+				 
+			}
+ 
+		return htmlBuffer.toString();
+	}
+	@Override
+	public void cleanField() {
+		if(this.getValue()!=null){
+			String dateValue=this.getValue().trim() ;
+			setValue(dateValue); 
+		}	
+	}
+	@Override
+	public Date getDate(){
+		/*try {
+			return dateFormat.parse(this.getValue() );
+		} catch (ParseException e) {
+			return null;
+		}*/
+		return this.date;
 	}
 
 }

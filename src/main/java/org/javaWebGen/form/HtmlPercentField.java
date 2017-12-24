@@ -45,11 +45,9 @@ import java.text.NumberFormat;
 import org.apache.commons.validator.routines.PercentValidator;
 
 
-public class HtmlPercentField extends HtmlNumberField{
+public class HtmlPercentField extends HtmlField{
 
-	/**
-	 * 
-	 */
+	private static final String INPUT_TYPE="type='number'";
 	private static final long serialVersionUID = -4403234346785914723L;
 	public static final NumberFormat DECIMAL_FORMAT= DecimalFormat.getNumberInstance(); 
 	public static final String INVALID_MESSAGE="Enter a valid Percent";
@@ -79,10 +77,12 @@ public class HtmlPercentField extends HtmlNumberField{
 	
 	@Override
 	public boolean validate(String value){
-		boolean val=PercentValidator.getInstance().isValid(value);
+		boolean val=super.validate(value);
+		val=PercentValidator.getInstance().isValid(value);
 		if(!val){
 
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) ); 
+			this.isFieldValid=false;
 		}
  
 		return val;
@@ -94,5 +94,46 @@ public class HtmlPercentField extends HtmlNumberField{
 			this.setValue (this.getValue().trim() );
 		}
 		
+	}
+
+	@Override
+	public String getJQueryFieldValidate() {
+		StringBuffer json=new StringBuffer("");
+		
+		json.append(this.getName()+":{\n");
+		json.append("    number:true,\n");
+		if(this.isRequired() ){
+			json.append("    required:true,\n");
+		}
+		json.append("},\n");
+		return json.toString();
+	}
+	@Override
+	public String getJQueryFieldScript() {
+		 
+		return EMPTY;
+	}
+	public String getField(){
+		StringBuffer htmlBuffer=new StringBuffer();
+		
+			htmlBuffer.append("<input "+this.getDefaultAttributes()+INPUT_TYPE); 
+			 
+			htmlBuffer.append(" placeholder='"+this.getToolTip()+"'");
+			if(this.isRequired()){
+				htmlBuffer.append(" required");
+			}
+			if(this.isViewOnly()){
+				htmlBuffer.append(" readonly");
+			}
+			htmlBuffer.append(" />\n");
+
+			if(this.isFieldValid){
+					 
+			}else{
+				htmlBuffer.append("<label class='help-block has-error' for='"+this.getName()+"'> "+this.getErrorMessage()+"</label>");
+	 
+			}
+		
+		return htmlBuffer.toString();
 	}
 }

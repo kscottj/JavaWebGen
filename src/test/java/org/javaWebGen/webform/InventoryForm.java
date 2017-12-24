@@ -32,10 +32,10 @@ public class InventoryForm extends CsrfForm{
  	/*form fields*/
    	private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
 	private HtmlNumberField  locationId= new HtmlNumberField("locationId" ,false);
-	private HtmlDateTimeField  createDate= new HtmlDateTimeField("createDate" ,false);
-	private HtmlDateTimeField  updateDate= new HtmlDateTimeField("updateDate" ,false);
-	private HtmlTextField  updateBy= new HtmlTextField("updateBy" ,false);
-	private HtmlTextField  comment= new HtmlTextField("comment" ,false);
+	private HtmlField  createDate= new HtmlDateTimeField("createDate" ,false);
+	private HtmlField  updateDate= new HtmlDateTimeField("updateDate" ,false);
+	private HtmlField  updateBy= new HtmlTextField("updateBy" ,false);
+	private HtmlField  comment= new HtmlTextField("comment" ,false);
  
   /**constructor that builds form*/
  	public InventoryForm(HttpServletRequest req){
@@ -59,16 +59,16 @@ public class InventoryForm extends CsrfForm{
 	public HtmlNumberField getLocationId(){
 		 return locationId;
 	}
-	public HtmlDateField getCreateDate(){
+	public HtmlField getCreateDate(){
 		 return createDate;
 	}
-	public HtmlDateField getUpdateDate(){
+	public HtmlField getUpdateDate(){
 		 return updateDate;
 	}
-	public HtmlTextField getUpdateBy(){
+	public HtmlField getUpdateBy(){
 		 return updateBy;
 	}
-	public HtmlTextField getComment(){
+	public HtmlField getComment(){
 		 return comment;
 	}
 }

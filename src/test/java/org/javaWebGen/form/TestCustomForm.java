@@ -11,12 +11,13 @@ public class TestCustomForm {
 		form.getFrom().setValue("g@g.com");
 		HtmlField capta=form.getCapta();
 		capta.setValue(ContactForm.NOT_A_ROBOT);		
-		//Assert.assertTrue("form not valid",form.isValid() );
+		Assert.assertTrue("form not valid",form.isValid() );
+		form = new ContactForm();
 		capta.setValue("no");
 		Assert.assertFalse("form is valid",form.isValid() );
 		Assert.assertTrue("capt.err="+capta.getErrorMessage(),capta.getErrorMessage()!=null );
-		Assert.assertTrue("has an form error=",form.getErrors().size()>0 );
-		Assert.assertTrue("has an field error=",form.getFieldErrors().size()>0 );
+		Assert.assertFalse("has an form error=",form.getErrors().size()>0 ); //no form error
+		Assert.assertTrue("has an field error=",form.getFieldErrors().size()>0 ); //one field error
 		//field error?
 		
 		

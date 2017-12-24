@@ -31,10 +31,10 @@ public class BookForm extends CsrfForm{
  private static final long serialVersionUID = 453453453788212L;
  	/*form fields*/
    	private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
-	private HtmlTextField  isbn= new HtmlTextField("isbn" ,false);
-	private HtmlDateTimeField  createDate= new HtmlDateTimeField("createDate" ,false);
-	private HtmlDateTimeField  updateDate= new HtmlDateTimeField("updateDate" ,false);
-	private HtmlTextField  updateBy= new HtmlTextField("updateBy" ,false);
+	private HtmlField  isbn= new HtmlTextField("isbn" ,false);
+	private HtmlField  createDate= new HtmlDateTimeField("createDate" ,false);
+	private HtmlField  updateDate= new HtmlDateTimeField("updateDate" ,false);
+	private HtmlField  updateBy= new HtmlTextField("updateBy" ,false);
  
   /**constructor that builds form*/
  	public BookForm(HttpServletRequest req){
@@ -54,16 +54,16 @@ public class BookForm extends CsrfForm{
 	public HtmlNumberField getBookId(){
 		 return bookId;
 	}
-	public HtmlTextField getIsbn(){
+	public HtmlField getIsbn(){
 		 return isbn;
 	}
-	public HtmlDateField getCreateDate(){
+	public HtmlField getCreateDate(){
 		 return createDate;
 	}
-	public HtmlDateField getUpdateDate(){
+	public HtmlField getUpdateDate(){
 		 return updateDate;
 	}
-	public HtmlTextField getUpdateBy(){
+	public HtmlField getUpdateBy(){
 		 return updateBy;
 	}
 }
