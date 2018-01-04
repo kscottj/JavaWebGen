@@ -70,9 +70,17 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class StringUtil {
 
+	
     public final static String ISO8601date_FORMAT = "yyyy-MM-dd";
     public final static String ISO8601time_FORMAT = "'T'HH:mm:ss";
     public final static String ISO8601Datetime_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    
+    private static FastDateFormat ISO8601date = FastDateFormat.getInstance(ISO8601date_FORMAT);
+	private static FastDateFormat ISO8601time =  FastDateFormat.getInstance(ISO8601time_FORMAT);
+	private static FastDateFormat ISO8601Datetime =  FastDateFormat.getInstance(ISO8601Datetime_FORMAT);
+
+ 
+
     public static  DateConverter dateConverter = null ;
     public static DateTimeConverter dateTimeCoverter=null;
 	public static final String DATE_PATTERN="MM/dd/yyyy";
@@ -251,26 +259,34 @@ static{
     /**
      * get a date in ISO foramat yyyy-mm-dd
      * @param date
-     * @return formatted date
+     * @return
      */
     public static String convertDateToISOString(Date date){
     	if(date==null)
     		return null;
-    	SimpleDateFormat iso8601Date = new SimpleDateFormat (ISO8601date_FORMAT);
-    	return iso8601Date.format(date);
+    	return ISO8601date.format(date);
     }
     /**
      * get time in ISO format  'T'HH:mm:ss
      * @param date
-     * @return formatted date
+     * @return
      */
     public static String convertTimeToISOString(Date date){
     	if(date==null)
     		return null;
-    	SimpleDateFormat iso8601time = new SimpleDateFormat (ISO8601time_FORMAT);
-    	return iso8601time.format(date);
+    	return ISO8601time.format(date);
     }
-	/*********************
+    /**
+     * get time in ISO format  'T'HH:mm:ss
+     * @param date
+     * @return
+     */
+    public static String convertDateTimeToISOString(Date date){
+    	if(date==null)
+    		return null;
+    	return ISO8601Datetime.format(date);
+    }
+    /********************
 	 * converts a byte array to a printable string will ignore empty byte that
 	 * =0 used to covert byte[] buffers to a string
 	 * 

@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateSpringController extends CodeGenerator {
 	private final static Logger log = LoggerFactory.getLogger(GenerateSpringController.class);
-	public static final String VERSION = "GenerateSpringController v2_021";
+	public static final String VERSION = "GenerateSpringController v2_022";
 
 	private String className = null;
 	private String subClassName = null;
@@ -716,7 +716,7 @@ public class GenerateSpringController extends CodeGenerator {
 		String text = "\t/************************************\n"
 				+ "\t*fills in a databean based on data in a request\n"
 				+ "\t************************************/\n"
-				+ "\tprotected static "
+				+ "\tpublic static "
 				+ beanName
 				+ " getDataBean(HttpServletRequest req) throws WebAppException{\n"
 				+
