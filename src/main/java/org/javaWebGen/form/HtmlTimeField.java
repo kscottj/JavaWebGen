@@ -135,18 +135,19 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	 
 		
 		boolean val=super.validate(value);
+		log.debug(">is valid time="+value+"="+ val);
 		
-		 
-		try {
-			StringUtil.convertToTime(value);
-		} catch (ParseException e) {
-			log.warn(value+"is invalid datetime"+e.getMessage());
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
-			this.isFieldValid=false;
-			val=false;			
-		}
+			try {
+				StringUtil.convertToTime(value);
+			} catch (ParseException e) {
+				log.warn(value+"is invalid Time"+e.getMessage());
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+				this.isFieldValid=false;
+				val=false;			
+			}
 
- 
+
+		log.debug("<is valid time="+val);
 	return val;	 
 
 	}
@@ -162,9 +163,11 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	@Override
 	public String getJQueryFieldScript() {
 		if(this.isViewOnly()){
-			return "<!--read only datepicker-->\n";
+			return "<!--read only timepicker-->\n";
 		}else{
-			return "$('#"+this.getName()+"').timepicker('showWidget');\n";	
+			//return "$('#"+this.getName()+"').timepicker('showWidget');\n";
+			return "$('#"+this.getName()+"').timepicker();\n";
+		
 			
 		}
 		
@@ -174,7 +177,7 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 		StringBuffer json=new StringBuffer("");
 		
 		json.append(this.getName()+":{\n");
-		json.append("    date: true,\n");
+	/*	json.append("    time: true,\n");*/
 		if(this.isRequired()){
 			json.append("    required: true,\n");
 		}

@@ -486,6 +486,9 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		//log.debug(this.getName()+".isValid="+isFieldValid);
 		return isFieldValid;
 	}
+	/**
+	 * 
+	 */
 	public boolean validate(String value) {
 		log.debug("value="+value);
 		this.cleanField();

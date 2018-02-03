@@ -353,12 +353,25 @@ public class HtmlForm implements  WebFormAware, Serializable{
 		this.errorMap.put(fieldName, message);
 	}
 	/**
+	 * return html error 
+	 */
+	public String getHtmlErrors() {
+		List<String> list=this.getErrors();
+		StringBuffer buffer= new StringBuffer("<ul class='hasErrors'>");
+		for(String error:list) {
+			buffer.append("<li>"+error+"</li>");
+		}
+		buffer.append("</ul>");
+		return buffer.toString();
+	}
+	/**
 	 * return a list of error messages that are not related to a specific bound field
 	 * @return list of generic form errors
 	 */
 	public List<String> getErrors(){
 		return this.formErrors;
 	}
+	
 	/**
 	 * return a list of error messages that are not related to a specific bound field
 	 * @see HtmlForm.getErrors

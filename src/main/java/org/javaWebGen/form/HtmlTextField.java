@@ -85,11 +85,12 @@ public class HtmlTextField extends HtmlField{
  	 
 		return htmlBuffer.toString();
 	}
-	@Override
-	public boolean validate(String value){ //maybe check for odd encoding?
-		return true;
+	/*@Override
+	public boolean validate(String value){ 
+		boolean val=super.validate(value);
+		return val;
 		
-	}
+	}*/
 	@Override
 	public void cleanField() {
 		if(this.getValue()!=null){
@@ -120,7 +121,7 @@ public class HtmlTextField extends HtmlField{
 		StringBuffer json=new StringBuffer("");
 		if(this.isRequired() ){
 			json.append(this.getName()+":{\n");
-			json.append("    minlength: 2,\n");
+			json.append("    minlength: 1,\n");
 			json.append("    required: true,\n");
 			json.append("},\n");
 		}

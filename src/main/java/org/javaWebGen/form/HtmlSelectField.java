@@ -59,24 +59,25 @@ public class HtmlSelectField extends HtmlField{
 	 
 	public HtmlSelectField(String name){
 		super(name);
-		setValueList( new LinkedHashMap<String,String>() );
+		setValueMap( new LinkedHashMap<String,String>() );
 		
 		 
 	}
 	public HtmlSelectField(String name,boolean required){
 		super(name,required);
-		setValueList( new LinkedHashMap<String,String>() );
+		setValueMap( new LinkedHashMap<String,String>() );
 		
 	}
 	
 	public HtmlSelectField(String name,boolean required,String label){
 		super(name,required,label);
-		setValueList( new LinkedHashMap<String,String>() );
+		setValueMap( new LinkedHashMap<String,String>() );
 		
 	}
 	public HtmlSelectField(String name,boolean required,String label,String attributes){
 		super(name,required,label,attributes);
-		setValueList( new LinkedHashMap<String,String>() );
+
+		setValueMap( new LinkedHashMap<String,String>() );
 		
 	}
 	/**
@@ -84,7 +85,15 @@ public class HtmlSelectField extends HtmlField{
 	 * preserve the order they the options are displayed in
 	 * @param map of values
 	 */
-	public void setValueList(Map<String,String> map){
+	public void setValueMap(Map<String,String> map){
+		this.valueMap=map;
+	}
+	/**
+	 * Set the value list for the drop down used to populate the <option> fields.  Use a LinkedHashMap to
+	 * preserve the order they the options are displayed in
+	 * @param map of values
+	 */
+	public void setOptionMap(Map<String,String> map){
 		this.valueMap=map;
 	}
 	/**
@@ -138,7 +147,7 @@ public class HtmlSelectField extends HtmlField{
 	@Override
 	public boolean validate(String value){ //maybe check for odd encoding?
 		boolean val=super.validate(value);
-		this.isFieldValid=val;
+		
 		return val;
 		
 	}
@@ -159,7 +168,7 @@ public class HtmlSelectField extends HtmlField{
 		StringBuffer json=new StringBuffer("");
 		if(this.isRequired() ){
 			json.append(this.getName()+":{\n");
-			json.append("    minlength: 2,\n");
+			json.append("    minlength: 1,\n");
 			json.append("    required: true,\n");
 			json.append("},\n");
 		}

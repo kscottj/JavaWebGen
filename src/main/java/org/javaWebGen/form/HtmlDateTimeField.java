@@ -100,17 +100,15 @@ public class HtmlDateTimeField extends HtmlField implements DateFieldAware{
 	@Override
 	public boolean validate(String value)  {
 		boolean val=super.validate(value);
-		
- 
-			try {
-				StringUtil.convertToDateTime(value);
-			} catch (ParseException e) {
-				log.warn(value+" invalid datetime "+e.getMessage());
-				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
-				this.isFieldValid=false;
-				val=false;			
-			}
- 
+		try {
+			StringUtil.convertToDateTime(value);
+		} catch (ParseException e) {
+			log.warn(value+" invalid datetime "+e.getMessage());
+			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+			this.isFieldValid=false;
+			val=false;			
+		}
+
 	 
 		return val;	 
 	 

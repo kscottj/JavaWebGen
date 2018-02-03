@@ -115,10 +115,10 @@ public class HtmlDateField extends HtmlField implements DateFieldAware{
 	@Override
 	public void setDate(java.util.Date date){
 		this.date=date;
-		log.debug(this+"before date format="+date);
+		//log.debug(this+"before date format="+date);
 		 
 		this.setValue(StringUtil.formatDate(this.date) );
-		log.debug(this+"value="+this.getValue() );
+		//log.debug(this+"value="+this.getValue() );
 	}
 	@Override
 	public Date getDate(){
@@ -134,16 +134,17 @@ public class HtmlDateField extends HtmlField implements DateFieldAware{
 	public boolean validate(String value)  {
 		boolean val=super.validate(value);
 		log.debug("validate>"+value);
-		try {
-			//DateUtils.parseDate(value);
-			StringUtil.convertToDate(value);
-		} catch (ParseException e) {
-			log.warn(value+"is invalid date"+e.getMessage());
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
-			this.isFieldValid=false;
-			val= false;
+		if(value!=null&&value.length()<1) { 
+			try {
+				//DateUtils.parseDate(value);
+				StringUtil.convertToDate(value);
+			} catch (ParseException e) {
+				log.warn(value+"is invalid date"+e.getMessage());
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+				this.isFieldValid=false;
+				val= false;
+			}
 		}
-	 
 		return val;
  
 		
