@@ -83,12 +83,12 @@ public class ServerAction {
 	 * @param url
 	 * @return next Server action
 	 */
-	public static ServerAction updateAction(String url){
-		return new ServerAction(url);
+	public static ServerAction updateAction(String text){
+		return new ServerAction(text);
 	}
 	/**
 	 * get a Instance of the ServerAction class for update actions (REST action)
-	 * @param url of web service 
+	 * @param response output text of web service 
 	 * @return Server action
 	 */
 	public static ServerAction webService(String url){
