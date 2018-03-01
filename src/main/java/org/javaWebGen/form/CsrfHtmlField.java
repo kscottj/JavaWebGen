@@ -102,8 +102,11 @@ public class CsrfHtmlField extends HtmlField{
 		 
 		
 	}
-	private String makeHash(long time,String sead) {
-		return StringUtil.sha2Base64(this.time+sead);	
+	/* *
+	 * make csrf hash
+	 */
+	private String makeHash(long time,String seed) {
+		return StringUtil.sha2Base64(time+seed);	
 	}
 	/**
 	 * Constructor field is set to required IE must be validated
