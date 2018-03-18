@@ -65,13 +65,13 @@ public class GenerateView extends CodeGenerator {
      public static final String VERSION="4_17";
      public static final String DTD="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
      public static final String ADMIN_JSP="/WEB-INF/jsp/admin/";
-     private String adminPrefix="/admin";
+     public static final String adminPrefix="/admin";
      private String detailTemplate=null;
      private String listTemplate=null;
      private String indexTemplate=null;
 	 private String baseTag=null;
 	 private String webAppCss=null;
-	 private StyleAware style=new BootstrapStyle();
+	 public static final StyleAware style=new BootstrapStyle();
 	 private static final Logger log=LoggerFactory.getLogger(GenerateView.class);
     /**
     *
@@ -283,7 +283,7 @@ public class GenerateView extends CodeGenerator {
     	 
     	ArrayList <String> primaryKeys= getPrimaryKeys();
         String text=
-         "<div class='row'><a href='"+adminPrefix+"/index.jsp'>Admin Menu</a>\n"
+         "<div class='"+style.getRow()+" "+style.getFormGroup()+"'><a href='"+adminPrefix+"/index.jsp'>Admin Menu</a>\n"
         +"<a href='"+adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+"'>Back to List Menu</a>"
         +"</div>\n"
     	+"<form id='dataFormId' name='dataForm' action ='"+adminPrefix+"/"+beanName+"/"+WebConst.UPDATE_CMD+"' METHOD='post'>\n";
@@ -324,7 +324,7 @@ public class GenerateView extends CodeGenerator {
      * @param types
      * @return
      */
-	private String makeCreateForm(String[] cols, int[] types) {
+	protected String makeCreateForm(String[] cols, int[] types) {
     	String beanName=DataMapper.formatClassName(getTableName());
    	 
     	ArrayList <String> primaryKeys= getPrimaryKeys();
@@ -411,7 +411,7 @@ public class GenerateView extends CodeGenerator {
       * @return
       * @throws Exception
       */
-     private String makeNav()throws Exception{
+     protected String makeNav()throws Exception{
       	//String beanName=DataMapper.formatClassName(getTableName() );
        
  
@@ -429,7 +429,7 @@ public class GenerateView extends CodeGenerator {
       * @param types
       * @return
       */
-     private String makeJavascript(String[] cols, int[] types){
+     protected String makeJavascript(String[] cols, int[] types){
      	String beanName=DataMapper.formatClassName(getTableName() );
      		String text=
      		
@@ -441,7 +441,7 @@ public class GenerateView extends CodeGenerator {
 		 
          "function updateClick(dataForm){\n" +
          //"alert('Are you sure you want to delete this record?');\n" +
-         "\tdataForm.action='/admin/"+beanName+"/"+WebConst.UPDATE_CMD+"';\n"+
+         "\tdataForm.action='/admin/"+beanName+"/"+WebConst.SAVE_CMD+"';\n"+
          "\tdataForm.submit();\n" +
 		 "} //end update function\n";
 
@@ -619,7 +619,8 @@ public class GenerateView extends CodeGenerator {
 		log.debug(">>>generateIndex");
 		String filePath=this.getFilePath();
 		try{
-	        File file=new File(filePath+"/WEB-INF/jsp/admin/index.jsp");
+	       // File file=new File(filePath+"/WEB-INF/jsp/admin/index.jsp");
+			 File file=new File(filePath+"/admin/index.jsp");
 	        if(! file.exists() ){
 		        FileWriter fo;
 		        //String[] parms=new String[1];
@@ -640,10 +641,11 @@ public class GenerateView extends CodeGenerator {
 		        out.print(text);
 		        out.flush();
 		        out.close();
-		        log.info("---Wrote File "+filePath+"/WEB-INF/jsp/admin/index.jsp");	
-	        }
+		        log.info("---Wrote File "+filePath+"/admin/index.jsp");	
+	       }
  
 		}catch(IOException ioe){
+			log.error("IOError=",ioe);
 			
 		}finally{
 			

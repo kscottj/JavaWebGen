@@ -561,7 +561,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	public String getDivTag(){
 		StringBuffer htmlBuffer=new StringBuffer();
 		 
-		htmlBuffer.append("<div class='"+this.getGroupCss()+"'>" );
+		htmlBuffer.append("<div class='"+style.getRow()+" "+this.getGroupCss()+"'>" );
 		htmlBuffer.append("  <label for='"+this.htmlid+"' class='"+style.getControlLabel()+" "+style.getColSm2()+"'>"+this.getLabel()+"</label>");
 		htmlBuffer.append("  <div class='"+style.getColSm10()+"'>");
 		htmlBuffer.append(getField() );
@@ -570,6 +570,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		return htmlBuffer.toString();
 		 
 	}
+
 	@Override
 	public String getTable(){
 		StringBuffer tableBuffer=new StringBuffer();
