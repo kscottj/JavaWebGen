@@ -168,19 +168,19 @@ public class CsrfHtmlField extends HtmlField{
 		boolean val=super.validate(value);
 		log.debug("validate>"+value );
 		if(this.req==null) {
-			log.debug("Request is null in CSRF Field "+this.getName());
+			log.warn("Request is null in CSRF Field "+this.getName());
 			val= false;
 			this.isFieldValid=false;
 		}
 		HttpSession session=this.req.getSession(false);
 		if(session==null) {
-			log.error("Session is null in CSRF Field "+this.getName());
+			log.warn("Session is null in CSRF Field "+this.getName());
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
 			val= false;
 			this.isFieldValid=false;
 		}
-		String sead=(String) session.getAttribute(WebConst.CSRF_SEED);
-		if(sead==null) {
+		String seed=(String) session.getAttribute(WebConst.CSRF_SEED);
+		if(seed==null) {
 			log.error("Random SEED for CSRF field not set in session"+this.getName());
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
 			val= false;
@@ -188,7 +188,7 @@ public class CsrfHtmlField extends HtmlField{
 		}
 		//log.debug("session sead="+sead);
 		//log.debug("time="+time);
-		String hash=makeHash(time,sead);
+		String hash=makeHash(time,seed);
 		//log.debug("hash="+hash);
 		if(hash.equals(this.getValue() )){
 			log.debug("<<<<<validate"+value +" hash is valid");  
@@ -199,6 +199,7 @@ public class CsrfHtmlField extends HtmlField{
 			val= false;
 			this.isFieldValid=false;
 		} 
+		log.debug("<validate="+val );
 		return val;
 	}
  
