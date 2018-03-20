@@ -475,10 +475,14 @@ public abstract class HtmlField implements  HtmlFieldAware{
 			return true; 
 		}
 
-		/*if(this.getValue()!=null && this.getValue().trim().length()>0){		 
+		if(this.getValue()!=null && this.getValue().trim().length()>0){		 
 			this.isFieldValid= validate(this.getValue());
 				//this.errorMessage="Required Field";
-		}*/
+		}else {
+			if(this.required) {
+				isFieldValid = false;
+			}
+		}
 
 	
 		//log.debug(this.getName()+".isValid()"+this.isFieldValid);

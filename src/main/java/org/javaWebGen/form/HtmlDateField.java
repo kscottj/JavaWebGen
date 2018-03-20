@@ -122,22 +122,27 @@ public class HtmlDateField extends HtmlField implements DateFieldAware{
 	}
 	@Override
 	public Date getDate(){
-		/*try {
-			return dateFormat.parse(this.getValue() );
+		try {
+			return StringUtil.convertToDate(this.getValue() );
 		} catch (ParseException e) {
+			log.warn("Invalid date "+this.getValue() );
 			return null;
-		}*/
-		return this.date;
+		 
+		}
+		
+ 
 	}
 	
 	@Override
 	public boolean validate(String value)  {
 		boolean val=super.validate(value);
 		log.debug("validate>"+value);
-		if(value!=null&&value.length()<1) { 
+		if(value!=null&&value.length()>1) { 
 			try {
-				//DateUtils.parseDate(value);
-				StringUtil.convertToDate(value);
+			
+				
+				StringUtil.convertToDate(value) ;
+			
 			} catch (ParseException e) {
 				log.warn(value+"is invalid date"+e.getMessage());
 				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
