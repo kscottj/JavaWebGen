@@ -41,7 +41,6 @@ package org.javaWebGen;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;

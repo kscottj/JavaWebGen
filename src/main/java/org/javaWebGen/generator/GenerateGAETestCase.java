@@ -23,7 +23,6 @@ SOFTWARE.
 package org.javaWebGen.generator;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.commons.text.StrSubstitutor;

@@ -41,16 +41,9 @@ package org.javaWebGen.generator;
 
 import java.sql.Types;
 import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
 import java.io.*;
-
 import org.apache.commons.text.StrSubstitutor;
- 
-
 import org.javaWebGen.exception.UtilException;
-import org.javaWebGen.exception.WebAppException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
