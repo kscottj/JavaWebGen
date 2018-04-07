@@ -334,7 +334,7 @@ public class UtilTestHarness extends TestCase{
 		}	
 		dateStr="10/10/2017 21:10:10";
 		try {
-			date=StringUtil.convertToDateTime(dateStr);
+			date=StringUtil.convertToTime(dateStr);
 			log.info(StringUtil.formatDateTime(date));
 		} catch (ParseException e) {
 			log.debug(dateStr+" invalid date"+e.getMessage() );	
@@ -342,8 +342,8 @@ public class UtilTestHarness extends TestCase{
 		}
 		dateStr="10/10/2017";
 		try {
-			date=StringUtil.convertToDate(dateStr);
-			log.info(StringUtil.formatDate(date));
+			date=StringUtil.convertToTime(dateStr);
+			log.info(StringUtil.formatDateTime(date));
 		} catch (ParseException e) {
 			log.debug(dateStr+" invalid date"+e.getMessage() );	
 			Assert.assertTrue("should be valid date "+dateStr,false); 

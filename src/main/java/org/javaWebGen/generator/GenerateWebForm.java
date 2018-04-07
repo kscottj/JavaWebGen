@@ -1,6 +1,7 @@
+               
 /*
  * =================================================================== *
- * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ * Copyright (c) 2003 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -37,6 +38,7 @@
  * SUCH DAMAGE.
  * ====================================================================
  */
+
 package org.javaWebGen.generator;
 
 
@@ -142,13 +144,13 @@ public class GenerateWebForm extends GenerateModel {
 			switch (colTypes[i]) {
 			
 			case Types.DATE:
-				text += "\tprivate HtmlField "+fieldName+"= new HtmlDateField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlDateField "+fieldName+"= new HtmlDateField(\""+fieldName+"\" ";
 			break;
 			case Types.TIMESTAMP:
-				text += "\tprivate HtmlField  "+fieldName+"= new HtmlDateTimeField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlDateTimeField  "+fieldName+"= new HtmlDateTimeField(\""+fieldName+"\" ";
 			break;
 			case Types.TIME:
-				text += "\tprivate HtmlField  "+fieldName+"= new HtmlTimeField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlTimeField  "+fieldName+"= new HtmlTimeField(\""+fieldName+"\" ";
 			break;
 			case Types.BIGINT:
 			case Types.INTEGER:
@@ -158,10 +160,10 @@ public class GenerateWebForm extends GenerateModel {
 			case Types.DECIMAL:
 			case Types.FLOAT:
 			case Types.DOUBLE:	
-				text += "\tprivate HtmlField "+fieldName+"= new HtmlDecimalField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlDecimalField "+fieldName+"= new HtmlDecimalField(\""+fieldName+"\" ";
 			break;					
 			default:
-				text += "\tprivate HtmlField  "+fieldName+"= new HtmlTextField(\""+fieldName+"\" ";
+				text += "\tprivate HtmlTextField  "+fieldName+"= new HtmlTextField(\""+fieldName+"\" ";
 			}
 			if (isKey){
 				text+=",false);\n";   //primary keys are not editable anyway
@@ -242,10 +244,10 @@ public class GenerateWebForm extends GenerateModel {
 			switch (colTypes[i]) {
 			
 			case Types.DATE:
-				text += "\tpublic HtmlField get"+className+"(){\n\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlDateField get"+className+"(){\n\t return "+fieldName+";\n\t}\n";
 			break;
 			case Types.TIMESTAMP:
-				text += "\tpublic HtmlField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlDateField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
 			break;
 			case Types.BIGINT:
 			case Types.INTEGER:
@@ -256,10 +258,10 @@ public class GenerateWebForm extends GenerateModel {
 			case Types.FLOAT:
 			case Types.DOUBLE:	
 
-				text += "\tpublic HtmlField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlDecimalField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
 			break;					
 			default:
-				text += "\tpublic HtmlField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
+				text += "\tpublic HtmlTextField get"+className+"(){\n\t\t return "+fieldName+";\n\t}\n";
 			}
 			
 		} //end for loop

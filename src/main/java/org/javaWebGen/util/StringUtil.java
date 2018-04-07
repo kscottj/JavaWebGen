@@ -1,6 +1,6 @@
 /*
  * =================================================================== *
- * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ * Copyright (c) 2006 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -37,6 +37,7 @@
  * SUCH DAMAGE.
  * ====================================================================
  */
+
 package org.javaWebGen.util;
 
 import java.io.PrintWriter;
@@ -70,17 +71,9 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class StringUtil {
 
-	
     public final static String ISO8601date_FORMAT = "yyyy-MM-dd";
     public final static String ISO8601time_FORMAT = "'T'HH:mm:ss";
     public final static String ISO8601Datetime_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
-    
-    private static FastDateFormat ISO8601date = FastDateFormat.getInstance(ISO8601date_FORMAT);
-	private static FastDateFormat ISO8601time =  FastDateFormat.getInstance(ISO8601time_FORMAT);
-	private static FastDateFormat ISO8601Datetime =  FastDateFormat.getInstance(ISO8601Datetime_FORMAT);
-
- 
-
     public static  DateConverter dateConverter = null ;
     public static DateTimeConverter dateTimeCoverter=null;
 	public static final String DATE_PATTERN="MM/dd/yyyy";
@@ -186,7 +179,7 @@ static{
     }
     
     /**
-     * parse ISO date format MM/dd/yyyy
+     * parse ISO date format yyyy-mm-dd
      * @param dateStr
      * @return java date object
      * @throws ParseException  invalid date
@@ -201,22 +194,7 @@ static{
  
     	return date;
     }
-    /**
-     * parse ISO date format MM/dd/yyyy HH:mm:ss
-     * @param dateStr text to be converted
-     * @return java date object
-     * @throws ParseException  invalid date
-     */
-    public static Date convertToDateTime(String dateStr) throws ParseException {
-    	Date date=null;
-    	if(dateStr==null || dateStr.equals("null")|| dateStr.equals("")){
-    		 
-    		return null;
-    	}
-		date=DateUtils.parseDateStrictly(dateStr,DATE_TIME_PATTERN);
- 
-    	return date;
-    }   
+    
     /**
      * parse ISO time format 'T'HH:mm:ss
      * @param dateStr
@@ -259,34 +237,26 @@ static{
     /**
      * get a date in ISO foramat yyyy-mm-dd
      * @param date
-     * @return
+     * @return formatted date
      */
     public static String convertDateToISOString(Date date){
     	if(date==null)
     		return null;
-    	return ISO8601date.format(date);
+    	SimpleDateFormat iso8601Date = new SimpleDateFormat (ISO8601date_FORMAT);
+    	return iso8601Date.format(date);
     }
     /**
      * get time in ISO format  'T'HH:mm:ss
      * @param date
-     * @return
+     * @return formatted date
      */
     public static String convertTimeToISOString(Date date){
     	if(date==null)
     		return null;
-    	return ISO8601time.format(date);
+    	SimpleDateFormat iso8601time = new SimpleDateFormat (ISO8601time_FORMAT);
+    	return iso8601time.format(date);
     }
-    /**
-     * get time in ISO format  'T'HH:mm:ss
-     * @param date
-     * @return
-     */
-    public static String convertDateTimeToISOString(Date date){
-    	if(date==null)
-    		return null;
-    	return ISO8601Datetime.format(date);
-    }
-    /********************
+	/*********************
 	 * converts a byte array to a printable string will ignore empty byte that
 	 * =0 used to covert byte[] buffers to a string
 	 * 

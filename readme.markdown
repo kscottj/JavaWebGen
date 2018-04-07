@@ -49,6 +49,52 @@ public BookForm(){
 }
 ```
 
+    
+### Base custom TAG(WEB-INF/tags/base.tag)
+
+Example Custom TAG(The Java way to setup a page template)
+```
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@attribute name="style" fragment="true" %>
+<%@attribute name="script" fragment="true" %>
+<%@attribute name="initJSFunction" fragment="true" %>
+<%@attribute name="bodyScript" fragment="true" %>
+<%@attribute name="title" fragment="true" %>
+<html lang="en">
+<head>
+<!-- Bootstrap -->
+<link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css'	rel='stylesheet'>
+<link href='<c:url value="/static/css/bootstrap-datepicker.min.css"/>'	rel='stylesheet'>
+<link href='<c:url value="/static/css/bootstrap-timepicker.min.css"/>' rel='stylesheet'>
+<link href='<c:url value="/static/css/webApp.css"/>' rel='stylesheet'>
+<script>
+function init(){
+    <jsp:invoke fragment='initJSFunction'/>
+}
+</script>
+ <script><jsp:invoke fragment='script' /></script>
+<title><jsp:invoke fragment='title'/></title> 
+</head>
+<body onLoad="init()">
+<div class='container'>
+<div class='col-m'>	
+	<div class='webApp'>
+ <jsp:doBody/>
+ </div>	 
+</div>	
+</div><!-- /.container --> `
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'></script>
+<script src='<c:url value="/static/js/bootstrap-datepicker.min.js"/>'>
+</script><script src='<c:url value="/static/js/bootstrap-timepicker.min.js"/>'></script><script>
+<jsp:invoke fragment='bodyScript'/> 
+</script>
+</body>
+</html>
+```
+
 ### Basic view deail JSP
 
 Example Form page.  the `${form} will render the form as HTML with all values and validations.

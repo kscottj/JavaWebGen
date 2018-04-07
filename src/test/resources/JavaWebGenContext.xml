@@ -13,13 +13,10 @@
 
 <!--define generated DAO beans -->
 <bean id="PublisherDao" class="org.javaWebGen.data.dao.PublisherDAO"> 
-   <property name="dataSource" ref="dataSource" />
 </bean>
 <bean id="AuthorDao" class="org.javaWebGen.data.dao.AuthorDAO"> 
-   <property name="dataSource" ref="dataSource" />
 </bean>
 <bean id="BookDao" class="org.javaWebGen.data.dao.BookDAO"> 
-   <property name="dataSource" ref="dataSource" />
 </bean>
 
  <!-- set daofactory-->

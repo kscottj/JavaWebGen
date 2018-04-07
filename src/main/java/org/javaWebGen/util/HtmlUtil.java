@@ -204,7 +204,6 @@ public class HtmlUtil{
 	   * @return web session from request
 	   */
 	  @Deprecated
-
 	  public static WebSession getWebSession(HttpServletRequest req) {
 		 if(req==null) {
 			 return null;

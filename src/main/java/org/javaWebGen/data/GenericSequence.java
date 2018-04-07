@@ -43,9 +43,8 @@ import org.javaWebGen.exception.SqlAppException;
  *);
  *<PRE>
  **********************************************/
-@Deprecated
+@SuppressWarnings("deprecation")
 public final class GenericSequence extends JdbcDao implements Sequence{
-
 	//private DataManager _manager = null;
 	//private static Sequence _gen = null;
 
