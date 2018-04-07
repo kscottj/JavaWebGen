@@ -6,11 +6,11 @@
    <jsp:attribute name="script"> 
        function deleteClick(dataForm){
 	alert('Are you sure you want to delete this record?');
-	dataForm.action='/admin/Book/delete';
+	dataForm.action='/admin/Publisher/delete';
 	dataForm.submit();
 } //end delete function
 function updateClick(dataForm){
-	dataForm.action='/admin/Book/update';
+	dataForm.action='/admin/Publisher/update';
 	dataForm.submit();
 } //end update function
 
@@ -19,22 +19,18 @@ function updateClick(dataForm){
      ${form.JQueryScript}
   </jsp:attribute>   
   <jsp:attribute name="title">
-     Book  </jsp:attribute>   
+     Publisher  </jsp:attribute>   
   <jsp:body>
   <div class='col-m'>	
-     <h1>Detail Book</h1>
+     <h1>Detail Publisher</h1>
       <div class='row'><a href='/admin/index.jsp'>Admin Menu</a>
-<a href='/admin/Book/list'>Back to List Menu</a></div>
-<form id='dataFormId' name='dataForm' action ='/admin/Book/update' METHOD='post'>
+<a href='/admin/Publisher/list'>Back to List Menu</a></div>
+<form id='dataFormId' name='dataForm' action ='/admin/Publisher/update' METHOD='post'>
 <div class='form-group'>
-<div class='col-sm-2'>BookId</div><div class='col-sm-10'>${form.bookId.value}</div>
+<div class='col-sm-2'>PublisherId</div><div class='col-sm-10'>${form.publisherId.value}</div>
 </div>
-<input type='hidden' name='bookId' value='${form.bookId.value}'>
-${form.title.divTag}
-${form.isbn.divTag}
-${form.publisherId.divTag}
-${form.authorId.divTag}
-${form.createDate.divTag}
+<input type='hidden' name='publisherId' value='${form.publisherId.value}'>
+${form.name.divTag}
 <button id='button.update' class='btn btn-primary  btn-large' name='updateBut' onClick='updateClick(dataForm)' ><fmt:message key="dialog.save" bundle="${msg}" /></button>
 <button id='button.delete' class='btn btn-warning  btn-large' name='deleteBut' onClick='deleteClick(dataForm)'><fmt:message key="dialog.delete" bundle="${msg}" /></button>
 </form>

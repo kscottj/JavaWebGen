@@ -30,11 +30,11 @@ import org.javaWebGen.data.dao.*
 * It will be regenerated if the database schema changes 
 *******************************************************************************/
 @Service
-public abstract class BookModelImpl implements Model { 
+public abstract class AuthorModelImpl implements Model { 
 //begin private Vars
 	
 /** data bean for this object **/;
-	private BookDAO dao= new BookDAO();
+	private AuthorDAO dao= new AuthorDAO();
 
 //find by Primary Key
 
@@ -42,9 +42,9 @@ public abstract class BookModelImpl implements Model {
 	* Generated method. get a Databean with table data in it
 	* @return databean with data
 	******************************************************/
-	public Book getById(Long id) throws WebAppException{
+	public Author getById(Long id) throws WebAppException{
 		try{
-			Book bean=JavaWebGenContext.getDao().getBookDao().findByPrimaryKey(id);
+			Author bean=JavaWebGenContext.getDao().getAuthorDao().findByPrimaryKey(id);
 			 return bean;
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
@@ -57,7 +57,7 @@ public abstract class BookModelImpl implements Model {
 	* Warning Dates fields must be in a format that the Java DateFormatter can use!
 	* @return databean with data
 	******************************************************/
-	public Book getByIdParm(String idparm) throws WebAppException{
+	public Author getByIdParm(String idparm) throws WebAppException{
 		 try{
 			Long id =new Long(idparm);
 			return getById(id);
@@ -72,9 +72,9 @@ public abstract class BookModelImpl implements Model {
 	*Warning Generated method inserts new Databean 
 	*
 	******************************************************/
-	public Long create(Book bean) throws WebAppException{
+	public Long create(Author bean) throws WebAppException{
 		try{
-			return JavaWebGenContext.getDao().getBookDao().insert(bean);
+			return JavaWebGenContext.getDao().getAuthorDao().insert(bean);
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 		}
@@ -86,9 +86,9 @@ public abstract class BookModelImpl implements Model {
 	* Warning Generated method updates the database with a Databean 
 	* 
 	******************************************************/
-	public void save(Book bean) throws WebAppException{
+	public void save(Author bean) throws WebAppException{
 		try{
-			JavaWebGenContext.getDao().getBookDao().update(bean);
+			JavaWebGenContext.getDao().getAuthorDao().update(bean);
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 		}
@@ -100,9 +100,9 @@ public abstract class BookModelImpl implements Model {
 	* Warning Generated method deletes record from the database based on a Databean 
 	* 
 	******************************************************/
-	public void remove(Book bean) throws WebAppException{
+	public void remove(Author bean) throws WebAppException{
 		try{
-			JavaWebGenContext.getDao().getBookDao().delete(bean);
+			JavaWebGenContext.getDao().getAuthorDao().delete(bean);
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 		}
@@ -114,10 +114,10 @@ public abstract class BookModelImpl implements Model {
 	* Warning Generated method list of all records in a table 
 	* @return array of DataBeans
 	******************************************************/
-	public List<Book> list() throws WebAppException{
-		List<Book> dataBeans =null;
+	public List<Author> list() throws WebAppException{
+		List<Author> dataBeans =null;
  		try{
-		dataBeans = JavaWebGenContext.getDao().getBookDao().findAll();
+		dataBeans = JavaWebGenContext.getDao().getAuthorDao().findAll();
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 		}

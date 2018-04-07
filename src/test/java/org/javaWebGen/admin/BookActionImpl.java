@@ -105,10 +105,11 @@ private static final Logger log=LoggerFactory.getLogger(BookActionImpl.class);//
 			Book dataBean=new Book();
 		try{
 			dataBean.setBookId(HtmlUtil.stripTags(req.getParameter("bookId") ) );
+			dataBean.setTitle(HtmlUtil.stripTags(req.getParameter("title") ) );
 			dataBean.setIsbn(HtmlUtil.stripTags(req.getParameter("isbn") ) );
-			dataBean.setCreateDate(StringUtil.convertToTime(req.getParameter("createDate") ) );
-			dataBean.setUpdateDate(StringUtil.convertToTime(req.getParameter("updateDate") ) );
-			dataBean.setUpdateBy(HtmlUtil.stripTags(req.getParameter("updateBy") ) );
+			dataBean.setPublisherId(HtmlUtil.stripTags(req.getParameter("publisherId") ) );
+			dataBean.setAuthorId(HtmlUtil.stripTags(req.getParameter("authorId") ) );
+			dataBean.setCreateDate(StringUtil.convertToDate(req.getParameter("createDate") ) );
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 }		return dataBean;

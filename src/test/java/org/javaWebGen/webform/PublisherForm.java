@@ -27,49 +27,29 @@
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public class InventoryForm extends CsrfForm{
+public class PublisherForm extends CsrfForm{
  private static final long serialVersionUID = 453453453788212L;
  	/*form fields*/
-   	private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
-	private HtmlNumberField  locationId= new HtmlNumberField("locationId" ,false);
-	private HtmlField  createDate= new HtmlDateTimeField("createDate" ,false);
-	private HtmlField  updateDate= new HtmlDateTimeField("updateDate" ,false);
-	private HtmlField  updateBy= new HtmlTextField("updateBy" ,false);
-	private HtmlField  comment= new HtmlTextField("comment" ,false);
+   	private HtmlNumberField  publisherId= new HtmlNumberField("publisherId" ,false);
+	private HtmlField  name= new HtmlTextField("name" ,false);
  
   /**constructor that builds form*/
- 	public InventoryForm(HttpServletRequest req){
+ 	public PublisherForm(HttpServletRequest req){
 		super(req);
-		this.addField(bookId);
-		this.addField(locationId);
-		this.addField(createDate);
-		this.addField(updateDate);
-		this.addField(updateBy);
-		this.addField(comment);
+		this.addField(publisherId);
+		this.addField(name);
 	}
  
  	/** get form name */
 	public String getWebFormName(){
- 		return "InventoryForm";
+ 		return "PublisherForm";
  	}
  //getters
-	public HtmlNumberField getBookId(){
-		 return bookId;
+	public HtmlNumberField getPublisherId(){
+		 return publisherId;
 	}
-	public HtmlNumberField getLocationId(){
-		 return locationId;
-	}
-	public HtmlField getCreateDate(){
-		 return createDate;
-	}
-	public HtmlField getUpdateDate(){
-		 return updateDate;
-	}
-	public HtmlField getUpdateBy(){
-		 return updateBy;
-	}
-	public HtmlField getComment(){
-		 return comment;
+	public HtmlField getName(){
+		 return name;
 	}
 }
  

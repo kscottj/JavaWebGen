@@ -91,8 +91,10 @@ public class Router  extends CsrfFilter{
 	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+		 
 		HttpServletRequest   httpRequest  = (HttpServletRequest)  req;
 		HttpServletResponse   httpResponse  = (HttpServletResponse)  res;
+		
 		this.setupSession(httpRequest);
 		String uri =  httpRequest.getServletPath();
 		//log.info("doFilter.uri="+uri);

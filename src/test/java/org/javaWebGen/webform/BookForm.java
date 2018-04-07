@@ -31,19 +31,21 @@ public class BookForm extends CsrfForm{
  private static final long serialVersionUID = 453453453788212L;
  	/*form fields*/
    	private HtmlNumberField  bookId= new HtmlNumberField("bookId" ,false);
+	private HtmlField  title= new HtmlTextField("title" ,false);
 	private HtmlField  isbn= new HtmlTextField("isbn" ,false);
-	private HtmlField  createDate= new HtmlDateTimeField("createDate" ,false);
-	private HtmlField  updateDate= new HtmlDateTimeField("updateDate" ,false);
-	private HtmlField  updateBy= new HtmlTextField("updateBy" ,false);
+	private HtmlNumberField  publisherId= new HtmlNumberField("publisherId" ,false);
+	private HtmlNumberField  authorId= new HtmlNumberField("authorId" ,false);
+	private HtmlField createDate= new HtmlDateField("createDate" ,false);
  
   /**constructor that builds form*/
  	public BookForm(HttpServletRequest req){
 		super(req);
 		this.addField(bookId);
+		this.addField(title);
 		this.addField(isbn);
+		this.addField(publisherId);
+		this.addField(authorId);
 		this.addField(createDate);
-		this.addField(updateDate);
-		this.addField(updateBy);
 	}
  
  	/** get form name */
@@ -54,17 +56,20 @@ public class BookForm extends CsrfForm{
 	public HtmlNumberField getBookId(){
 		 return bookId;
 	}
+	public HtmlField getTitle(){
+		 return title;
+	}
 	public HtmlField getIsbn(){
 		 return isbn;
 	}
+	public HtmlNumberField getPublisherId(){
+		 return publisherId;
+	}
+	public HtmlNumberField getAuthorId(){
+		 return authorId;
+	}
 	public HtmlField getCreateDate(){
-		 return createDate;
-	}
-	public HtmlField getUpdateDate(){
-		 return updateDate;
-	}
-	public HtmlField getUpdateBy(){
-		 return updateBy;
+	 return createDate;
 	}
 }
  

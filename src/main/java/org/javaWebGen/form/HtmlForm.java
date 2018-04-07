@@ -234,14 +234,15 @@ public class HtmlForm implements  WebFormAware, Serializable{
 		 reqMap = new HashMap<String,String>();
 	
 		Enumeration<String> names = req.getParameterNames();
-	     while (names.hasMoreElements()) {
+		 
+	    while (names.hasMoreElements()) {
 	       String name = names.nextElement();
 	       String cleanParm = HtmlUtil.stripTags( req.getParameter(name) );
 	       reqMap.put(name, cleanParm );
-	       log.debug(" req key="+name+" value="+cleanParm+"|" );
-	       	 
-	     }
-	     try {
+	       //log.debug(" req key="+name+" value="+cleanParm+"|" );   	 
+	    }
+	    
+	    try {
 	    	 if(databean!=null){
 	    		 BeanUtils.populate(databean, reqMap);
 	    		 this.setFieldMap(databean);
@@ -649,23 +650,24 @@ public class HtmlForm implements  WebFormAware, Serializable{
 	 * @return true if form is valid
 	 */
 	public boolean validate() {
-		log.debug(" begin isValid");
+		log.debug(">validate()");
 		this.clean();
 		boolean valid=true;
 			
 		Collection <HtmlField> c=fieldMap.values();
 		for(HtmlField field:c){
-			if(!field.validate(field.getValue() ) ){
+			valid=field.validate(field.getValue() );
+			if(!valid){
 				log.warn("invalid web form field="+field.getName()+" value="+field.getValue() );
 				this.addFieldErrors(field.getName(), field.getErrorMessage());
 				//errorMap.put(field.getName(), field.getErrorMessage() );
-				valid=false;
+				 
 			}
-			log.debug(field.getName()+" isValid:"+field.isValid() );
+			log.debug(field.getName()+".isValid:"+valid );
 		}
 		
 
-		log.debug(" end isValid:"+valid);
+		log.debug("<validate():"+valid);
 		return valid;
 	}
 	/**

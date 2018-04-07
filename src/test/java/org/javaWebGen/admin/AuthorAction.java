@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public class LocationAction extends LocationActionImpl { 
+public class AuthorAction extends AuthorActionImpl { 
 @SuppressWarnings("unused")
- 	private final Logger log=LoggerFactory.getLogger(LocationActionImpl.class);//begin exec
+ 	private final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);//begin exec
 	/**
 	* Generated method  
 	* retrieves all data from a table and displays it using a JSP 
@@ -37,9 +37,9 @@ public class LocationAction extends LocationActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction list(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-			List<Location> list =getModel().list();
+			List<Author> list =getModel().list();
 					req.setAttribute(WebConst.DATA_BEAN_LIST,list);
-	return ServerAction.viewAction("/admin/LocationList.jsp");
+	return ServerAction.viewAction("/admin/AuthorList.jsp");
 	}
 			//database table has primary KEY in it
 	/**
@@ -49,11 +49,11 @@ public class LocationAction extends LocationActionImpl {
 *	@return page(controller) or URI to jump to
 *	*/
 	public ServerAction detail(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-			Location dataBean= getModel().getByIdParm(req.getParameter("locationId") );
-			LocationForm  form= new LocationForm(req);
+			Author dataBean= getModel().getByIdParm(req.getParameter("authorId") );
+			AuthorForm  form= new AuthorForm(req);
 			form.setData(dataBean,req);
 			req.setAttribute(WebConst.FORM,form ) ; 
-			return ServerAction.viewAction("/admin/LocationDetail.jsp");
+			return ServerAction.viewAction("/admin/AuthorDetail.jsp");
 		}
 	/**
 	* Generated method  
@@ -62,15 +62,15 @@ public class LocationAction extends LocationActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction update(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-			LocationForm form= new LocationForm(req);
-		Location databean=getDataBean(req);
+			AuthorForm form= new AuthorForm(req);
+		Author databean=getDataBean(req);
 		form.setData(databean,req);
 		req.setAttribute(WebConst.FORM, form);
 		if(form.isValid() ){
-			getModel().save( (Location)form.getData() );
-			return ServerAction.updateAction("/admin/Location/list");
+			getModel().save( (Author)form.getData() );
+			return ServerAction.updateAction("/admin/Author/list");
 		}else{
-			return ServerAction.viewAction("/admin/LocationDetail.jsp");
+			return ServerAction.viewAction("/admin/AuthorDetail.jsp");
 		}
 	}
 	/**
@@ -80,9 +80,9 @@ public class LocationAction extends LocationActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction delete(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		Location databean =getDataBean(req);
+		Author databean =getDataBean(req);
 		getModel().remove(databean);
-		return ServerAction.updateAction("/admin/Location/list");
+		return ServerAction.updateAction("/admin/Author/list");
 	}
 	/**
 	* Generated method  
@@ -91,14 +91,14 @@ public class LocationAction extends LocationActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction create(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		LocationForm form = new LocationForm(req);
-		form.setData(new Location(), req);
+		AuthorForm form = new AuthorForm(req);
+		form.setData(new Author(), req);
 		if( form.isValid() ){;
-			getModel().create( (Location) form.getData() );
-			return ServerAction.updateAction("/admin/Location/list");
+			getModel().create( (Author) form.getData() );
+			return ServerAction.updateAction("/admin/Author/list");
 		}else{
 			req.setAttribute(WebConst.FORM,form);
-			return ServerAction.viewAction("/admin/LocationCreate.jsp");
+			return ServerAction.viewAction("/admin/AuthorCreate.jsp");
 		}
 	}//end create
 	/**
@@ -108,11 +108,11 @@ public class LocationAction extends LocationActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction add(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		LocationForm form = new LocationForm(req);
+		AuthorForm form = new AuthorForm(req);
 		form.setData(req);
-		form.setAction("/admin/Location/create");
+		form.setAction("/admin/Author/create");
 		req.setAttribute(WebConst.FORM, form);
-	return ServerAction.viewAction("/admin/LocationCreate.jsp");
+	return ServerAction.viewAction("/admin/AuthorCreate.jsp");
 	}
 //end exec
 

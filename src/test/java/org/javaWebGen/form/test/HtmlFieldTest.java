@@ -8,12 +8,8 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-
-
 import javax.servlet.http.HttpServletRequest;
-
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -25,6 +21,7 @@ import org.javaWebGen.form.HtmlSelectField;
 import org.javaWebGen.form.HtmlTextField;
 import org.javaWebGen.form.HtmlUrlField;
 import org.javaWebGen.util.MockRequestHelper;
+
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -6,13 +6,13 @@
   <div class='col-m'>	
    </div>
   <div class='col-m'>	
-  <h1> Book List</h1>
-         <p><a href='/admin/Book/add'>Add New Record</a></p><c:choose>
+  <h1> Author List</h1>
+         <p><a href='/admin/Author/add'>Add New Record</a></p><c:choose>
    <c:when test="${!empty  dataBeanList}">
  <table class='table table-striped table-bordered table-condensed'>
-     <tr><th>book_id</th><th>title</th><th>Action</th></tr>
+     <tr><th>author_id</th><th>first_name</th><th>Action</th></tr>
   <c:forEach var="bean" items="${dataBeanList}"> 
-    <tr><td>${bean.bookId}</td><td>${bean.title}</td><td><a href='/admin/Book/detail?bookId=${bean.bookId}'>Edit</a></td></tr>
+    <tr><td>${bean.authorId}</td><td>${bean.firstName}</td><td><a href='/admin/Author/detail?authorId=${bean.authorId}'>Edit</a></td></tr>
 </c:forEach>
 </table>
 </c:when>

@@ -71,6 +71,7 @@ public class CsrfHtmlField extends HtmlField{
 	private static final long serialVersionUID = 5109955892471971726L;
 	private final long time= System.currentTimeMillis();
 	private HttpServletRequest req=null;
+	private boolean isValueSet=false;
 	
 	/**
 	 * constructor
@@ -83,31 +84,51 @@ public class CsrfHtmlField extends HtmlField{
 		this.setHash(req);
 	}
 	/**
+	 * constructor
+	 * @param req request 
+	 */
+	public CsrfHtmlField(HttpServletRequest req,String fieldName){
+		super(fieldName,true);	
+		this.req=req;
+	 
+		this.setHash(req);
+	}
+	/**
 	 * set value to current hash
 	 * @param req request
 	 */
 	private void setHash(HttpServletRequest req) {
-		 HttpSession session = req.getSession(false);
+		 HttpSession session = req.getSession();
 		 if(session!=null&& req!=null) {
-			 String sead=(String) session.getAttribute(WebConst.CSRF_SEED);
-			 log.debug("set sead="+sead);
-			 if(sead!=null) {
-				 String hash=makeHash(this.time,sead);
-				 log.debug("set hash="+hash);
-				 this.setValue(hash);
+			 String seed=(String) session.getAttribute(WebConst.CSRF_SEED);
+			 if(seed!=null) {
+				 String hash=makeHash(this.time,seed);
+				 super.setValue(this.time+","+hash); 
+			 }else {
+				 log.warn("random session seed=[NULL}");
 			 }
 		 }else {
 			 log.warn("request or sesion is [NULL]");
 		 }
-		 
+	}
+	/**
+	 * flag boolean if value is set from request
+	 */
+	@Override
+	public void setValue(String value) {
+		super.setValue(value);
+		//log.debug("this.isValueSet==="+value);
+		this.isValueSet=true;
 		
 	}
 	/* *
 	 * make csrf hash
 	 */
 	private String makeHash(long time,String seed) {
+		
 		return StringUtil.sha2Base64(time+seed);	
 	}
+	
 	/**
 	 * Constructor field is set to required IE must be validated
 	 * @param name of field is ignored set to FIELD_NAME always
@@ -122,11 +143,10 @@ public class CsrfHtmlField extends HtmlField{
 	@Override
 	public String getField() {
 		StringBuffer htmlBuffer=new StringBuffer();
-		htmlBuffer.append("\n<hidden name='"+WebConst.CSRF_NONCE+"' value='"+time+"'/><hidden name='"+WebConst.CSRF_HASH+"' value='"+this.getValue()+"'/>\n");
+		htmlBuffer.append("\n<input type='hidden' name='"+this.getName()+"' value='"+this.getValue()+"'>\n");
 		if(this.isFieldValid){
-			htmlBuffer.append("<!--valid-->"); 
+			//htmlBuffer.append("<!--valid-->"); 
 		}else{
-		 
 			htmlBuffer.append("<div class='alert alert-danger' > "+this.getErrorMessage()+"</div>");
 		}
 		return htmlBuffer.toString();
@@ -162,45 +182,55 @@ public class CsrfHtmlField extends HtmlField{
 	 * @param value
 	 * @return true if csrf hash is valid
 	 */
-	 
 	@Override
 	public boolean validate(String value) {
 		boolean val=super.validate(value);
 		log.debug("validate>"+value );
 		if(this.req==null) {
-			log.warn("Request is null in CSRF Field "+this.getName());
-			val= false;
-			this.isFieldValid=false;
-		}
-		HttpSession session=this.req.getSession(false);
-		if(session==null) {
-			log.warn("Session is null in CSRF Field "+this.getName());
+			log.error("Request is null in CSRF Field "+this.getName());
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
-			val= false;
 			this.isFieldValid=false;
-		}
+			return false;
+		} 
+		
+		HttpSession session=this.req.getSession(false);
 		String seed=(String) session.getAttribute(WebConst.CSRF_SEED);
-		if(seed==null) {
+		if(seed==null||seed.length()<2) {
 			log.error("Random SEED for CSRF field not set in session"+this.getName());
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
 			val= false;
 			this.isFieldValid=false;
+			return false;
 		}
-		//log.debug("session sead="+sead);
-		//log.debug("time="+time);
-		String hash=makeHash(time,seed);
-		//log.debug("hash="+hash);
-		if(hash.equals(this.getValue() )){
+		String[] parms=this.getValue().split(",");
+		if(parms.length!=2) {
+			log.error("Invalid hash parms ="+parms.length);
+			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
+			return false;
+		}
+		long nounce=Long.parseLong(parms[0] );
+		String csrfHash=parms[1];
+
+		String calcHash=makeHash(nounce,seed);
+		log.debug("value was set from req?"+this.isValueSet);
+		if(calcHash.equals(csrfHash) && this.isValueSet){
 			log.debug("<<<<<validate"+value +" hash is valid");  
 			val= true;	
 		}else {
-			log.warn(hash+"?value="+value );
+			log.debug(calcHash+"?value="+value+" isValueSet="+this.isValueSet );
 			this.setErrorMessage(this.getProps(MsgConst.ERROR_CSRF, INVALID_MESSAGE) );  
-			val= false;
 			this.isFieldValid=false;
+			return false;
 		} 
 		log.debug("<validate="+val );
 		return val;
+	}
+	/** mainly for testing
+	 * 
+	 * @return current nounce
+	 */
+	public String getNounce() {
+		return this.time+"";
 	}
  
 	

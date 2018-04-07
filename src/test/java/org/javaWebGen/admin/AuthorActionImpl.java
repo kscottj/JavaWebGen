@@ -33,11 +33,11 @@ import javax.servlet.http.HttpServletRequest;
 * If you need to change the this code you should override what you do not need.
 *******************************************************************************/
 @SuppressWarnings("unused") //StringUtil might be needed depending for some data fields
-public abstract class LocationActionImpl extends WebController{ 
-private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class);//begin private Vars
+public abstract class AuthorActionImpl extends WebController{ 
+private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);//begin private Vars
 	
 /** model for this object **/;
-	private LocationModel model= null;
+	private AuthorModel model= null;
 
 //find by Primary Key
 
@@ -46,8 +46,8 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	* for one row in the database
 	*@return DataBean with data from the Model
 	******************************************************/
-	protected Location getById(Long id) throws WebAppException{
-        Location bean =getModel().getById(id);
+	protected Author getById(Long id) throws WebAppException{
+        Author bean =getModel().getById(id);
         return bean;
     } //find by primary key
 
@@ -60,7 +60,7 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	*@param bean data Bound JavaBean
 	*@see org.javaWebGen.data.DataBean
 	******************************************************/
-	protected void create(org.javaWebGen.data.bean.Location bean) throws WebAppException{
+	protected void create(org.javaWebGen.data.bean.Author bean) throws WebAppException{
 		getModel().create(bean);
 	} //end create
 
@@ -71,7 +71,7 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	*@param bean data Bound  JavaBean
 	*@see org.javaWebGen.data.DataBean
 	******************************************************/
-	protected void update(Location bean) throws WebAppException{
+	protected void update(Author bean) throws WebAppException{
 		getModel().save(bean);
 	} //end create
 
@@ -83,7 +83,7 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	*@see org.javaWebGen.data.DataBean
 	*
 	******************************************************/
-	protected void delete(Location bean) throws WebAppException{
+	protected void delete(Author bean) throws WebAppException{
 		getModel().remove(bean);
 	} //end delete
 
@@ -93,7 +93,7 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	*Warning Generated method list all rows in table 
 	*@return list of databeans
 	******************************************************/
-	protected List <Location> list() throws WebAppException{
+	protected List <Author> list() throws WebAppException{
 		return getModel().list();
 	} //end list
 
@@ -101,14 +101,12 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	/************************************
 	*fills in a databean based on data in a request
 	************************************/
-	protected static Location getDataBean(HttpServletRequest req) throws WebAppException{
-			Location dataBean=new Location();
+	protected static Author getDataBean(HttpServletRequest req) throws WebAppException{
+			Author dataBean=new Author();
 		try{
-			dataBean.setLocationId(HtmlUtil.stripTags(req.getParameter("locationId") ) );
-			dataBean.setCreateDate(StringUtil.convertToTime(req.getParameter("createDate") ) );
-			dataBean.setUpdateDate(StringUtil.convertToTime(req.getParameter("updateDate") ) );
-			dataBean.setUpdateBy(HtmlUtil.stripTags(req.getParameter("updateBy") ) );
-			dataBean.setComment(HtmlUtil.stripTags(req.getParameter("comment") ) );
+			dataBean.setAuthorId(HtmlUtil.stripTags(req.getParameter("authorId") ) );
+			dataBean.setFirstName(HtmlUtil.stripTags(req.getParameter("firstName") ) );
+			dataBean.setLastName(HtmlUtil.stripTags(req.getParameter("lastName") ) );
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 }		return dataBean;
@@ -120,10 +118,10 @@ private static final Logger log=LoggerFactory.getLogger(LocationActionImpl.class
 	*get the correct model class
 	*@return model class
 	************************************/
-	protected synchronized LocationModel getModel() throws WebAppException{
+	protected synchronized AuthorModel getModel() throws WebAppException{
 		if (model==null){
 			if(model==null){
-				model = new LocationModel();
+				model = new AuthorModel();
 			}
 		}
 		return model;

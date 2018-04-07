@@ -35,9 +35,7 @@ public class GenerateSpringView extends GenerateView{
 		 "} //end update function\n";
 
      	return text;
-     	
-     	
-     }
+      }
      
      /**
       * build nave menu left hand
@@ -52,7 +50,7 @@ public class GenerateSpringView extends GenerateView{
     	StringBuffer buffer=new StringBuffer("<ul class=\"nav nav-pills nav-stacked\">\n");
 		for( String table:getEntityNames() ){
 			String entity=DataMapper.formatClassName(table);
-			buffer.append("<li><a href='"+entity+"/list.htm'>List"+entity+"</a></li>\n");
+			buffer.append("<li><a href='"+entity+"/list.htm'> List "+entity+"</a></li>\n");
 		}
 		buffer.append("</ul>\n");
 		return buffer.toString();
@@ -71,7 +69,7 @@ public class GenerateSpringView extends GenerateView{
 	     	ArrayList <String> primaryKeys= getPrimaryKeys();
 	         String text=
 	          "<div class='"+style.getRow()+" "+style.getFormGroup()+"'><a href='"+adminPrefix+"/index.jsp'>Admin Menu</a>\n"
-	         +"<a href='"+adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+"'>Back to List Menu</a>"
+	         +"<a href='"+adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+".htm'>Back to List Menu</a>"
 	         +"</div>\n"
 	     	+"<form id='dataFormId' name='dataForm' action ='"+adminPrefix+"/"+beanName+"/save.htm' METHOD='post'>\n";
 	         for(String col:cols){
@@ -83,8 +81,8 @@ public class GenerateSpringView extends GenerateView{
 	         		}
 	         		if(isPrimary){
 	         			text+=
-	         			 "<div class='"+this.style.getFormGroup()+"'>\n"
-	         			+"<div class='"+this.style.getColSm2()+"'>"
+	         			 "<div class='"+style.getFormGroup()+"'>\n"
+	         			+"<div class='"+style.getColSm2()+"'>"
 	         					+DataMapper.formatClassName(col)+"</div><div class='"+style.getColSm10()+"'>${form."+var+".value}</div>\n"
 	         			+"</div>\n"
 	         			+"<input type='hidden' name='"+var+"' value='${form."+var+".value}'>\n";
@@ -93,6 +91,7 @@ public class GenerateSpringView extends GenerateView{
 	         		}
 	         	}
 	         }
+	         text+="${form.csrf.divTag}\n";
 	     	if(primaryKeys.size()==1) { 
 	         text+=
 	 	 		 "<button id='button.update' class='"+style.getSubmitButton()+"' name='updateBut' onClick='updateClick(dataForm)' ><fmt:message key=\"dialog.save\" bundle=\"${msg}\" /></button>\n"
@@ -109,7 +108,7 @@ public class GenerateSpringView extends GenerateView{
 	      * 
 	      * @param cols
 	      * @param types
-	      * @return
+	      * @return create html
 	      */
 	    @Override
 	 	protected String makeCreateForm(String[] cols, int[] types) {
@@ -118,9 +117,9 @@ public class GenerateSpringView extends GenerateView{
 	     	ArrayList <String> primaryKeys= getPrimaryKeys();
 	         String text=
 	         	 "<div class='row'><a href='/admin/index.jsp'>Admin Menu</a>\n"
-	         	+"<a href='"+this.adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+"'>Back to List Menu</a>"
+	         	+"<a href='"+adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+".htm'>Back to List Menu</a>"
 	         	+"</div>\n"
-	         	+"<form id='dataFormId' name='dataForm' action ='"+this.adminPrefix+"/"+beanName+"/create,htm' METHOD='post'>\n";
+	         	+"<form id='dataFormId' name='dataForm' action ='"+adminPrefix+"/"+beanName+"/save.htm' METHOD='post'>\n";
 	         for(String col:cols){
 	         	String var=DataMapper.formatVarName(col);
 	         	boolean isPrimary= false;
@@ -129,13 +128,15 @@ public class GenerateSpringView extends GenerateView{
 	         			isPrimary=true;
 	         		}
 	         		if(isPrimary){
-	         			text+="<%--primary key "+var+"--%>\n";
+	         			text+="<!-- primary key -->\n";
+	         			text+="<input type='hidden' name='"+var+"' value='${form."+var+".value}'>\n";
 	  
 	         		}else{
 	         			text+="${form."+var+".divTag}\n";
 	         		}
 	         	}
 	         }
+	         text+="${form.csrf.divTag}\n";
 	         if(primaryKeys.size()==1) { 
 	         	text+="<button id='button.update' type='submit' class='"+style.getSubmitButton()+"'><fmt:message key=\"dialog.add\" bundle=\"${msg}\" /></button>\n"
 	         		+"</form>\n";
@@ -159,7 +160,7 @@ public class GenerateSpringView extends GenerateView{
          	ArrayList <String> primaryKeys= getPrimaryKeys();
          	 //String text="<b>No Records found</b>";
          	 String text=
-         		 "<p><a href='"+adminPrefix+"/"+beanName+"/add'>Add New Record</a></p>"
+         		 "<p><a href='"+adminPrefix+"/"+beanName+"/create.htm'>Add New Record</a></p>"
     		     +"<c:choose>\n" 	
     		 	 +"   <c:when test=\"${!empty  dataBeanList}\">\n"
     		     +" <table class='"+style.getStripedTable()+"'>\n     <tr>";

@@ -8,8 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory; 
 
 public class HtmlDecimalField extends HtmlNumberField{
+	/**
+	 * 
+	 */
 	@SuppressWarnings("unused")
 	private static final Logger log=LoggerFactory.getLogger(HtmlCurrencyField.class); 
+	private static final long serialVersionUID = -4403234346785914723L;
 	public static final NumberFormat DECIMAL_FORMAT= DecimalFormat.getNumberInstance(); 
 	public static final String INVALID_MESSAGE="Enter a valid number";
 	public static final String INVALID_MSG_KEY="form.errors.decimal";

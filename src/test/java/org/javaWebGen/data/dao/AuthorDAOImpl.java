@@ -41,7 +41,7 @@ import org.javaWebGen.data.JdoDao;
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public abstract class LocationDAOImpl extends JdoDao { 
+public abstract class AuthorDAOImpl extends JdoDao { 
 //begin private Vars
 
 
@@ -53,12 +53,12 @@ public abstract class LocationDAOImpl extends JdoDao {
 	*@param primary key or id for entity 
 	@return DataBean with data
 	******************************************************/
-	protected Location findByPrimaryKey(PersistenceManager pm,Long id) throws DBException{
+	protected Author findByPrimaryKey(PersistenceManager pm,Long id) throws DBException{
 		if (id==null){
-			throw new DBException(DBException.DAO_ERROR,"Location id=null");
+			throw new DBException(DBException.DAO_ERROR,"Author id=null");
 		}
 		try{
-			return pm.getObjectById(Location.class,id);
+			return pm.getObjectById(Author.class,id);
 		}catch(Exception ex){
 			throw new DBException(DBException.DAO_ERROR,ex);
 		}
@@ -69,9 +69,9 @@ public abstract class LocationDAOImpl extends JdoDao {
 	*@param primary key or id for entity
 	@return DataBean with data
 	*/
-	public Location findByPrimaryKey(Long id) throws DBException{
+	public Author findByPrimaryKey(Long id) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Location entity=null;
+		Author entity=null;
 		try{
 			entity = findByPrimaryKey(pm,id);
 		}catch(Exception ex){
@@ -89,12 +89,12 @@ public abstract class LocationDAOImpl extends JdoDao {
 	*@param DabaBean with entity data in it
 	*@return id inserted into datastore
 	*/
-	public Long insert(Location entity) throws DBException{
+	public Long insert(Author entity) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Long id=null;
 		try{
 			entity = pm.makePersistent(entity);
-			id=entity.getLocationId() ;
+			id=entity.getAuthorId() ;
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
 		}finally{
@@ -109,15 +109,13 @@ public abstract class LocationDAOImpl extends JdoDao {
 	*Warning Generated method updates the data store with a DataBean 
 	*@param DabaBean with entity data in it	*
 	*/
-	public void update(Location entity) throws DBException{
+	public void update(Author entity) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Location e=findByPrimaryKey(pm,entity.getLocationId () );
-			 // leave key field alone e.setLocationId (entity.getLocationId () );
-			e.setCreateDate (entity.getCreateDate () );
-			e.setUpdateDate (entity.getUpdateDate () );
-			e.setUpdateBy (entity.getUpdateBy () );
-			e.setComment (entity.getComment () );
+			Author e=findByPrimaryKey(pm,entity.getAuthorId () );
+			 // leave key field alone e.setAuthorId (entity.getAuthorId () );
+			e.setFirstName (entity.getFirstName () );
+			e.setLastName (entity.getLastName () );
 			pm.makePersistent(e);
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
@@ -132,10 +130,10 @@ public abstract class LocationDAOImpl extends JdoDao {
 	*Warning Generated method updates the database with a DataBean 
 	*@param DabaBean with entity data in it
 	*/
-	public void delete(Location entity) throws DBException{
+	public void delete(Author entity) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Location e=findByPrimaryKey(pm,entity.getLocationId()  );
+			Author e=findByPrimaryKey(pm,entity.getAuthorId()  );
 			pm.deletePersistent(e);
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
@@ -152,18 +150,18 @@ public abstract class LocationDAOImpl extends JdoDao {
 	*@return list of all DataBean in data store
 	*/
 	@SuppressWarnings("unchecked")
-	public List<Location> findAll() throws DBException{
+	public List<Author> findAll() throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		List<Location> results=null;
+		List<Author> results=null;
 		try{
-			Query query =pm.newQuery(Location.class);
-			results=(List<Location>) query.execute();
+			Query query =pm.newQuery(Author.class);
+			results=(List<Author>) query.execute();
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
 		}finally{
 			pm.close();
 		}
-		return new ArrayList<Location>(results);
+		return new ArrayList<Author>(results);
 	} //findAll
 
 }

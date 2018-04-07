@@ -33,14 +33,23 @@ import javax.servlet.http.HttpServletRequest;
 * If you need to change the this code you should override what you do not need.
 *******************************************************************************/
 @SuppressWarnings("unused") //StringUtil might be needed depending for some data fields
-public abstract class InventoryActionImpl extends WebController{ 
-private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.class);//begin private Vars
+public abstract class PublisherActionImpl extends WebController{ 
+private static final Logger log=LoggerFactory.getLogger(PublisherActionImpl.class);//begin private Vars
 	
 /** model for this object **/;
-	private InventoryModel model= null;
+	private PublisherModel model= null;
 
 //find by Primary Key
-//only on primary keys supported can not generated getById method
+
+	/***************************************************
+	*Warning Generated method. get a DataBean with table data in it.
+	* for one row in the database
+	*@return DataBean with data from the Model
+	******************************************************/
+	protected Publisher getById(Long id) throws WebAppException{
+        Publisher bean =getModel().getById(id);
+        return bean;
+    } //find by primary key
 
 //begin insert (create)
 
@@ -51,9 +60,8 @@ private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.clas
 	*@param bean data Bound JavaBean
 	*@see org.javaWebGen.data.DataBean
 	******************************************************/
-	protected void create(org.javaWebGen.data.bean.Inventory bean) throws WebAppException{
-		//getModel().create(bean); 
-		//overide with custom code to handle multiple primary keys; 
+	protected void create(org.javaWebGen.data.bean.Publisher bean) throws WebAppException{
+		getModel().create(bean);
 	} //end create
 
 //begin update(store)
@@ -63,9 +71,8 @@ private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.clas
 	*@param bean data Bound  JavaBean
 	*@see org.javaWebGen.data.DataBean
 	******************************************************/
-	protected void update(Inventory bean) throws WebAppException{
-		//getModel().save (bean); 
-		//overide with custom code to handle multiple primary keys 
+	protected void update(Publisher bean) throws WebAppException{
+		getModel().save(bean);
 	} //end create
 
 //begin delete(store)
@@ -76,9 +83,8 @@ private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.clas
 	*@see org.javaWebGen.data.DataBean
 	*
 	******************************************************/
-	protected void delete(Inventory bean) throws WebAppException{
-		//getModel().remove(databean);
-		//overide with custom code to handle multiple primary keys 
+	protected void delete(Publisher bean) throws WebAppException{
+		getModel().remove(bean);
 	} //end delete
 
 //begin listAll)
@@ -87,7 +93,7 @@ private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.clas
 	*Warning Generated method list all rows in table 
 	*@return list of databeans
 	******************************************************/
-	protected List <Inventory> list() throws WebAppException{
+	protected List <Publisher> list() throws WebAppException{
 		return getModel().list();
 	} //end list
 
@@ -95,15 +101,11 @@ private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.clas
 	/************************************
 	*fills in a databean based on data in a request
 	************************************/
-	protected static Inventory getDataBean(HttpServletRequest req) throws WebAppException{
-			Inventory dataBean=new Inventory();
+	protected static Publisher getDataBean(HttpServletRequest req) throws WebAppException{
+			Publisher dataBean=new Publisher();
 		try{
-			dataBean.setBookId(HtmlUtil.stripTags(req.getParameter("bookId") ) );
-			dataBean.setLocationId(HtmlUtil.stripTags(req.getParameter("locationId") ) );
-			dataBean.setCreateDate(StringUtil.convertToTime(req.getParameter("createDate") ) );
-			dataBean.setUpdateDate(StringUtil.convertToTime(req.getParameter("updateDate") ) );
-			dataBean.setUpdateBy(HtmlUtil.stripTags(req.getParameter("updateBy") ) );
-			dataBean.setComment(HtmlUtil.stripTags(req.getParameter("comment") ) );
+			dataBean.setPublisherId(HtmlUtil.stripTags(req.getParameter("publisherId") ) );
+			dataBean.setName(HtmlUtil.stripTags(req.getParameter("name") ) );
 		}catch(Exception e){
 			throw new WebAppException(WebAppException.APP_ERROR,e);
 }		return dataBean;
@@ -115,10 +117,10 @@ private static final Logger log=LoggerFactory.getLogger(InventoryActionImpl.clas
 	*get the correct model class
 	*@return model class
 	************************************/
-	protected synchronized InventoryModel getModel() throws WebAppException{
+	protected synchronized PublisherModel getModel() throws WebAppException{
 		if (model==null){
 			if(model==null){
-				model = new InventoryModel();
+				model = new PublisherModel();
 			}
 		}
 		return model;

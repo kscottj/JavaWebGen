@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.javaWebGen.config.WebConst;
 import org.mockito.Mockito;
@@ -16,6 +17,9 @@ import org.mockito.Mockito;
  *
  */
 public class MockRequestHelper {
+	public static final String FAKE_SEED="csrfseed";
+	public static final String FAKE_AGENT="csrfagent";
+	public static final String FAKE_IP="127.0.0.1";
 
 	
 	public static HttpServletRequest mapName(String key, String value){
@@ -47,10 +51,12 @@ public class MockRequestHelper {
 		//session
 		/*setup CSRF data*/
 
-		sessionMap.put(WebConst.CSRF_SEED, "csrfseed");
-		sessionMap.put(WebConst.CSRF_HASH, "csrfhash");
+		sessionMap.put(WebConst.CSRF_SEED, FAKE_SEED);
+		//sessionMap.put(WebConst.CSRF_HASH, "csrfhash");
 		
 		HttpSession session = Mockito.mock(HttpSession.class);
+		Mockito.when(req.getSession() )
+			.thenReturn(session);  
 		Mockito.when(req.getSession(false))
 			.thenReturn(session);  
 		Mockito.when(req.getSession(true))
@@ -65,9 +71,9 @@ public class MockRequestHelper {
 		}
 		//session validation will fail without this
 		Mockito.when(session.getAttribute(WebConst.CSRF_AGENT))
-			.thenReturn("testAgent");
+			.thenReturn(FAKE_AGENT);
 		Mockito.when(session.getAttribute(WebConst.CSRF_IP))
-			.thenReturn("127.0.0.1");
+			.thenReturn(FAKE_IP);
 		return session;
 		
 	}
@@ -127,5 +133,10 @@ public class MockRequestHelper {
 		HashMap<String,String> sessionMap=new HashMap<String,String>();
 		setupSession(req,sessionMap);
 		return req;
+	}
+	public static HttpServletResponse resp() {
+		HttpServletResponse res= Mockito.mock(HttpServletResponse.class);
+		return res;
+		
 	}
 }

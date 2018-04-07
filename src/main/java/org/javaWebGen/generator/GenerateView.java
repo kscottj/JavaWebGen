@@ -296,8 +296,8 @@ public class GenerateView extends CodeGenerator {
         		}
         		if(isPrimary){
         			text+=
-        			 "<div class='"+this.style.getFormGroup()+"'>\n"
-        			+"<div class='"+this.style.getColSm2()+"'>"
+        			 "<div class='"+style.getFormGroup()+"'>\n"
+        			+"<div class='"+style.getColSm2()+"'>"
         					+DataMapper.formatClassName(col)+"</div><div class='"+style.getColSm10()+"'>${form."+var+".value}</div>\n"
         			+"</div>\n"
         			+"<input type='hidden' name='"+var+"' value='${form."+var+".value}'>\n";
@@ -330,9 +330,9 @@ public class GenerateView extends CodeGenerator {
     	ArrayList <String> primaryKeys= getPrimaryKeys();
         String text=
         	 "<div class='row'><a href='/admin/index.jsp'>Admin Menu</a>\n"
-        	+"<a href='"+this.adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+"'>Back to List Menu</a>"
+        	+"<a href='"+adminPrefix+"/"+beanName+"/"+WebConst.LIST_CMD+"'>Back to List Menu</a>"
         	+"</div>\n"
-        	+"<form id='dataFormId' name='dataForm' action ='"+this.adminPrefix+"/"+beanName+"/"+WebConst.CREATE_CMD+"' METHOD='post'>\n";
+        	+"<form id='dataFormId' name='dataForm' action ='"+adminPrefix+"/"+beanName+"/"+WebConst.CREATE_CMD+"' METHOD='post'>\n";
         for(String col:cols){
         	String var=DataMapper.formatVarName(col);
         	boolean isPrimary= false;

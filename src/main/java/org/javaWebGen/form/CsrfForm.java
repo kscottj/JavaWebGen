@@ -57,6 +57,7 @@ import org.slf4j.LoggerFactory;
 public class CsrfForm extends HtmlForm {
 
 	private static final long serialVersionUID = -2643638282079319182L;
+	public static final String DEFAULT_CSRF_NAME = "csrf";
 	private CsrfHtmlField csrf = null;
 	private static final Logger log = LoggerFactory.getLogger(CsrfForm.class);
 
@@ -67,7 +68,7 @@ public class CsrfForm extends HtmlForm {
 	 */
 	public CsrfForm(FormBeanAware bean, HttpServletRequest req) {
 		super(bean, req);
-		csrf = new CsrfHtmlField(req);
+		csrf = new CsrfHtmlField(req,DEFAULT_CSRF_NAME);
 
 		addField(csrf);
 		log.debug("add csrf"+csrf+bean.toJSON() );
@@ -79,7 +80,7 @@ public class CsrfForm extends HtmlForm {
 	public CsrfForm( HttpServletRequest req) {
 		super(req);
 		
-		csrf = new CsrfHtmlField(req);
+		csrf = new CsrfHtmlField(req,DEFAULT_CSRF_NAME);
 
 		addField(csrf);
 		log.debug("add csrf"+csrf);

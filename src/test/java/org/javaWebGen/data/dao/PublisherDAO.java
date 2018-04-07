@@ -17,5 +17,5 @@
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public class LocationDAO extends LocationDAOImpl { 
+public class PublisherDAO extends PublisherDAOImpl { 
 }

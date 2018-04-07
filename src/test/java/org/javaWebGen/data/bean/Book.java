@@ -44,13 +44,15 @@ private static int[] types=null;
 @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 private Long bookId = null;
 @Persistent 
+private String title = null;
+@Persistent 
 private String isbn = null;
 @Persistent 
+private Integer publisherId = null;
+@Persistent 
+private Integer authorId = null;
+@Persistent 
 private java.util.Date createDate = null;
-@Persistent 
-private java.util.Date updateDate = null;
-@Persistent 
-private String updateBy = null;
 
 //begin getters and setters
 
@@ -68,6 +70,26 @@ private String updateBy = null;
 	*************************************************/
 	public void setBookId(Long value){
 		bookId=value;
+	}
+
+	/********************************************
+	*Warning Generated method gets value of field
+	*@return value from database column
+	***********************************************/
+	public String getTitle() {
+			return title;
+	}
+
+	/*********************************************
+	*Warning Generated method sets field value
+	*@param value for database column
+	*************************************************/
+	public void setTitle(String value){
+		if(value==null){
+			title=null;
+		}else{
+			title= value;
+		}
 	}
 
 	/********************************************
@@ -94,6 +116,44 @@ private String updateBy = null;
 	*Warning Generated method gets value of field
 	*@return value from database column
 	***********************************************/
+	public int getPublisherId() {
+		if(publisherId==null){
+			return 0;
+		}
+		return publisherId.intValue();
+	}
+
+	/*********************************************
+	*Warning Generated method sets field value
+	*@param value for database column
+	*************************************************/
+	public void setPublisherId(int value){
+		publisherId=new Integer(value);
+	}
+
+	/********************************************
+	*Warning Generated method gets value of field
+	*@return value from database column
+	***********************************************/
+	public int getAuthorId() {
+		if(authorId==null){
+			return 0;
+		}
+		return authorId.intValue();
+	}
+
+	/*********************************************
+	*Warning Generated method sets field value
+	*@param value for database column
+	*************************************************/
+	public void setAuthorId(int value){
+		authorId=new Integer(value);
+	}
+
+	/********************************************
+	*Warning Generated method gets value of field
+	*@return value from database column
+	***********************************************/
 	public java.util.Date getCreateDate() {
 		return createDate;
 	}
@@ -105,42 +165,6 @@ private String updateBy = null;
 	public void setCreateDate(java.util.Date value){
 		createDate=value;
 	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public java.util.Date getUpdateDate() {
-		return updateDate;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setUpdateDate(java.util.Date value){
-		updateDate=value;
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public String getUpdateBy() {
-			return updateBy;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setUpdateBy(String value){
-		if(value==null){
-			updateBy=null;
-		}else{
-			updateBy= value;
-		}
-	}
 	/****************************************
 	*set a long column based on a string
 	*@param input String
@@ -151,21 +175,30 @@ private String updateBy = null;
 		}
 	}
 	/****************************************
-	*set a DATE or TIMESTAMP column based on a string
+	*set a integer column based on a string
 	*@param input String
 	*******************************************************/
-	public void setCreateDate(String input) throws ParseException{
+	public void setPublisherId(String input) throws ParseException{
 		if(input!=null && input.trim().length()>0 ){
-			createDate=StringUtil.convertToTime(input);
+		publisherId=new Integer(input);
+		}
+	}
+	/****************************************
+	*set a integer column based on a string
+	*@param input String
+	*******************************************************/
+	public void setAuthorId(String input) throws ParseException{
+		if(input!=null && input.trim().length()>0 ){
+		authorId=new Integer(input);
 		}
 	}
 	/****************************************
 	*set a DATE or TIMESTAMP column based on a string
 	*@param input String
 	*******************************************************/
-	public void setUpdateDate(String input) throws ParseException{
+	public void setCreateDate(String input) throws ParseException{
 		if(input!=null && input.trim().length()>0 ){
-			updateDate=StringUtil.convertToTime(input);
+			createDate=StringUtil.convertToDate(input);
 		}
 	}
 
@@ -177,7 +210,7 @@ private String updateBy = null;
 	****************************************/
 
 	public String toXML(){
-		String xml="<Book bookId='"+getBookId()+"' isbn='"+getIsbn()+"' createDate='"+getCreateDate()+"' updateDate='"+getUpdateDate()+"' updateBy='"+getUpdateBy()+"' />\n";
+		String xml="<Book bookId='"+getBookId()+"' title='"+getTitle()+"' isbn='"+getIsbn()+"' publisherId='"+getPublisherId()+"' authorId='"+getAuthorId()+"' createDate='"+getCreateDate()+"' />\n";
 		return xml;
 	}//end toXML()
 //begin getData
@@ -187,12 +220,13 @@ private String updateBy = null;
 	*@return data from object as array of objects 
 	*******************************************************/
 	public Object[] getData(){
-		Object[] data = new Object[5];
+		Object[] data = new Object[6];
 		data[0]=bookId;
-		data[1]=isbn;
-		data[2]=createDate;
-		data[3]=updateDate;
-		data[4]=updateBy;
+		data[1]=title;
+		data[2]=isbn;
+		data[3]=publisherId;
+		data[4]=authorId;
+		data[5]=createDate;
 		return data;
 	} //end getData
 
@@ -205,23 +239,24 @@ private String updateBy = null;
 	*@see org.javaWebGen.data.DbResult
 	*************************************************/
 	public void setData(Object[] data) throws IllegalArgumentException{
-		if( data.length != 5){
+		if( data.length != 6){
 			throw new IllegalArgumentException("query return wrong number of rows "+data.length);
 		} //end if
 
 		bookId = (Long) data[0];
 		if (data[1]!=null){
-			isbn =  data[1].toString();
+			title =  data[1].toString();
+		}else{
+			title=null;
+		}
+		if (data[2]!=null){
+			isbn =  data[2].toString();
 		}else{
 			isbn=null;
 		}
-		createDate = (java.util.Date) data[2];
-		updateDate = (java.util.Date) data[3];
-		if (data[4]!=null){
-			updateBy =  data[4].toString();
-		}else{
-			updateBy=null;
-		}
+		publisherId = (Integer) data[3];
+		authorId = (Integer) data[4];
+		createDate = (java.util.Date) data[5];
 	}//end setData
 
 //begin get Insert
@@ -232,7 +267,7 @@ private String updateBy = null;
 	************************************************
 	*/ 
 	public static String getInsertSQL(){
-		String sql = "INSERT INTO book (book_id,isbn,create_date,update_date,update_by) VALUES(?,?,?,?,?)";
+		String sql = "INSERT INTO book (book_id,title,isbn,publisher_id,author_id,create_date) VALUES(?,?,?,?,?,?)";
 		return sql;
 	}
 
@@ -243,7 +278,7 @@ private String updateBy = null;
 	*@return update sql without where clause
 	**************************************/ 
 	public static String getUpdateSQL(){
-		String sql ="UPDATE book SET book_id=? ,isbn=? ,create_date=? ,update_date=? ,update_by=? ";
+		String sql ="UPDATE book SET book_id=? ,title=? ,isbn=? ,publisher_id=? ,author_id=? ,create_date=? ";
 		return sql;
 	}
 
@@ -254,7 +289,7 @@ private String updateBy = null;
 	*@return select sql without a where clause
 	****************************************/ 
 	public static String getSelectSQL(){
-		String sql = "Select book_id,isbn,create_date,update_date,update_by from book ";
+		String sql = "Select book_id,title,isbn,publisher_id,author_id,create_date from book ";
 		return sql;
 	}
 
@@ -282,12 +317,13 @@ private String updateBy = null;
 	************************************************/
 	public int[] getDataTypes(){
 		if(types == null){
-		 types = new int[5];
+		 types = new int[6];
 			 types[0]=-5;
 			 types[1]=12;
-			 types[2]=93;
-			 types[3]=93;
-			 types[4]=12;
+			 types[2]=12;
+			 types[3]=4;
+			 types[4]=4;
+			 types[5]=91;
 		} //end if
 	return types;
 	}
@@ -305,10 +341,11 @@ private String updateBy = null;
 		JSONObject jo = new JSONObject();
 		try{
 			jo.append("bookId",getBookId() );
+			jo.append("title",getTitle() );
 			jo.append("isbn",getIsbn() );
+			jo.append("publisherId",getPublisherId() );
+			jo.append("authorId",getAuthorId() );
 			jo.append("createDate",getCreateDate() );
-			jo.append("updateDate",getUpdateDate() );
-			jo.append("updateBy",getUpdateBy() );
 			return jo.toString();
  		}catch(JSONException je){
 			return " Book{exception:'"+je.getMessage()+"}'";

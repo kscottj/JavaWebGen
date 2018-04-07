@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public class InventoryAction extends InventoryActionImpl { 
+public class PublisherAction extends PublisherActionImpl { 
 @SuppressWarnings("unused")
- 	private final Logger log=LoggerFactory.getLogger(InventoryActionImpl.class);//begin exec
+ 	private final Logger log=LoggerFactory.getLogger(PublisherActionImpl.class);//begin exec
 	/**
 	* Generated method  
 	* retrieves all data from a table and displays it using a JSP 
@@ -37,9 +37,9 @@ public class InventoryAction extends InventoryActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction list(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-			List<Inventory> list =getModel().list();
+			List<Publisher> list =getModel().list();
 					req.setAttribute(WebConst.DATA_BEAN_LIST,list);
-	return ServerAction.viewAction("/admin/InventoryList.jsp");
+	return ServerAction.viewAction("/admin/PublisherList.jsp");
 	}
 			//database table has primary KEY in it
 	/**
@@ -49,12 +49,11 @@ public class InventoryAction extends InventoryActionImpl {
 *	@return page(controller) or URI to jump to
 *	*/
 	public ServerAction detail(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-			//Inventory dataBean= getModel().getByIdParm(req.getParameter(bookId") );
-			//overide with custom code to handle multiple primary keys 
-			InventoryForm  form= new InventoryForm(req);
-			form.setData(req);
+			Publisher dataBean= getModel().getByIdParm(req.getParameter("publisherId") );
+			PublisherForm  form= new PublisherForm(req);
+			form.setData(dataBean,req);
 			req.setAttribute(WebConst.FORM,form ) ; 
-			return ServerAction.viewAction("/admin/InventoryDetail.jsp");
+			return ServerAction.viewAction("/admin/PublisherDetail.jsp");
 		}
 	/**
 	* Generated method  
@@ -63,16 +62,15 @@ public class InventoryAction extends InventoryActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction update(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-			InventoryForm form= new InventoryForm(req);
-		Inventory databean=getDataBean(req);
+			PublisherForm form= new PublisherForm(req);
+		Publisher databean=getDataBean(req);
 		form.setData(databean,req);
 		req.setAttribute(WebConst.FORM, form);
 		if(form.isValid() ){
-			//getModel().save( (Inventory)form.getData() );
-			//overide with custom code to handle multiple primary keys 
-			return ServerAction.updateAction("/admin/Inventory/list");
+			getModel().save( (Publisher)form.getData() );
+			return ServerAction.updateAction("/admin/Publisher/list");
 		}else{
-			return ServerAction.viewAction("/admin/InventoryDetail.jsp");
+			return ServerAction.viewAction("/admin/PublisherDetail.jsp");
 		}
 	}
 	/**
@@ -82,10 +80,9 @@ public class InventoryAction extends InventoryActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction delete(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		//Inventory databean =getDataBean(req);
-		//getModel().remove(databean);
-		//overide with custom code to handle multiple primary keys 
-		return ServerAction.updateAction("/admin/Inventory/list");
+		Publisher databean =getDataBean(req);
+		getModel().remove(databean);
+		return ServerAction.updateAction("/admin/Publisher/list");
 	}
 	/**
 	* Generated method  
@@ -94,15 +91,14 @@ public class InventoryAction extends InventoryActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction create(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		InventoryForm form = new InventoryForm(req);
-		form.setData(new Inventory(), req);
+		PublisherForm form = new PublisherForm(req);
+		form.setData(new Publisher(), req);
 		if( form.isValid() ){;
-			//getModel().create( (Inventory) form.getData() );
-		//overide with custom code to handle multiple primary keys 
-			return ServerAction.updateAction("/admin/Inventory/list");
+			getModel().create( (Publisher) form.getData() );
+			return ServerAction.updateAction("/admin/Publisher/list");
 		}else{
 			req.setAttribute(WebConst.FORM,form);
-			return ServerAction.viewAction("/admin/InventoryCreate.jsp");
+			return ServerAction.viewAction("/admin/PublisherCreate.jsp");
 		}
 	}//end create
 	/**
@@ -112,11 +108,11 @@ public class InventoryAction extends InventoryActionImpl {
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction add(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
-		InventoryForm form = new InventoryForm(req);
+		PublisherForm form = new PublisherForm(req);
 		form.setData(req);
-		form.setAction("/admin/Inventory/create");
+		form.setAction("/admin/Publisher/create");
 		req.setAttribute(WebConst.FORM, form);
-	return ServerAction.viewAction("/admin/InventoryCreate.jsp");
+	return ServerAction.viewAction("/admin/PublisherCreate.jsp");
 	}
 //end exec
 

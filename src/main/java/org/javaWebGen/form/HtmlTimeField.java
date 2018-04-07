@@ -41,7 +41,6 @@ package org.javaWebGen.form;
 
 import java.text.ParseException;
 import java.util.Date;
-import org.apache.commons.validator.routines.TimeValidator;
 import org.javaWebGen.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

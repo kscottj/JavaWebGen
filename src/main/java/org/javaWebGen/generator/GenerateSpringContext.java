@@ -369,10 +369,10 @@ public class GenerateSpringContext extends CodeGenerator{
         	 String jdoSwitch=app.searchCmdParm(args, "-jdo");
         	 if(jdoSwitch!=null){
         		 app.useJDO=true;
-        		 log.debug("useJDO=true");
+        		 log.warn("useJDO=true");
         	 }else{
         		 app.useJDO=false; //use jdbc context
-        		 log.debug("default to JDBC context");
+        		 log.info("default to JDBC context");
         	 }
         	
         	 if(args.length > 1 && args.length <6 ){

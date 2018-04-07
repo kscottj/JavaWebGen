@@ -27,44 +27,34 @@
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public class LocationForm extends CsrfForm{
+public class AuthorForm extends CsrfForm{
  private static final long serialVersionUID = 453453453788212L;
  	/*form fields*/
-   	private HtmlNumberField  locationId= new HtmlNumberField("locationId" ,false);
-	private HtmlField  createDate= new HtmlDateTimeField("createDate" ,false);
-	private HtmlField  updateDate= new HtmlDateTimeField("updateDate" ,false);
-	private HtmlField  updateBy= new HtmlTextField("updateBy" ,false);
-	private HtmlField  comment= new HtmlTextField("comment" ,false);
+   	private HtmlNumberField  authorId= new HtmlNumberField("authorId" ,false);
+	private HtmlField  firstName= new HtmlTextField("firstName" ,false);
+	private HtmlField  lastName= new HtmlTextField("lastName" ,false);
  
   /**constructor that builds form*/
- 	public LocationForm(HttpServletRequest req){
+ 	public AuthorForm(HttpServletRequest req){
 		super(req);
-		this.addField(locationId);
-		this.addField(createDate);
-		this.addField(updateDate);
-		this.addField(updateBy);
-		this.addField(comment);
+		this.addField(authorId);
+		this.addField(firstName);
+		this.addField(lastName);
 	}
  
  	/** get form name */
 	public String getWebFormName(){
- 		return "LocationForm";
+ 		return "AuthorForm";
  	}
  //getters
-	public HtmlNumberField getLocationId(){
-		 return locationId;
+	public HtmlNumberField getAuthorId(){
+		 return authorId;
 	}
-	public HtmlField getCreateDate(){
-		 return createDate;
+	public HtmlField getFirstName(){
+		 return firstName;
 	}
-	public HtmlField getUpdateDate(){
-		 return updateDate;
-	}
-	public HtmlField getUpdateBy(){
-		 return updateBy;
-	}
-	public HtmlField getComment(){
-		 return comment;
+	public HtmlField getLastName(){
+		 return lastName;
 	}
 }
  

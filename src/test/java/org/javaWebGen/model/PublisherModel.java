@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public class InventoryModel extends InventoryModelImpl { 
+public class PublisherModel extends PublisherModelImpl { 
 	/** Model Logger */
 @SuppressWarnings("unused")
 	private final Logger log = LoggerFactory.getLogger(ConfigConst.MODEL_LOG);

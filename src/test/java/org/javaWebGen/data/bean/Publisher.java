@@ -37,20 +37,14 @@ import org.json.*;
 *******************************************************************************/
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @SuppressWarnings({ "serial", "unused" }) //TODO generator should be smarter about this
-public class Location implements DataBean, Serializable{ 
+public class Publisher implements DataBean, Serializable{ 
 //begin private Vars
 private static int[] types=null;
 @PrimaryKey
 @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-private Long locationId = null;
+private Long publisherId = null;
 @Persistent 
-private java.util.Date createDate = null;
-@Persistent 
-private java.util.Date updateDate = null;
-@Persistent 
-private String updateBy = null;
-@Persistent 
-private String comment = null;
+private String name = null;
 
 //begin getters and setters
 
@@ -58,114 +52,44 @@ private String comment = null;
 	*Warning Generated method gets value of field
 	*@return value from database column
 	***********************************************/
-	public Long getLocationId() {
-		return locationId;
+	public Long getPublisherId() {
+		return publisherId;
 	}
 
 	/*********************************************
 	*Warning Generated method sets field value
 	*@param value for database column
 	*************************************************/
-	public void setLocationId(Long value){
-		locationId=value;
+	public void setPublisherId(Long value){
+		publisherId=value;
 	}
 
 	/********************************************
 	*Warning Generated method gets value of field
 	*@return value from database column
 	***********************************************/
-	public java.util.Date getCreateDate() {
-		return createDate;
+	public String getName() {
+			return name;
 	}
 
 	/*********************************************
 	*Warning Generated method sets field value
 	*@param value for database column
 	*************************************************/
-	public void setCreateDate(java.util.Date value){
-		createDate=value;
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public java.util.Date getUpdateDate() {
-		return updateDate;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setUpdateDate(java.util.Date value){
-		updateDate=value;
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public String getUpdateBy() {
-			return updateBy;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setUpdateBy(String value){
+	public void setName(String value){
 		if(value==null){
-			updateBy=null;
+			name=null;
 		}else{
-			updateBy= value;
-		}
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public String getComment() {
-			return comment;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setComment(String value){
-		if(value==null){
-			comment=null;
-		}else{
-			comment= value;
+			name= value;
 		}
 	}
 	/****************************************
 	*set a long column based on a string
 	*@param input String
 	*******************************************************/
-	public void setLocationId(String input) throws ParseException{
+	public void setPublisherId(String input) throws ParseException{
 		if(input!=null && input.trim().length()>0 ){
-		locationId=new Long(input);
-		}
-	}
-	/****************************************
-	*set a DATE or TIMESTAMP column based on a string
-	*@param input String
-	*******************************************************/
-	public void setCreateDate(String input) throws ParseException{
-		if(input!=null && input.trim().length()>0 ){
-			createDate=StringUtil.convertToTime(input);
-		}
-	}
-	/****************************************
-	*set a DATE or TIMESTAMP column based on a string
-	*@param input String
-	*******************************************************/
-	public void setUpdateDate(String input) throws ParseException{
-		if(input!=null && input.trim().length()>0 ){
-			updateDate=StringUtil.convertToTime(input);
+		publisherId=new Long(input);
 		}
 	}
 
@@ -177,7 +101,7 @@ private String comment = null;
 	****************************************/
 
 	public String toXML(){
-		String xml="<Location locationId='"+getLocationId()+"' createDate='"+getCreateDate()+"' updateDate='"+getUpdateDate()+"' updateBy='"+getUpdateBy()+"' comment='"+getComment()+"' />\n";
+		String xml="<Publisher publisherId='"+getPublisherId()+"' name='"+getName()+"' />\n";
 		return xml;
 	}//end toXML()
 //begin getData
@@ -187,12 +111,9 @@ private String comment = null;
 	*@return data from object as array of objects 
 	*******************************************************/
 	public Object[] getData(){
-		Object[] data = new Object[5];
-		data[0]=locationId;
-		data[1]=createDate;
-		data[2]=updateDate;
-		data[3]=updateBy;
-		data[4]=comment;
+		Object[] data = new Object[2];
+		data[0]=publisherId;
+		data[1]=name;
 		return data;
 	} //end getData
 
@@ -205,22 +126,15 @@ private String comment = null;
 	*@see org.javaWebGen.data.DbResult
 	*************************************************/
 	public void setData(Object[] data) throws IllegalArgumentException{
-		if( data.length != 5){
+		if( data.length != 2){
 			throw new IllegalArgumentException("query return wrong number of rows "+data.length);
 		} //end if
 
-		locationId = (Long) data[0];
-		createDate = (java.util.Date) data[1];
-		updateDate = (java.util.Date) data[2];
-		if (data[3]!=null){
-			updateBy =  data[3].toString();
+		publisherId = (Long) data[0];
+		if (data[1]!=null){
+			name =  data[1].toString();
 		}else{
-			updateBy=null;
-		}
-		if (data[4]!=null){
-			comment =  data[4].toString();
-		}else{
-			comment=null;
+			name=null;
 		}
 	}//end setData
 
@@ -232,7 +146,7 @@ private String comment = null;
 	************************************************
 	*/ 
 	public static String getInsertSQL(){
-		String sql = "INSERT INTO location (location_id,create_date,update_date,update_by,comment) VALUES(?,?,?,?,?)";
+		String sql = "INSERT INTO publisher (publisher_id,name) VALUES(?,?)";
 		return sql;
 	}
 
@@ -243,7 +157,7 @@ private String comment = null;
 	*@return update sql without where clause
 	**************************************/ 
 	public static String getUpdateSQL(){
-		String sql ="UPDATE location SET location_id=? ,create_date=? ,update_date=? ,update_by=? ,comment=? ";
+		String sql ="UPDATE publisher SET publisher_id=? ,name=? ";
 		return sql;
 	}
 
@@ -254,7 +168,7 @@ private String comment = null;
 	*@return select sql without a where clause
 	****************************************/ 
 	public static String getSelectSQL(){
-		String sql = "Select location_id,create_date,update_date,update_by,comment from location ";
+		String sql = "Select publisher_id,name from publisher ";
 		return sql;
 	}
 
@@ -265,10 +179,10 @@ private String comment = null;
 	*@param result
 	*@see org.javaWebGen.data.DbResult
 	************************************************/ 
-	public static ArrayList<Location> load(DbResult result) throws  IllegalArgumentException{
-		ArrayList <Location>list= new ArrayList<Location>(result.size() );
+	public static ArrayList<Publisher> load(DbResult result) throws  IllegalArgumentException{
+		ArrayList <Publisher>list= new ArrayList<Publisher>(result.size() );
 		for (int i=0; i< result.size(); i++){
-			Location o= new Location();
+			Publisher o= new Publisher();
 			o.setData( result.get(i) );
 			list.set(i,o);
 		 }
@@ -282,12 +196,9 @@ private String comment = null;
 	************************************************/
 	public int[] getDataTypes(){
 		if(types == null){
-		 types = new int[5];
+		 types = new int[2];
 			 types[0]=-5;
-			 types[1]=93;
-			 types[2]=93;
-			 types[3]=12;
-			 types[4]=12;
+			 types[1]=12;
 		} //end if
 	return types;
 	}
@@ -304,14 +215,11 @@ private String comment = null;
 
 		JSONObject jo = new JSONObject();
 		try{
-			jo.append("locationId",getLocationId() );
-			jo.append("createDate",getCreateDate() );
-			jo.append("updateDate",getUpdateDate() );
-			jo.append("updateBy",getUpdateBy() );
-			jo.append("comment",getComment() );
+			jo.append("publisherId",getPublisherId() );
+			jo.append("name",getName() );
 			return jo.toString();
  		}catch(JSONException je){
-			return " Location{exception:'"+je.getMessage()+"}'";
+			return " Publisher{exception:'"+je.getMessage()+"}'";
  		}
 	} //end to Json
 

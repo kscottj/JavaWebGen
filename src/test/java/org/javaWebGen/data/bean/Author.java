@@ -37,23 +37,16 @@ import org.json.*;
 *******************************************************************************/
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @SuppressWarnings({ "serial", "unused" }) //TODO generator should be smarter about this
-public class Inventory implements DataBean, Serializable{ 
+public class Author implements DataBean, Serializable{ 
 //begin private Vars
 private static int[] types=null;
 @PrimaryKey
 @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-private Long bookId = null;
-@PrimaryKey
-@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-private Long locationId = null;
+private Long authorId = null;
 @Persistent 
-private java.util.Date createDate = null;
+private String firstName = null;
 @Persistent 
-private java.util.Date updateDate = null;
-@Persistent 
-private String updateBy = null;
-@Persistent 
-private String comment = null;
+private String lastName = null;
 
 //begin getters and setters
 
@@ -61,83 +54,35 @@ private String comment = null;
 	*Warning Generated method gets value of field
 	*@return value from database column
 	***********************************************/
-	public Long getBookId() {
-		return bookId;
+	public Long getAuthorId() {
+		return authorId;
 	}
 
 	/*********************************************
 	*Warning Generated method sets field value
 	*@param value for database column
 	*************************************************/
-	public void setBookId(Long value){
-		bookId=value;
+	public void setAuthorId(Long value){
+		authorId=value;
 	}
 
 	/********************************************
 	*Warning Generated method gets value of field
 	*@return value from database column
 	***********************************************/
-	public Long getLocationId() {
-		return locationId;
+	public String getFirstName() {
+			return firstName;
 	}
 
 	/*********************************************
 	*Warning Generated method sets field value
 	*@param value for database column
 	*************************************************/
-	public void setLocationId(Long value){
-		locationId=value;
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public java.util.Date getCreateDate() {
-		return createDate;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setCreateDate(java.util.Date value){
-		createDate=value;
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public java.util.Date getUpdateDate() {
-		return updateDate;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setUpdateDate(java.util.Date value){
-		updateDate=value;
-	}
-
-	/********************************************
-	*Warning Generated method gets value of field
-	*@return value from database column
-	***********************************************/
-	public String getUpdateBy() {
-			return updateBy;
-	}
-
-	/*********************************************
-	*Warning Generated method sets field value
-	*@param value for database column
-	*************************************************/
-	public void setUpdateBy(String value){
+	public void setFirstName(String value){
 		if(value==null){
-			updateBy=null;
+			firstName=null;
 		}else{
-			updateBy= value;
+			firstName= value;
 		}
 	}
 
@@ -145,55 +90,28 @@ private String comment = null;
 	*Warning Generated method gets value of field
 	*@return value from database column
 	***********************************************/
-	public String getComment() {
-			return comment;
+	public String getLastName() {
+			return lastName;
 	}
 
 	/*********************************************
 	*Warning Generated method sets field value
 	*@param value for database column
 	*************************************************/
-	public void setComment(String value){
+	public void setLastName(String value){
 		if(value==null){
-			comment=null;
+			lastName=null;
 		}else{
-			comment= value;
+			lastName= value;
 		}
 	}
 	/****************************************
 	*set a long column based on a string
 	*@param input String
 	*******************************************************/
-	public void setBookId(String input) throws ParseException{
+	public void setAuthorId(String input) throws ParseException{
 		if(input!=null && input.trim().length()>0 ){
-		bookId=new Long(input);
-		}
-	}
-	/****************************************
-	*set a long column based on a string
-	*@param input String
-	*******************************************************/
-	public void setLocationId(String input) throws ParseException{
-		if(input!=null && input.trim().length()>0 ){
-		locationId=new Long(input);
-		}
-	}
-	/****************************************
-	*set a DATE or TIMESTAMP column based on a string
-	*@param input String
-	*******************************************************/
-	public void setCreateDate(String input) throws ParseException{
-		if(input!=null && input.trim().length()>0 ){
-			createDate=StringUtil.convertToTime(input);
-		}
-	}
-	/****************************************
-	*set a DATE or TIMESTAMP column based on a string
-	*@param input String
-	*******************************************************/
-	public void setUpdateDate(String input) throws ParseException{
-		if(input!=null && input.trim().length()>0 ){
-			updateDate=StringUtil.convertToTime(input);
+		authorId=new Long(input);
 		}
 	}
 
@@ -205,7 +123,7 @@ private String comment = null;
 	****************************************/
 
 	public String toXML(){
-		String xml="<Inventory bookId='"+getBookId()+"' locationId='"+getLocationId()+"' createDate='"+getCreateDate()+"' updateDate='"+getUpdateDate()+"' updateBy='"+getUpdateBy()+"' comment='"+getComment()+"' />\n";
+		String xml="<Author authorId='"+getAuthorId()+"' firstName='"+getFirstName()+"' lastName='"+getLastName()+"' />\n";
 		return xml;
 	}//end toXML()
 //begin getData
@@ -215,13 +133,10 @@ private String comment = null;
 	*@return data from object as array of objects 
 	*******************************************************/
 	public Object[] getData(){
-		Object[] data = new Object[6];
-		data[0]=bookId;
-		data[1]=locationId;
-		data[2]=createDate;
-		data[3]=updateDate;
-		data[4]=updateBy;
-		data[5]=comment;
+		Object[] data = new Object[3];
+		data[0]=authorId;
+		data[1]=firstName;
+		data[2]=lastName;
 		return data;
 	} //end getData
 
@@ -234,23 +149,20 @@ private String comment = null;
 	*@see org.javaWebGen.data.DbResult
 	*************************************************/
 	public void setData(Object[] data) throws IllegalArgumentException{
-		if( data.length != 6){
+		if( data.length != 3){
 			throw new IllegalArgumentException("query return wrong number of rows "+data.length);
 		} //end if
 
-		bookId = (Long) data[0];
-		locationId = (Long) data[1];
-		createDate = (java.util.Date) data[2];
-		updateDate = (java.util.Date) data[3];
-		if (data[4]!=null){
-			updateBy =  data[4].toString();
+		authorId = (Long) data[0];
+		if (data[1]!=null){
+			firstName =  data[1].toString();
 		}else{
-			updateBy=null;
+			firstName=null;
 		}
-		if (data[5]!=null){
-			comment =  data[5].toString();
+		if (data[2]!=null){
+			lastName =  data[2].toString();
 		}else{
-			comment=null;
+			lastName=null;
 		}
 	}//end setData
 
@@ -262,7 +174,7 @@ private String comment = null;
 	************************************************
 	*/ 
 	public static String getInsertSQL(){
-		String sql = "INSERT INTO inventory (book_id,location_id,create_date,update_date,update_by,comment) VALUES(?,?,?,?,?,?)";
+		String sql = "INSERT INTO author (author_id,first_name,last_name) VALUES(?,?,?)";
 		return sql;
 	}
 
@@ -273,7 +185,7 @@ private String comment = null;
 	*@return update sql without where clause
 	**************************************/ 
 	public static String getUpdateSQL(){
-		String sql ="UPDATE inventory SET book_id=? ,location_id=? ,create_date=? ,update_date=? ,update_by=? ,comment=? ";
+		String sql ="UPDATE author SET author_id=? ,first_name=? ,last_name=? ";
 		return sql;
 	}
 
@@ -284,7 +196,7 @@ private String comment = null;
 	*@return select sql without a where clause
 	****************************************/ 
 	public static String getSelectSQL(){
-		String sql = "Select book_id,location_id,create_date,update_date,update_by,comment from inventory ";
+		String sql = "Select author_id,first_name,last_name from author ";
 		return sql;
 	}
 
@@ -295,10 +207,10 @@ private String comment = null;
 	*@param result
 	*@see org.javaWebGen.data.DbResult
 	************************************************/ 
-	public static ArrayList<Inventory> load(DbResult result) throws  IllegalArgumentException{
-		ArrayList <Inventory>list= new ArrayList<Inventory>(result.size() );
+	public static ArrayList<Author> load(DbResult result) throws  IllegalArgumentException{
+		ArrayList <Author>list= new ArrayList<Author>(result.size() );
 		for (int i=0; i< result.size(); i++){
-			Inventory o= new Inventory();
+			Author o= new Author();
 			o.setData( result.get(i) );
 			list.set(i,o);
 		 }
@@ -312,13 +224,10 @@ private String comment = null;
 	************************************************/
 	public int[] getDataTypes(){
 		if(types == null){
-		 types = new int[6];
+		 types = new int[3];
 			 types[0]=-5;
-			 types[1]=-5;
-			 types[2]=93;
-			 types[3]=93;
-			 types[4]=12;
-			 types[5]=12;
+			 types[1]=12;
+			 types[2]=12;
 		} //end if
 	return types;
 	}
@@ -335,15 +244,12 @@ private String comment = null;
 
 		JSONObject jo = new JSONObject();
 		try{
-			jo.append("bookId",getBookId() );
-			jo.append("locationId",getLocationId() );
-			jo.append("createDate",getCreateDate() );
-			jo.append("updateDate",getUpdateDate() );
-			jo.append("updateBy",getUpdateBy() );
-			jo.append("comment",getComment() );
+			jo.append("authorId",getAuthorId() );
+			jo.append("firstName",getFirstName() );
+			jo.append("lastName",getLastName() );
 			return jo.toString();
  		}catch(JSONException je){
-			return " Inventory{exception:'"+je.getMessage()+"}'";
+			return " Author{exception:'"+je.getMessage()+"}'";
  		}
 	} //end to Json
 

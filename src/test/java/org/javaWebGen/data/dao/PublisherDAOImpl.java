@@ -41,7 +41,7 @@ import org.javaWebGen.data.JdoDao;
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
-public abstract class BookDAOImpl extends JdoDao { 
+public abstract class PublisherDAOImpl extends JdoDao { 
 //begin private Vars
 
 
@@ -53,12 +53,12 @@ public abstract class BookDAOImpl extends JdoDao {
 	*@param primary key or id for entity 
 	@return DataBean with data
 	******************************************************/
-	protected Book findByPrimaryKey(PersistenceManager pm,Long id) throws DBException{
+	protected Publisher findByPrimaryKey(PersistenceManager pm,Long id) throws DBException{
 		if (id==null){
-			throw new DBException(DBException.DAO_ERROR,"Book id=null");
+			throw new DBException(DBException.DAO_ERROR,"Publisher id=null");
 		}
 		try{
-			return pm.getObjectById(Book.class,id);
+			return pm.getObjectById(Publisher.class,id);
 		}catch(Exception ex){
 			throw new DBException(DBException.DAO_ERROR,ex);
 		}
@@ -69,9 +69,9 @@ public abstract class BookDAOImpl extends JdoDao {
 	*@param primary key or id for entity
 	@return DataBean with data
 	*/
-	public Book findByPrimaryKey(Long id) throws DBException{
+	public Publisher findByPrimaryKey(Long id) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Book entity=null;
+		Publisher entity=null;
 		try{
 			entity = findByPrimaryKey(pm,id);
 		}catch(Exception ex){
@@ -89,12 +89,12 @@ public abstract class BookDAOImpl extends JdoDao {
 	*@param DabaBean with entity data in it
 	*@return id inserted into datastore
 	*/
-	public Long insert(Book entity) throws DBException{
+	public Long insert(Publisher entity) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Long id=null;
 		try{
 			entity = pm.makePersistent(entity);
-			id=entity.getBookId() ;
+			id=entity.getPublisherId() ;
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
 		}finally{
@@ -109,16 +109,12 @@ public abstract class BookDAOImpl extends JdoDao {
 	*Warning Generated method updates the data store with a DataBean 
 	*@param DabaBean with entity data in it	*
 	*/
-	public void update(Book entity) throws DBException{
+	public void update(Publisher entity) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Book e=findByPrimaryKey(pm,entity.getBookId () );
-			 // leave key field alone e.setBookId (entity.getBookId () );
-			e.setTitle (entity.getTitle () );
-			e.setIsbn (entity.getIsbn () );
-			e.setPublisherId (entity.getPublisherId () );
-			e.setAuthorId (entity.getAuthorId () );
-			e.setCreateDate (entity.getCreateDate () );
+			Publisher e=findByPrimaryKey(pm,entity.getPublisherId () );
+			 // leave key field alone e.setPublisherId (entity.getPublisherId () );
+			e.setName (entity.getName () );
 			pm.makePersistent(e);
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
@@ -133,10 +129,10 @@ public abstract class BookDAOImpl extends JdoDao {
 	*Warning Generated method updates the database with a DataBean 
 	*@param DabaBean with entity data in it
 	*/
-	public void delete(Book entity) throws DBException{
+	public void delete(Publisher entity) throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try{
-			Book e=findByPrimaryKey(pm,entity.getBookId()  );
+			Publisher e=findByPrimaryKey(pm,entity.getPublisherId()  );
 			pm.deletePersistent(e);
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
@@ -153,18 +149,18 @@ public abstract class BookDAOImpl extends JdoDao {
 	*@return list of all DataBean in data store
 	*/
 	@SuppressWarnings("unchecked")
-	public List<Book> findAll() throws DBException{
+	public List<Publisher> findAll() throws DBException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		List<Book> results=null;
+		List<Publisher> results=null;
 		try{
-			Query query =pm.newQuery(Book.class);
-			results=(List<Book>) query.execute();
+			Query query =pm.newQuery(Publisher.class);
+			results=(List<Publisher>) query.execute();
 		}catch(Exception e){
 			throw new DBException(DBException.DAO_ERROR,e);
 		}finally{
 			pm.close();
 		}
-		return new ArrayList<Book>(results);
+		return new ArrayList<Publisher>(results);
 	} //findAll
 
 }
