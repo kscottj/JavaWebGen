@@ -1,7 +1,6 @@
-               
 /*
  * =================================================================== *
- * Copyright (c) 2003 Kevin Scott All rights  reserved.
+ * Copyright (c) 2017 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -38,7 +37,6 @@
  * SUCH DAMAGE.
  * ====================================================================
  */
-
 package org.javaWebGen.generator;
 
 
@@ -68,7 +66,7 @@ public class GenerateSpringModel extends GenerateModel {
 	private final static Logger log= LoggerFactory.getLogger(GenerateSpringModel.class);
 	   private String modelFactoryTemplate=
 		        "/*\n"+
-		        "Copyright (c) 2012-2013 Kevin Scott All rights  reserved."+
+		        "Copyright (c) 2012-2018 Kevin Scott All rights  reserved."+
 		        " Permission is hereby granted, free of charge, to any person obtaining a copy of \n"+
 		        " this software and associated documentation files (the \"Software\"), to deal in \n"+
 		        " the Software without restriction, including without limitation the rights to \n"+
@@ -101,7 +99,7 @@ public class GenerateSpringModel extends GenerateModel {
 		        "}\n";
     private String classTemplate=
         "/*\n"+
-        " Copyright (c) 2012-2013 Kevin Scott All rights  reserved.\n"+
+        " Copyright (c) 2012-2018 Kevin Scott All rights  reserved.\n"+
         " Permission is hereby granted, free of charge, to any person obtaining a copy of \n"+
         " this software and associated documentation files (the \"Software\"), to deal in \n"+
         " the Software without restriction, including without limitation the rights to \n"+
@@ -131,7 +129,7 @@ public class GenerateSpringModel extends GenerateModel {
         "* It will be regenerated if the database schema changes \n"+
         "*******************************************************************************/\n"+
         "@Service\n"+
-        "public abstract class ${javaWebGen.className} implements Model { \n"+
+        "public abstract class ${javaWebGen.className} implements BusinessModel { \n"+
         "//begin private Vars\n"+
         "${javaWebGen.vars}\n"+
         "//find by Primary Key\n"	 +
@@ -194,13 +192,13 @@ public class GenerateSpringModel extends GenerateModel {
     *************************************/
     private String makeVars(String[] cols, int[] types){
        // String beanName=DataMapper.formatClassName(tableName);
-        String daoName=DataMapper.formatClassName(getTableName() )+"DAO";
-        String text=
-            "\t\n/** data bean for this object **/;\n"+
+//        String daoName=DataMapper.formatClassName(getTableName() )+"DAO";
+//        String text=
+//            "\t\n/** data bean for this object **/;\n"+
 //            "\tprivate "+beanName+" dataBean;\n"+
-        	"\tprivate "+daoName+" dao= new "+daoName+"();\n";
+ //       	"\tprivate "+daoName+" dao= new "+daoName+"();\n";
 
-        return text;
+        return "";
     }  
     /***************************************************************************
 	 * gen find by primary key

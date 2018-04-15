@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 public class GenerateLookup extends CodeGenerator {
 
 	public static String VERSION = "GenerateLookup v1_01";
-	 private final static Logger log= LoggerFactory.getLogger(GenerateSpringView.class);
+	 private final static Logger log= LoggerFactory.getLogger(GenerateLookup.class);
 	private String classTemplate = 
 		"/*\n"
 		+ "Copyright (c) 2006 Kevin Scott\n"
