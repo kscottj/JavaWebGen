@@ -1,7 +1,46 @@
+/*
+ * =================================================================== *
+ * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ * if any, must include the following acknowledgment:
+ * "This product includes software developed by "Kevin Scott"
+ * Alternately, this acknowledgment may appear in the software itself,
+ * if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The name "Kevin Scott must not be used to endorse or promote products
+ * derived from this software without prior written permission. For
+ * written permission, please contact kevscott_tx@yahoo.com
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL KEVIN SCOTT BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ */
 package org.javaWebGen.form;
 
+import java.text.ParseException;
 import java.util.Date;
-import org.apache.commons.validator.routines.DateValidator;
 import org.javaWebGen.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +59,7 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	//private StringBuffer htmlBuffer =new StringBuffer();
 	private static final Logger log=LoggerFactory.getLogger(HtmlTimeField.class);//begin exec
 	private static final String INPUT_TYPE="type='text'";
-	public static final String INVALID_MESSAGE="Invalid date use the "+StringUtil.TIME_PATTERN+" format";
+	public static final String INVALID_MESSAGE="Invalid time use the "+StringUtil.TIME_PATTERN+" format";
 	public static final String INVALID_MSG_KEY="form.error.time";
 	//private static final String INVALID_DATE_KEY="type='error.date.field'";
 	private java.util.Date date=null;
@@ -93,11 +132,23 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	@Override
 	public boolean validate(String value){
 	 
-		boolean val=DateValidator.getInstance().isValid(value);
-		if(!val){
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
-		}
-		return val;
+		
+		boolean val=super.validate(value);
+		log.debug(">is valid time="+value+"="+ val);
+		
+			try {
+				StringUtil.convertToTime(value);
+			} catch (ParseException e) {
+				log.warn(value+"is invalid Time"+e.getMessage());
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+				this.isFieldValid=false;
+				val=false;			
+			}
+
+
+		log.debug("<is valid time="+val);
+	return val;	 
+
 	}
 
 	@Override
@@ -111,9 +162,11 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	@Override
 	public String getJQueryFieldScript() {
 		if(this.isViewOnly()){
-			return "<!--read only datepicker-->\n";
+			return "<!--read only timepicker-->\n";
 		}else{
-			return "$('#"+this.getName()+"').timepicker('showWidget');\n";	
+			//return "$('#"+this.getName()+"').timepicker('showWidget');\n";
+			return "$('#"+this.getName()+"').timepicker();\n";
+		
 			
 		}
 		
@@ -123,7 +176,7 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 		StringBuffer json=new StringBuffer("");
 		
 		json.append(this.getName()+":{\n");
-		json.append("    date: true,\n");
+	/*	json.append("    time: true,\n");*/
 		if(this.isRequired()){
 			json.append("    required: true,\n");
 		}
