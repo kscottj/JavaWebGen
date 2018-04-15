@@ -1,3 +1,42 @@
+/*
+ * =================================================================== *
+ * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ * if any, must include the following acknowledgment:
+ * "This product includes software developed by "Kevin Scott"
+ * Alternately, this acknowledgment may appear in the software itself,
+ * if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The name "Kevin Scott must not be used to endorse or promote products
+ * derived from this software without prior written permission. For
+ * written permission, please contact kevscott_tx@yahoo.com
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL KEVIN SCOTT BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ */
 package org.javaWebGen.form;
 
 import java.io.Serializable;
@@ -78,7 +117,7 @@ public class HtmlForm implements  WebFormAware, Serializable{
 	private FormBeanAware databean=null;
 	private String action=null;
 	private String htmlName="dataFormId";
-	 
+	private boolean isFormValid=true; 
 	private String buttonLabel="Submit";
 	private HashMap<String,String> reqMap=null;
 	private LinkedHashMap<String,HtmlField> fieldMap=new LinkedHashMap<String,HtmlField>();
@@ -195,14 +234,15 @@ public class HtmlForm implements  WebFormAware, Serializable{
 		 reqMap = new HashMap<String,String>();
 	
 		Enumeration<String> names = req.getParameterNames();
-	     while (names.hasMoreElements()) {
+		 
+	    while (names.hasMoreElements()) {
 	       String name = names.nextElement();
 	       String cleanParm = HtmlUtil.stripTags( req.getParameter(name) );
 	       reqMap.put(name, cleanParm );
-	       log.debug(" req key="+name+" value="+cleanParm+"|" );
-	       	 
-	     }
-	     try {
+	       //log.debug(" req key="+name+" value="+cleanParm+"|" );   	 
+	    }
+	    
+	    try {
 	    	 if(databean!=null){
 	    		 BeanUtils.populate(databean, reqMap);
 	    		 this.setFieldMap(databean);
@@ -289,15 +329,15 @@ public class HtmlForm implements  WebFormAware, Serializable{
 		setData(req);
 	}
 	/**
-	 * Add Form Error Message.  This is error is not related to a specific error on this page
-	 * @param errorMessage error message to display on the form attempts look up by message bundle
+	 * Add Form Error Message.  This is error is not related to a specific field on this page
+	 * @param errorMessage error message to display 
 	 */
 	public void addError(String errorMessage){
 		 
 		this.formErrors.add(errorMessage);
 	}
 	/**
-	 *  Add Form Error Message.  This is error is not related to a specific error on this page
+	 *  Add Form Error Message.  This is error is not related to a specific field on this page
 	 * @param messageKey key to look up error in message bundle
 	 * @param defaultError default error message if key not found in message bundle 
 	 */
@@ -314,11 +354,32 @@ public class HtmlForm implements  WebFormAware, Serializable{
 		this.errorMap.put(fieldName, message);
 	}
 	/**
+	 * return html error 
+	 */
+	public String getHtmlErrors() {
+		List<String> list=this.getErrors();
+		StringBuffer buffer= new StringBuffer("<ul class='hasErrors'>");
+		for(String error:list) {
+			buffer.append("<li>"+error+"</li>");
+		}
+		buffer.append("</ul>");
+		return buffer.toString();
+	}
+	/**
 	 * return a list of error messages that are not related to a specific bound field
 	 * @return list of generic form errors
 	 */
 	public List<String> getErrors(){
 		return this.formErrors;
+	}
+	
+	/**
+	 * return a list of error messages that are not related to a specific bound field
+	 * @see HtmlForm.getErrors
+	 * @return list of generic form errors
+	 */
+	public List<String> getFormErrors(){
+		return getErrors();
 	}
 	/**
 	 * Get error messages that bound to a field on the form. IE To be able to highlight the error field in the JSP
@@ -366,38 +427,8 @@ public class HtmlForm implements  WebFormAware, Serializable{
 	public void setButtonLabel(String label){
 		this.buttonLabel=label;
 	}
-	/**
-	 * Is this form valid
-	 * @return true if no validations errors are found in any field
-	 */
-	public boolean isValid(){
-		boolean valid=false; 
-		this.clean();
-		valid=this.validate();
-		
-		Iterator<String> i=errorMap.keySet().iterator();
-		while(i.hasNext() ) {
-			String fieldKey=i.next();
-			HtmlField field=fieldMap.get(fieldKey);
-			field.addCustomError(errorMap.get(fieldKey) );
-			field.isFieldValid=false;
-			return false;
-		}
-		Collection <HtmlField> c=fieldMap.values();
-		for(HtmlField field:c){
-			if(!field.isValid()){
-				log.warn("invalid web form field="+field.getName()+" value="+field.getValue() );
-				errorMap.put(field.getName(), field.getErrorMessage() );
-			}
-		}
-		if(errorMap.size()>0 || this.formErrors.size()>0){
-			valid= false;
-		}else{
-			valid= true;
-		}
 	
-		return valid;
-	}
+
 	/**
 	 * Get FormBeanAware JavaBean that populated the form 
 	 * @return dataBean that poulated the form
@@ -595,12 +626,49 @@ public class HtmlForm implements  WebFormAware, Serializable{
 
 	}
 	/**
+	 * Is this form valid
+	 * @return true if no validations errors are found in any field
+	 */
+	public boolean isValid(){
+		if(isFormValid){
+			this.isFormValid=this.validate();
+		}
+		if(errorMap.size()>0 || this.formErrors.size()>0){
+			this.isFormValid= false;
+			log.debug("form.err"+formErrors.size());
+			if(this.formErrors.size()>0) {
+				log.debug("form.err"+formErrors.get(0));
+			}
+			log.debug("field.err"+errorMap.size());
+			
+		}
+		return this.isFormValid;
+	}
+	/**
 	 * Perform custom validation a data bound form.  Subclasses should override this
 	 * method if they need to perform custom validation.
 	 * @return true if form is valid
 	 */
 	public boolean validate() {
-		return true;
+		log.debug(">validate()");
+		this.clean();
+		boolean valid=true;
+			
+		Collection <HtmlField> c=fieldMap.values();
+		for(HtmlField field:c){
+			valid=field.validate(field.getValue() );
+			if(!valid){
+				log.warn("invalid web form field="+field.getName()+" value="+field.getValue() );
+				this.addFieldErrors(field.getName(), field.getErrorMessage());
+				//errorMap.put(field.getName(), field.getErrorMessage() );
+				 
+			}
+			log.debug(field.getName()+".isValid:"+valid );
+		}
+		
+
+		log.debug("<validate():"+valid);
+		return valid;
 	}
 	/**
 	 * clean the data that will be displayed

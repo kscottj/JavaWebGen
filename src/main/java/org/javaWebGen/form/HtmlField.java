@@ -1,3 +1,42 @@
+/*
+ * =================================================================== *
+ * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ * if any, must include the following acknowledgment:
+ * "This product includes software developed by "Kevin Scott"
+ * Alternately, this acknowledgment may appear in the software itself,
+ * if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The name "Kevin Scott must not be used to endorse or promote products
+ * derived from this software without prior written permission. For
+ * written permission, please contact kevscott_tx@yahoo.com
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL KEVIN SCOTT BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ */
 package org.javaWebGen.form;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +82,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	private String errorMessage="";
 	protected StyleAware style=new BootstrapStyle();
 	private boolean isViewOnly;
+	
 
 	//id="exampleInputEmail1" placeholder="Enter email"
 	/**
@@ -430,12 +470,32 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	 * @return true if field is valid
 	 */
 	public boolean isValid() {
-		isFieldValid=true;
-		this.cleanField();
-		
+
 		if(this.isViewOnly){ //do not validate view only
 			return true; 
 		}
+
+		if(this.getValue()!=null && this.getValue().trim().length()>0){		 
+			this.isFieldValid= validate(this.getValue());
+				//this.errorMessage="Required Field";
+		}else {
+			if(this.required) {
+				isFieldValid = false;
+			}
+		}
+
+	
+		//log.debug(this.getName()+".isValid()"+this.isFieldValid);
+
+		//log.debug(this.getName()+".isValid="+isFieldValid);
+		return isFieldValid;
+	}
+	/**
+	 * 
+	 */
+	public boolean validate(String value) {
+		log.debug("value="+value);
+		this.cleanField();
 		if(this.required){ 
 			if(this.getValue()==null || this.getValue().trim().length()<1 ){
 				this.errorMessage="Required Field";
@@ -444,14 +504,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 			}
 			
 		}
-		if(this.getValue()!=null && this.getValue().trim().length()>0){		 
-			this.isFieldValid= validate(this.getValue());
-				//this.errorMessage="Required Field";
-		}
-		//log.debug(this.getName()+".isValid()"+this.isFieldValid);
-
-
-		return isFieldValid;
+		return true;
 	}
 	
 	/**
@@ -504,7 +557,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	 */
 	public void setErrorMessage(String errorMessage) {
  
-		
+		this.isFieldValid=false;
 		this.errorMessage = errorMessage;
 	}
 
@@ -512,7 +565,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	public String getDivTag(){
 		StringBuffer htmlBuffer=new StringBuffer();
 		 
-		htmlBuffer.append("<div class='"+this.getGroupCss()+"'>" );
+		htmlBuffer.append("<div class='"+style.getRow()+" "+this.getGroupCss()+"'>" );
 		htmlBuffer.append("  <label for='"+this.htmlid+"' class='"+style.getControlLabel()+" "+style.getColSm2()+"'>"+this.getLabel()+"</label>");
 		htmlBuffer.append("  <div class='"+style.getColSm10()+"'>");
 		htmlBuffer.append(getField() );
@@ -521,6 +574,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		return htmlBuffer.toString();
 		 
 	}
+
 	@Override
 	public String getTable(){
 		StringBuffer tableBuffer=new StringBuffer();
@@ -537,6 +591,10 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		tableBuffer.append("</tr>\n"); 
 		return tableBuffer.toString();
 		 
+	}
+	
+	public boolean hasErrors() {
+		return this.isFieldValid;
 	}
 	
 }
