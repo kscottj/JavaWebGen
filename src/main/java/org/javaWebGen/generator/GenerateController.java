@@ -25,7 +25,7 @@ import java.sql.Types;
 import java.util.*;
 import java.io.*;
 
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.javaWebGen.config.WebConst;
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
@@ -35,14 +35,14 @@ import org.slf4j.LoggerFactory;
 /**
  * Generated Web Controller Objects from the database config
  * creates a WebController and a implementation class. The
- * implementation class will be overwritten if it exist
+ * implementation class will be overwritten if it exist.
  * @author Kevin Scott
  * @version $Revision: 1.3 $
  *
  */
 public class GenerateController extends CodeGenerator {
     private static final Logger log=LoggerFactory.getLogger(GenerateController.class);
-    public static final String VERSION="GenerateController v4_06";
+    public static final String VERSION="GenerateController v4_07";
      
 	private String className=null;
 	private String subClassName=null;
@@ -69,6 +69,7 @@ public class GenerateController extends CodeGenerator {
          "\n"+
          "package org.javaWebGen.admin;\n"+
          "import java.util.*;\n"+
+         "import javax.annotation.Generated;\n"+
          "import org.javaWebGen.WebController;\n"+
          "import org.javaWebGen.data.bean.*;\n"+
          "import org.javaWebGen.util.HtmlUtil;\n"+
@@ -86,6 +87,7 @@ public class GenerateController extends CodeGenerator {
          "* If you need to change the this code you should override what you do not need.\n"+
          "*******************************************************************************/\n"+
          "@SuppressWarnings(\"unused\") //StringUtil might be needed depending for some data fields\n"+
+         "@Generated(value = { \"org.javaWebGen.generator.GenerateController\" })\n"+
          "public abstract class ${javaWebGen.className} extends WebController{ \n"+
          "private static final Logger log=LoggerFactory.getLogger(${javaWebGen.className}.class);"+
          "//begin private Vars\n"+
@@ -119,6 +121,7 @@ public class GenerateController extends CodeGenerator {
          "/* */\n"+
          "package org.javaWebGen.admin;\n\n"+
          "import java.util.*;\n"+
+         "import javax.annotation.Generated;\n"+
          "import org.javaWebGen.ServerAction;\n"+
          "import org.javaWebGen.data.bean.*;\n"+
          "import org.javaWebGen.webform.*;\n"+
@@ -137,7 +140,7 @@ public class GenerateController extends CodeGenerator {
          "* @author Kevin Scott                                                        \n"+
          "* @version $Revision: 1.00 $                                               \n"+
          "*******************************************************************************/\n"+
-   
+         "@Generated(value = { \"org.javaWebGen.generator.GenerateController\" })\n"+
          "public class ${javaWebGen.subClassName} extends ${javaWebGen.className} { \n"+
          "@SuppressWarnings(\"unused\")\n "+
          "\tprivate final Logger log=LoggerFactory.getLogger(${javaWebGen.className}.class);"+
@@ -191,7 +194,7 @@ public class GenerateController extends CodeGenerator {
         	String javaType=DataMapper.getJavaTypeFromSQLType(primaryKeyTypes[0]);
 	        String text=
 	        "\n\t/***************************************************\n"+
-	        "\t*Warning Generated method. get a DataBean with table data in it.\n"+
+	        "\t*Get a DataBean with table data in it.\n"+
 	        "\t* for one row in the database\n"+
 	        "\t*@return DataBean with data from the Model\n"+
 	        "\t******************************************************/\n"+
@@ -218,7 +221,7 @@ public class GenerateController extends CodeGenerator {
         String beanName=BEAN_PACKAGE+DataMapper.formatClassName(getTableName() );
         String text=
         "\n\t/***************************************************\n"+
-        "\t*Warning Generated method inserts new data based on the\n"+
+        "\t*Inserts new data based on the\n"+
         "\t*values in a DataBean. \n"+
         "\t*\n"+
         "\t*@param bean data Bound JavaBean\n"+
@@ -245,7 +248,7 @@ public class GenerateController extends CodeGenerator {
         String beanName=DataMapper.formatClassName(getTableName() );
         String text=
         "\n\t/***************************************************\n"+
-        "\t*Warning Generated method updates the database with values " +
+        "\t*Updates the database with values " +
         "\t*in a DataBean \n"+
         "\t*@param bean data Bound  JavaBean\n"+
         "\t*@see org.javaWebGen.data.DataBean\n"+
@@ -407,12 +410,11 @@ public class GenerateController extends CodeGenerator {
          String beanName=DataMapper.formatClassName(getTableName() );
         // ArrayList <String> primaryKeys=getPrimaryKeys();
          String text=
-         "\n\t/**\n"+
-         "\t* Generated method  \n"+
+         "\n\t/*****************************************************************\n"+
  		 "\t* retrieves all data from a table and displays it using a JSP \n"+
  		 "\t*\n"+
          "\t*@return page(controller) or URI to jump to\n"+
-         "\t*/\n"+
+         "\t*********************************************************************/\n"+
          "\tpublic ServerAction list(HttpServletRequest req, HttpServletResponse res) throws WebAppException{\n"+ 
          "\t\t\tList<"+beanName+"> list =getModel().list();\n" +
          "\t\t\t\t\treq.setAttribute(WebConst.DATA_BEAN_LIST,list);\n"+
@@ -430,12 +432,11 @@ public class GenerateController extends CodeGenerator {
          
          ArrayList <String> primaryKeys=getPrimaryKeys();
     	 String text=
-  		     "\t/**\n"+
-  		     "*\t Generated method  \n"+
+  		     "\t/******************************************************************************\n"+
 		     "*\t retrieves all data from a datastore forwards to a view page to display it \n"+
 		     "*\t\n"+
 		     "*\t@return page(controller) or URI to jump to\n"+
-		     "*\t*/\n"+
+		     "*\t******************************************************************************/\n"+
 		     "\tpublic ServerAction detail(HttpServletRequest req, HttpServletResponse res) throws WebAppException{\n";
     	 
 	     	 int[] ptypes=getPrimaryKeyTypes();
@@ -463,10 +464,10 @@ public class GenerateController extends CodeGenerator {
      private String getUpdateCmd(String beanName){
     	 //ArrayList <String> primaryKeys=getPrimaryKeys();
     	 String text=
-    		 "\t/**\n"+
+    		 "\t/*******************************************************************************\n"+
     		 "\t* Generated method  \n"+
     		 "\t* retrieves all data from a datastore forwards to a view page to display it \n"+
-    		 "\t*\n"+
+    		 "\t********************************************************************************\n"+
     		 "\t*@return page(controller) or URI to jump to\n"+
     		 "\t*/\n"+
     		 "\tpublic ServerAction update(HttpServletRequest req, HttpServletResponse res) throws WebAppException{\n"+	 
@@ -499,12 +500,11 @@ public class GenerateController extends CodeGenerator {
      private String getDeleteCmd(String beanName){
     	 //ArrayList <String> primaryKeys=getPrimaryKeys();
     	 String text=
-        	"\t/**\n"+
-            "\t* Generated method  \n"+
-        	"\t* retrieves all data from a datastore forwards to a view page to display it \n"+
+        	"\t/**********************************************************************************\n"+
+           	"\t* Retrieves all data from a datastore forwards to a view page to display it \n"+
         	"\t*\n"+
         	"\t*@return page(controller) or URI to jump to\n"+
-        	"\t*/\n"+
+        	"\t************************************************************************************/\n"+
 			"\tpublic ServerAction delete(HttpServletRequest req, HttpServletResponse res) throws WebAppException{\n"+
 	         "\t\t"+beanName+" databean =getDataBean(req);\n" ;
 	     	int[] ptypes=getPrimaryKeyTypes();
@@ -528,12 +528,11 @@ public class GenerateController extends CodeGenerator {
       */
      private String getCreateCmd(String beanName){
     	 String text=
-    	     "\t/**\n"+
-    	     "\t* Generated method  \n"+
-    	     "\t* creates a new record \n"+
+    	     "\t/***************************************************************************************************\n"+
+    	     "\t* Creates a new record \n"+
     	     "\t*\n"+
     	     "\t*@return page(controller) or URI to jump to\n"+
-    	     "\t*/\n"+
+    	     "\t****************************************************************************************************/\n"+
     	     "\tpublic ServerAction create(HttpServletRequest req, HttpServletResponse res) throws WebAppException{\n"+
     	     "\t\t"+beanName+"Form form = new "+beanName+"Form(req);\n"+
     	     //"\t\t"+beanName+" databean = getDataBean(req);\n"+
@@ -555,12 +554,12 @@ public class GenerateController extends CodeGenerator {
 	         "\t\t}\n"+
 	         "\t}//end create\n";
     	 text+=
-		     "\t/**\n"+
+		     "\t/**********************************************************************************************\n"+
 		     "\t* Generated method  \n"+
 		     "\t* displays the CreateForm \n"+
 		     "\t*\n"+
 		     "\t*@return page(controller) or URI to jump to\n"+
-		     "\t*/\n"+
+		     "\t***********************************************************************************************/\n"+
 		     "\tpublic ServerAction add(HttpServletRequest req, HttpServletResponse res) throws WebAppException{\n"+
     	     "\t\t"+beanName+"Form form = new "+beanName+"Form(req);\n"+
     	     "\t\tform.setData(req);\n"+
@@ -580,7 +579,7 @@ public class GenerateController extends CodeGenerator {
         String beanName=DataMapper.formatClassName(getTableName() );
         String text=
         "\n\t/***************************************************\n"+
-        "\t*Warning Generated method updates the database with a Databean \n"+
+        "\t*Updates the database with a Databean \n"+
         "\t*@param bean data bound JavaBean\n"+
         "\t*@see org.javaWebGen.data.DataBean\n"+
         "\t*\n"+
@@ -627,7 +626,7 @@ public class GenerateController extends CodeGenerator {
         valueMap.put("javaWebGen.getDataBean", dataBean);
         valueMap.put("javaWebGen.model", model);
 
-        StrSubstitutor sub = new StrSubstitutor(valueMap);
+        StringSubstitutor sub = new StringSubstitutor(valueMap);
         String classText=sub.replace(classTemplate);
         return classText;
     }
@@ -640,7 +639,7 @@ public class GenerateController extends CodeGenerator {
         String beanName=DataMapper.formatClassName(getTableName() );
         String text=
         "\n\t/***************************************************\n"+
-        "\t*Warning Generated method list all rows in table \n"+
+        "\t*List all rows in table \n"+
         "\t*@return list of databeans\n"+
         "\t******************************************************/\n"+
         "\tprotected List <"+beanName+"> list() throws WebAppException{\n"+
@@ -657,9 +656,9 @@ public class GenerateController extends CodeGenerator {
 	private String makeDataBean(String[] colNames, int[] colTypes) {
 		String beanName=DataMapper.formatClassName(getTableName() );
 		String text=
-		"\t/************************************\n"+
+		"\t/**************************************************************************************\n"+
 		"\t*fills in a databean based on data in a request\n"+
-		"\t************************************/\n"+
+		"\t***************************************************************************************/\n"+
 		"\tprotected static "+beanName+" getDataBean(HttpServletRequest req) throws WebAppException{\n"+
 		
 		"\t\t\t"+beanName+" dataBean=new "+beanName+"();\n"+
@@ -696,8 +695,7 @@ public class GenerateController extends CodeGenerator {
 		String beanName=DataMapper.formatClassName(getTableName() );
 		String text=
 		"\t/************************************\n"+
-		"\t*Generated method\n"+
-		"\t*get the correct model class\n"+
+		"\t*Get the correct model class\n"+
 		"\t*@return model class\n"+
 		"\t************************************/\n"+
 		"\tprotected synchronized "+beanName+"Model getModel() throws WebAppException{\n"+
@@ -737,7 +735,7 @@ public class GenerateController extends CodeGenerator {
      	valueMap.put("javaWebGen.json", this.makeJSONWebService(getColNames(), getColTypes()) );
      	valueMap.put("javaWebGen.soap", this.makeSOAPWebService(getColNames(), getColTypes()) );
   	
-     	StrSubstitutor sub = new StrSubstitutor(valueMap);
+     	StringSubstitutor sub = new StringSubstitutor(valueMap);
         return sub.replace(subClassTemplate);
     }  
     /**

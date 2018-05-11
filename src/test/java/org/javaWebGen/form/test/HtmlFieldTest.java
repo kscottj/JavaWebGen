@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HtmlFieldTest {
 	private static final Logger log=LoggerFactory.getLogger(HtmlFieldTest.class);//begin exec
-	
+
 
 	@Test
 	public void testDate() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ParseException{
@@ -121,15 +121,7 @@ public class HtmlFieldTest {
 		
 	
 	}
-	@Test
-	public void testNumberField(){
-		HtmlNumberField field= new HtmlNumberField("testNumber",true);
-		Assert.assertFalse("is valid num?"+field.getValue()+field.isValid(),field.isValid() ); 
-		System.out.println(field);
-		
-		HtmlNumberField field1= new HtmlNumberField("testNumber");
-		Assert.assertTrue("is valid num?"+field1.getValue()+field1.isValid(),field1.isValid() ); 
-	}
+
 	@Test
 	public void testTextField(){
 		HtmlTextField field= new HtmlTextField("testText",true);
@@ -359,6 +351,28 @@ public class HtmlFieldTest {
 		Assert.assertTrue(form.dropdown.isValid() );
 		
 	}
+	@Test
+	public void testNumberField(){
+		HtmlNumberField field= new HtmlNumberField("testNumber",true);
+		Assert.assertFalse("is valid num?"+field.getValue()+field.isValid(),field.isValid() ); 
 	
+		
+		HtmlNumberField field1= new HtmlNumberField("testNumber");
+		Assert.assertTrue("is valid num?"+field1.getValue()+field1.isValid(),field1.isValid() ); 
+		
+		HtmlNumberField field3= new HtmlNumberField("testNumber",false);
+		field3.setValue(null);
+ 		Assert.assertTrue("is valid num?"+field3.getValue(),field3.isValid() );
+		
+		HtmlNumberField field4= new HtmlNumberField("testNumber",false);
+		field4.setValue("ggg");
+		Assert.assertFalse("is valid num?"+field4.getValue(),field4.isValid() );
+		field4.setValue("-1");
+		Assert.assertTrue("is valid num?"+field4.getValue(),field4.isValid() );
+		field4.setValue("");
+		
+		Assert.assertTrue("is valid num?"+field4.getValue(),field4.isValid() );
+	 
+	}
 	
 }

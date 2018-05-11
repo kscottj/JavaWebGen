@@ -52,14 +52,14 @@ public interface DataBean extends FormBeanAware{
 	/**************************************
 	*Get row data from Object.  Used by DAO objects
 	*@return row data as array of Objects
-    *@see org.javaWebGen.data.DAO
+    *@see org.javaWebGen.data.DataSourceDAO
 	***************************************/
 	public Object[] getData();
 
 	/**************************************
 	*set object data.  Used by DAO objects
 	*@param parms row data
-    *@see org.javaWebGen.data.DAO
+    *@see org.javaWebGen.data.DataSourceDAO
     *@throws incorrct parms passed
 	***************************************/
 	public void setData(Object[] parms) throws IllegalArgumentException;

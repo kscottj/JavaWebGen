@@ -99,7 +99,7 @@ public class Dispatcher extends HttpServlet {
 
 	}
 	public Dispatcher(String classPrefix, boolean isProd) {
-		urlProp=this.findUrlProp();
+		this.urlProp=this.findUrlProp();
 		this.classPrefix=classPrefix;
 		this.isProd=isProd;
 	}

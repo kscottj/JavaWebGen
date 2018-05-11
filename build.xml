@@ -8,14 +8,14 @@
 <!-- set global properties for this build -->
 
 	<property name="src" value="src/main/java" />
-	<property name="test-src" value="test/java" />	
+	<property name="test-src" value="src/test/java" />	
 	<property name="gen-src" value="src/main/java" />	
 	<property name="resource" value="src/main/resources" />
 	<property name="test-resource" value="src/test/resources" />
 	<property name="build" value="target" />
 	<property name="build-class" value="target/classes" />
 	<property name="build-test-class" value="target/test-classes" />
-	<property name="WebContent" value="src/main/webapp" />
+	<property name="WebContent" value="src/test/webapp" />
 
 <!-- =================================================================== -->
 <!-- set the classpath here and ref it in later steps-->
@@ -41,7 +41,7 @@
 		<mkdir dir="${build}" />
 		<mkdir dir="${build}/classes" />
 		<mkdir dir="target/lib" />
-		<mkdir dir="${gen-src}" />
+		<mkdir dir="${test-src}" />
 		<property name="myclasspath" refid="global.classpath"/>
 		<!-- Emit the property to the ant console -->
 		<echo message="Classpath = ${myclasspath}"/>
@@ -63,63 +63,135 @@
 	<!-- generate JDO DataBean from tourque XML file -->
 	<!-- =================================================================== -->
 	    <target name="genDataBeanJDO" depends="prepare" >
-	    	<mkdir dir="${gen-src}/org/javaWebGen/data/bean" />
+	    	<mkdir dir="${test-src}/org/javaWebGen/data/bean" />
 			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateJDODataBean" fork="true">
 				
-				<arg value="torque.xml"/>
-				<arg value="${gen-src}/org/javaWebGen/data/bean"/>
+				<arg value="test-torque.xml"/>
+				<arg value="${test-src}/org/javaWebGen/data/bean"/>
 			</java>	
 		</target>
 		<!-- =================================================================== -->
 		<!-- generate JDO DAO from tourque XML file -->
 		<!-- =================================================================== -->
 		    <target name="genJDO" depends="prepare" >
-		    	<mkdir dir="${gen-src}/org/javaWebGen/data/dao" />
+		    	<mkdir dir="${test-src}/org/javaWebGen/data/dao" />
 				<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateJDO" fork="true">
-					<arg value="torque.xml"/>
-					<arg value="${gen-src}/org/javaWebGen/data/dao"/>
+					<arg value="test-torque.xml"/>
+					<arg value="${test-src}/org/javaWebGen/data/dao"/>
 				</java>	
 			</target>
 		<!-- =================================================================== -->
 		<!-- generate JDBC DAO from tourque XML file -->
 		<!-- =================================================================== -->
 	  <target name="genJdbcDao" depends="prepare" >
- 		    	<mkdir dir="${gen-src}/org/javaWebGen/data/dao" />
+ 		    	<mkdir dir="${test-src}/org/javaWebGen/data/dao" />
 				<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateJdbcDao" fork="true">
-					<arg value="torque.xml"/>
-					<arg value="${gen-src}/org/javaWebGen/data/dao"/>
+					<arg value="test-torque.xml"/>
+					<arg value="${test-src}/org/javaWebGen/data/dao"/>
 				</java>	
-			</target>	
+		</target>	
+		<!-- =================================================================== -->
+		<!-- generate JDBC DAO from tourque XML file -->
+		<!-- =================================================================== -->
+	  <target name="GenerateGaeDao" depends="prepare" >
+			    	<mkdir dir="${test-src}/org/javaWebGen/data/dao" />
+				<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateGaeDao" fork="true">
+					<arg value="test-torque.xml"/>
+					<arg value="${test-src}/org/javaWebGen/data/dao"/>
+				</java>	
+		</target>
+	<!-- =================================================================== -->
+	<!-- generate JDBC DAO from tourque XML file -->
+	<!-- =================================================================== -->
+  <target name="genSpringJdbcDao" depends="prepare" >
+		    	<mkdir dir="${test-src}/org/javaWebGen/data/dao" />
+			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateSpringJdbcDao" fork="true">
+				<arg value="test-torque.xml"/>
+				<arg value="${test-src}/org/javaWebGen/data/dao"/>
+			</java>	
+	</target>
 		<!-- =================================================================== -->
 		<!-- generate model from tourque XML file -->
 		<!-- =================================================================== -->
 		    <target name="genModel" depends="prepare" >
-				<mkdir dir="${gen-src}/org/javaWebGen/model" />
+				<mkdir dir="${test-src}/org/javaWebGen/model" />
 				<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateModel" fork="true">
-					<arg value="torque.xml"/>
-					<arg value="${gen-src}/org/javaWebGen/model"/>
+					<arg value="test-torque.xml"/>
+					<arg value="${test-src}/org/javaWebGen/model"/>
 				</java>	
 			</target>
 		<!-- =================================================================== -->
 		<!-- generate controller from tourque XML file -->
 		<!-- =================================================================== -->
 		    <target name="genAction" depends="prepare"  >
-		    	<mkdir dir="${gen-src}/org/javaWebGen/admin" />
+		    	<mkdir dir="${test-src}/org/javaWebGen/admin" />
 				<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateController" fork="true">
-					<arg value="torque.xml"/>
-					<arg value="${gen-src}/org/javaWebGen/admin"/>
+					<arg value="test-torque.xml"/>
+					<arg value="${test-src}/org/javaWebGen/admin"/>
 					<arg value="-template"/>
 					<arg value="template/Action.java"/>
 				</java>	
 			</target>
+	<!-- =================================================================== -->
+	<!-- generate controller from tourque XML file -->
+	<!-- =================================================================== -->
+	    <target name="genSpringContext" depends="prepare"  >
+	    	<mkdir dir="${test-src}/org/javaWebGen" />
+			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateSpringContext" fork="true">
+				<arg value="test-torque.xml"/>
+				<arg value="${test-src}/org/javaWebGen"/>
+				<arg value="-jdo"/>
+				<arg value="-template"/>
+				<arg value="template/context.xml"/>
+			</java>	
+		</target>	
+	<!-- =================================================================== -->
+	<!-- generate controller from tourque XML file -->
+	<!-- =================================================================== -->
+	    <target name="genSpringModel" depends="genSpringContext"  >
+	    	<mkdir dir="${test-src}/org/javaWebGen/model" />
+			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateSpringModel" fork="true">
+				<arg value="test-torque.xml"/>
+				<arg value="${test-src}/org/javaWebGen/model"/>
+				<arg value="-template"/>
+				<arg value="template/View.jsp"/>
+			</java>	
+		</target>
+	<!-- =================================================================== -->
+	<!-- generate controller from tourque XML file -->
+	<!-- =================================================================== -->
+	    <target name="genSpringAction" depends="genSpringContext"  >
+	    	<mkdir dir="${test-src}/org/javaWebGen/controller" />
+			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateSpringController" fork="true">
+				<arg value="test-torque.xml"/>
+				<arg value="${test-src}/org/javaWebGen/controller"/>
+				<arg value="-template"/>
+				<arg value="template/Action.java"/>
+			</java>	
+		</target>
+	<!-- =================================================================== -->
+	<!-- generate controller from tourque XML file -->
+	<!-- =================================================================== -->
+	    <target name="genSpringView" depends="genSpringAction"  >
+	    	<mkdir dir="${WebContent}/WEB-INF/jsp/admin" />
+	    	<mkdir dir="${WebContent}/WEB-INF/tags/admin" />
+	    	<mkdir dir="${WebContent}/static" />
+	    	<mkdir dir="${WebContent}/static/css" />
+	    	<mkdir dir="${WebContent}/admin" />
+	    	<mkdir dir="${WebContent}/inc" />
+			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateSpringView" fork="true">
+				<arg value="test-torque.xml"/>
+				<arg value="${WebContent}"/>
+			</java>	
+		</target>
 		<!-- =================================================================== -->
 		<!-- generate web form from tourque XML file -->
 		<!-- =================================================================== -->
 		    <target name="genForm" depends="prepare" >
-		    	<mkdir dir="${gen-src}/org/javaWebGen/webform" />
+		    	<mkdir dir="${test-src}/org/javaWebGen/webform" />
 				<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateWebForm">
-					<arg value="torque.xml"/>
-					<arg value="${gen-src}/org/javaWebGen/webform"/>
+					<arg value="test-torque.xml"/>
+					<arg value="${test-src}/org/javaWebGen/webform"/>
 				</java>	
 			</target>
 	<!-- =================================================================== -->
@@ -133,7 +205,7 @@
     	<mkdir dir="${WebContent}/admin" />
     	<mkdir dir="${WebContent}/inc" />
 		<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateView" fork="true">
-			<arg value="torque.xml"/>
+			<arg value="test-torque.xml"/>
 			<arg value="${WebContent}"/>
 		</java>	
 	</target>
@@ -142,8 +214,8 @@
 	<!-- =================================================================== -->
 	    <target name="genTest" depends="prepare" >
 	    	<mkdir dir="${test-src}/org/javaWebGen/test" />
-			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateTestCase" fork="true">
-				<arg value="torque.xml"/>
+			<java classpathref="global.classpath" classname="org.javaWebGen.generator.GenerateGAETestCase" fork="true">
+				<arg value="test-torque.xml"/>
 				<arg value="${test-src}/org/javaWebGen/test"/>
 			</java>	
 		</target>

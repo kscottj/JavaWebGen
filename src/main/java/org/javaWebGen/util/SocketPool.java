@@ -50,7 +50,7 @@ import org.javaWebGen.util.Util;
 
 /*************************************************
 *Very Simple Pool of Socket network Connections
-*NOTE: Expermintal IE untested
+*NOTE: Experimental IE untested
 *@deprecated Use Java concurrent 
 *@version $Revision: 1.2 $
 *@author Kevin Scott

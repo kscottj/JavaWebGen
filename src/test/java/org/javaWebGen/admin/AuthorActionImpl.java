@@ -18,6 +18,7 @@ of the Software, and to permit persons to whom the Software is furnished to do
 /* data Acees Object talks to DB */
 package org.javaWebGen.admin;
 import java.util.*;
+import javax.annotation.Generated;
 import org.javaWebGen.WebController;
 import org.javaWebGen.data.bean.*;
 import org.javaWebGen.util.HtmlUtil;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 * If you need to change the this code you should override what you do not need.
 *******************************************************************************/
 @SuppressWarnings("unused") //StringUtil might be needed depending for some data fields
+@Generated(value = { "org.javaWebGen.generator.GenerateController" })
 public abstract class AuthorActionImpl extends WebController{ 
 private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);//begin private Vars
 	
@@ -42,7 +44,7 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 //find by Primary Key
 
 	/***************************************************
-	*Warning Generated method. get a DataBean with table data in it.
+	*Get a DataBean with table data in it.
 	* for one row in the database
 	*@return DataBean with data from the Model
 	******************************************************/
@@ -54,7 +56,7 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 //begin insert (create)
 
 	/***************************************************
-	*Warning Generated method inserts new data based on the
+	*Inserts new data based on the
 	*values in a DataBean. 
 	*
 	*@param bean data Bound JavaBean
@@ -67,7 +69,7 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 //begin update(store)
 
 	/***************************************************
-	*Warning Generated method updates the database with values 	*in a DataBean 
+	*Updates the database with values 	*in a DataBean 
 	*@param bean data Bound  JavaBean
 	*@see org.javaWebGen.data.DataBean
 	******************************************************/
@@ -78,7 +80,7 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 //begin delete(store)
 
 	/***************************************************
-	*Warning Generated method updates the database with a Databean 
+	*Updates the database with a Databean 
 	*@param bean data bound JavaBean
 	*@see org.javaWebGen.data.DataBean
 	*
@@ -90,7 +92,7 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 //begin listAll)
 //
 	/***************************************************
-	*Warning Generated method list all rows in table 
+	*List all rows in table 
 	*@return list of databeans
 	******************************************************/
 	protected List <Author> list() throws WebAppException{
@@ -98,9 +100,9 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 	} //end list
 
 //begin getDataBean
-	/************************************
+	/**************************************************************************************
 	*fills in a databean based on data in a request
-	************************************/
+	***************************************************************************************/
 	protected static Author getDataBean(HttpServletRequest req) throws WebAppException{
 			Author dataBean=new Author();
 		try{
@@ -114,8 +116,7 @@ private static final Logger log=LoggerFactory.getLogger(AuthorActionImpl.class);
 
 
 	/************************************
-	*Generated method
-	*get the correct model class
+	*Get the correct model class
 	*@return model class
 	************************************/
 	protected synchronized AuthorModel getModel() throws WebAppException{

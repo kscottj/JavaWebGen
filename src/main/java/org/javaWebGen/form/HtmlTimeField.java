@@ -134,17 +134,18 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	 
 		
 		boolean val=super.validate(value);
-		log.debug(">is valid time="+value+"="+ val);
-		
-			try {
-				StringUtil.convertToTime(value);
-			} catch (ParseException e) {
-				log.warn(value+"is invalid Time"+e.getMessage());
-				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
-				this.isFieldValid=false;
-				val=false;			
-			}
-
+		if(val&&value!=null) { 
+			log.debug(">is valid time="+value+"="+ val);
+			
+				try {
+					StringUtil.convertToTime(value);
+				} catch (ParseException e) {
+					log.warn(value+"is invalid Time"+e.getMessage());
+					this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );
+					this.isFieldValid=false;
+					val=false;			
+				}
+		}
 
 		log.debug("<is valid time="+val);
 	return val;	 

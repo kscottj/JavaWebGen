@@ -26,7 +26,7 @@ import java.sql.*;
 import java.util.*;
 import java.io.*;
 
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 public class GenerateJdbcDao extends CodeGenerator {
     
-    public static final String VERSION="GenerateJdbcDao v1_50";
+    public static final String VERSION="GenerateJdbcDao v1_53";
     private static final Logger log = LoggerFactory.getLogger(GenerateJdbcDao.class);
     private String className=null;
     private String subClassName=null;   
@@ -51,7 +51,7 @@ public class GenerateJdbcDao extends CodeGenerator {
 
     private String classTemplate=
         "/*\n"+
-        "Copyright (c) 2017 Kevin Scott All rights  reserved."+
+        "Copyright (c) 2018 Kevin Scott All rights  reserved."+
         " Permission is hereby granted, free of charge, to any person obtaining a copy of \n"+
         " this software and associated documentation files (the \"Software\"), to deal in \n"+
         " the Software without restriction, including without limitation the rights to \n"+
@@ -71,6 +71,7 @@ public class GenerateJdbcDao extends CodeGenerator {
         "package org.javaWebGen.data.dao;\n\n"+
         "import java.sql.*;\n"+
         "import java.util.*;\n"+
+        "import javax.annotation.Generated;\n"+
         "import javax.naming.Context;\n"+
         "import javax.naming.NamingException;\n"+
         "import javax.naming.InitialContext;\n"+
@@ -82,7 +83,7 @@ public class GenerateJdbcDao extends CodeGenerator {
         "import org.apache.commons.dbutils.handlers.ScalarHandler;\n"+
         "import org.javaWebGen.data.bean.*;\n"+
         "import org.javaWebGen.exception.DBException;\n"+
-        "import org.javaWebGen.data.DAO;\n"+
+        "import org.javaWebGen.data.DataSourceDAO;\n"+
         "import org.javaWebGen.config.Conf;\n"+
         "import org.javaWebGen.util.SQLHelper;\n"+
         "/******************************************************************************\n"+
@@ -92,12 +93,13 @@ public class GenerateJdbcDao extends CodeGenerator {
         "* @author Kevin Scott                                                        \n"+
         "* @version $Revision: 1.00 $                                               \n"+
         "*******************************************************************************/\n"+
-        "public abstract class ${javaWebGen.className} extends DAO { \n"+
+        "@Generated(value = { \"org.javaWebGen.generator.GenerateJdbcDao \" })\n"+
+        "public abstract class ${javaWebGen.className} extends DataSourceDAO { \n"+
     	"\tpublic ${javaWebGen.className}(){\n"+
         "\tContext initContext;\n"+
 		"\ttry {\n"+
 		"\t	initContext = new InitialContext();\n"+
-		"\t	this.setDataSource( (DataSource) initContext.lookup(Conf.getConfig().getProperty(DAO.DB_JNDI, \"jdbc.testDB\") ) );\n"+
+		"\t	this.setDataSource( (DataSource) initContext.lookup(Conf.getConfig().getProperty(DataSourceDAO.DB_JNDI, \"jdbc.testDB\") ) );\n"+
 		"\t	\n"+
 		"\t  } catch (NamingException e) {\n"+
 		"\t	   throw new RuntimeException(e);\n"+
@@ -173,9 +175,7 @@ public class GenerateJdbcDao extends CodeGenerator {
         int[] primaryKeysTypes=getPrimaryKeyTypes();
         String text=
         "\n\t/**\n"+
-        "\t* Warning Generated method. get a DataBean with table data in it\n"+
-        "\t* Warning can not handle primary keys that are decimal values\n"+
-        "\t* Warning may not handle date primary key correctly yet\n"+
+        "\t* Get a bound DataBean poulated with data from data store by primary key\n"+
         "\t* @return DataBean with data\n"+
         "\t*/\n"+
         "\tpublic "+beanName+" findByPrimaryKey("+getVars(primaryKeys,primaryKeysTypes)+") throws DBException,SQLException{\n"+
@@ -215,8 +215,8 @@ public class GenerateJdbcDao extends CodeGenerator {
         
         String text=
         "\n\t/**\n"+
-        "\t* Warning Generated method inserts new DataBean \n"+
-        "\t* @param entity DataAware Javabean to store to DB \n"+
+        "\t* Inserts new DataBean into data store \n"+
+        "\t* @param entity DataAware Javabean to store in DB \n"+
         "\t* @return primary key=0\n"+
         "\t*/\n"+
         "\tpublic "+javaType+" insert("+beanName+" entity) throws DBException,SQLException{\n";
@@ -291,7 +291,7 @@ public class GenerateJdbcDao extends CodeGenerator {
         //int[] primaryKeysTypes=getPrimaryKeyTypes();
         String text=
         "\n\t/**\n"+
-        "\t* Warning Generated method updates the database with a DataBean \n"+
+        "\t* Updates the database with a bound DataBean \n"+
         "\t* @param entity Databean to update DB with\n"+		
         "\t* @return number row changed\n"+
         "\t*/\n"+
@@ -346,7 +346,7 @@ public class GenerateJdbcDao extends CodeGenerator {
          int[] primaryKeysTypes=getPrimaryKeyTypes();
          String text=
          "\n\t/**\n"+
-         "\t* Warning Generated method updates the database with a DataBean \n"+
+         "\t* Remove bound databean from the data store \n"+
          "\t* @param entity DataAware javabean with data to delete\n"+		 
          "\t* @return number row changed\n"+
          "\t*/\n"+
@@ -373,7 +373,7 @@ public class GenerateJdbcDao extends CodeGenerator {
 
           String text=
           "\n\t/***************************************************\n"+
-          "\t*Warning Generated method. get a DataBean with table data in it\n"+
+          "\t*List all matching Databeas with with table data populated from data store\n"+
           "\t@return DataBean with data\n"+
           "\t******************************************************/\n"+
           "\tpublic List<"+beanName+"> findAll() throws DBException,SQLException{\n"+
@@ -471,7 +471,7 @@ public class GenerateJdbcDao extends CodeGenerator {
      	valueMap.put("javaWebGen.delete", delete );
      	valueMap.put("javaWebGen.findAll", findAll );
      	valueMap.put("javaWebGen.resultHandle", resultHandle );
-     	StrSubstitutor sub = new StrSubstitutor(valueMap);
+     	StringSubstitutor sub = new StringSubstitutor(valueMap);
 
         return sub.replace(classTemplate);
     }
@@ -516,7 +516,7 @@ public class GenerateJdbcDao extends CodeGenerator {
      	valueMap.put("javaWebGen.className", className );
 
   	
-     	StrSubstitutor sub = new StrSubstitutor(valueMap);
+     	StringSubstitutor sub = new StringSubstitutor(valueMap);
         return sub.replace(subClassTemplate);
     }  
     /**

@@ -43,7 +43,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -122,19 +122,7 @@ static{
     	SimpleDateFormat ISO8601date = new SimpleDateFormat (ISO8601date_FORMAT);
     	return ISO8601date.parse(dateStr);
     }
-    /**
-     * Formatted using default java  MM/dd/YY.  Not usefull due to two digit year
-     * @param date
-     * @return formatted string
-     */
-    public static String formatShortDate(Date date){
-    	if(date!=null){
 
-    		return DateFormat.getDateInstance(DateFormat.SHORT).format(date);
-    	}else{
-    		return "";
-    	}
-    }
     /**
      * Format date using using normal MM/dd/yyyy format
      * @param date
@@ -170,18 +158,6 @@ static{
     	if(date!=null){
 
     		return dateTimeFormat.format(date);
-    	}else{
-    		return "";
-    	}
-    }
-    /**
-     * Date formated as a time DateFormat.SHORT.  Not  useful due two digit year
-     * @param date
-     * @return formatted String
-     */
-    public static String formatShortTime(Date date){
-    	if(date!=null){
-    		return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
     	}else{
     		return "";
     	}
@@ -231,31 +207,9 @@ static{
     		
     		return null;
     	}
-    	Date date=null;
-    //	try{
-    		 
- 
-				date=DateUtils.parseDate(dateStr,VALID_TIME_FORMATS);
- 
-    		
-    	/*}catch(ParseException e){//try a different format?
-    		try {
-    			SimpleDateFormat iso8601Datetime = new SimpleDateFormat (ISO8601Datetime_FORMAT);
-				date =iso8601Datetime.parse(dateStr);
-				 
-			} catch (ParseException e1) {
-				 
-				try {
-					date=DateFormat.getTimeInstance().parse(dateStr);
-				} catch (ParseException e2) {
-					try{
-						date=DateFormat.getTimeInstance(DateFormat.SHORT).parse(dateStr);
-					}catch(ParseException e3){
-						log.error("Error parsing date ignoring! date="+dateStr,e3);
-					}
-				}
-			}
-    	}*/
+
+		Date date=DateUtils.parseDate(dateStr,VALID_TIME_FORMATS);
+
     	return date;
     }
     /**

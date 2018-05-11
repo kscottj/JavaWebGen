@@ -96,11 +96,12 @@ public class HtmlEmailField extends HtmlField{
 	@Override
 	public boolean validate(String value){ //maybe check for odd encoding?
 		boolean val=super.validate(value);
-		
-		val= EmailValidator.getInstance().isValid(value);
-		if (!val){
-			this.isFieldValid=false;
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+		if(val&&value!=null) { 
+			val= EmailValidator.getInstance().isValid(value);
+			if (!val){
+				this.isFieldValid=false;
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+			}
 		}
 		return val;
 	}

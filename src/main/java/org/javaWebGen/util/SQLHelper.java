@@ -87,14 +87,15 @@ public class SQLHelper {
 
 	    /**
 	     * log SQL like used by prepared statement
-	     * @param sql
+	     * @param sql statement
 	     */
 	    public static void dump(String sql){
 	    	log.debug(getSQL(sql) );
 	    }
 	    /**
 	     * log SQL like used by prepared statement
-	     * @param sql
+	     * @param sql statement
+	     * @param parms to replace in SQL 
 	     */
 	    public static void dump(String sql, Object... parms){
 	    	log.debug(getSQL(sql,parms) );

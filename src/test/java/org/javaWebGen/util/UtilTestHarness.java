@@ -288,12 +288,12 @@ public class UtilTestHarness extends TestCase{
 		dateStr="2017/10/10"; //would parse to wrong date so should reject now
 		try {
 			date=StringUtil.convertToDate(dateStr);
-			Assert.assertTrue("should be invalid date "+dateStr,false);
 			log.info(StringUtil.formatDate(date));
-			
+		
 		} catch (ParseException e) {
 			log.debug(dateStr+" invalid date"+e.getMessage() );
-			log.info(StringUtil.formatDate(date));
+			
+			log.error(StringUtil.formatDate(date));
 		}
 	 		
 		dateStr="2017-10-10";
@@ -302,42 +302,42 @@ public class UtilTestHarness extends TestCase{
 			
 			log.info(StringUtil.formatDate(date));
 		} catch (ParseException e) {
-			log.debug(dateStr+" invalid date"+e.getMessage() );
+			log.error(dateStr+" invalid date"+e.getMessage() );
 			Assert.assertTrue("should be valid date "+dateStr,false); 
 		}
 	 
 		dateStr="10.10.2017";
 		try {
 			date=StringUtil.convertToDate(dateStr);
-			Assert.assertTrue("should be invalid date "+dateStr,false);
-			
-			log.info(StringUtil.formatDate(date));
 		} catch (ParseException e) {
 			log.debug(dateStr+" invalid date"+e.getMessage() );
+			Assert.assertFalse("should be invalid time "+dateStr,false); 
 		}
-		dateStr="11:10:10 AM";
+		dateStr="11:10 PM";
 		try {
 			date=StringUtil.convertToTime(dateStr);
-			log.info(StringUtil.formatDate(date));
-			Assert.assertTrue("should be invalid date "+dateStr,false); 
+			//log.info(StringUtil.formatTime(date));
+		
 		} catch (ParseException e) {
-			log.debug(dateStr+" invalid date"+e.getMessage() );		 
+			log.error(dateStr+" invalid date"+e);		 
+			Assert.assertTrue("should be invalid time "+dateStr,false); 
+			
 		}
 	 
-		dateStr="21:10:10";
+		dateStr="23:10";
 		try {
 			date=StringUtil.convertToTime(dateStr);
-			log.info(StringUtil.formatTime(date));
+			//log.info(StringUtil.formatTime(date));
 		} catch (ParseException e) {
-			log.debug(dateStr+" invalid date"+e.getMessage() );	
+			log.error(dateStr+" invalid date"+e.getMessage() );	
 			Assert.assertTrue("should be valid date "+dateStr,false); 
 		}	
 		dateStr="10/10/2017 21:10:10";
 		try {
 			date=StringUtil.convertToDateTime(dateStr);
-			log.info(StringUtil.formatDateTime(date));
+			//log.info(StringUtil.formatDateTime(date));
 		} catch (ParseException e) {
-			log.debug(dateStr+" invalid date"+e.getMessage() );	
+			log.error(dateStr+" invalid date"+e.getMessage() );	
 			Assert.assertTrue("should be valid date "+dateStr,false); 
 		}
 		dateStr="10/10/2017";
@@ -345,8 +345,9 @@ public class UtilTestHarness extends TestCase{
 			date=StringUtil.convertToDate(dateStr);
 			log.info(StringUtil.formatDate(date));
 		} catch (ParseException e) {
-			log.debug(dateStr+" invalid date"+e.getMessage() );	
+			log.error(dateStr+" invalid date"+e.getMessage() );	
 			Assert.assertTrue("should be valid date "+dateStr,false); 
 		}
 	}
+
 }

@@ -78,11 +78,13 @@ public class HtmlPercentField extends HtmlField{
 	@Override
 	public boolean validate(String value){
 		boolean val=super.validate(value);
-		val=PercentValidator.getInstance().isValid(value);
-		if(!val){
-
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) ); 
-			this.isFieldValid=false;
+		if(val&&value!=null) { 
+			val=PercentValidator.getInstance().isValid(value);
+			if(!val){
+	
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) ); 
+				this.isFieldValid=false;
+			}
 		}
  
 		return val;

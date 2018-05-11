@@ -40,10 +40,11 @@
 package org.javaWebGen.generator;
 
 
-import java.util.*;
-import java.io.*;
 
-import org.apache.commons.text.StrSubstitutor;
+import java.io.*;
+import java.util.HashMap;
+import java.util.ArrayList;
+import org.apache.commons.text.StringSubstitutor;
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +52,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * create Models 
- * Generated Web Model Objects from the database config
- * creates a Model class and a implementing class
+ * Generated Web Model Objects from the atabase configuration(torque)XML. 
+ * creates a Service classes and a implementing class
  * This class Will be overwriten!
  * @author Kevin scott
  * @version $Revision: 1.2 $
@@ -60,13 +61,13 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateModel extends CodeGenerator {
     
-    public static final String VERSION="GenerateModel 2_09";
+    public static final String VERSION="GenerateModel 2_10";
 	private String className=null;
 	private String subClassName=null;
 	private final static Logger log = LoggerFactory.getLogger(GenerateModel.class);  
     private String classTemplate=
         "/*\n"+
-        " Copyright (c) 2012-2013 Kevin Scott All rights  reserved.\n"+
+        " Copyright (c) 2018 Kevin Scott All rights  reserved.\n"+
         " Permission is hereby granted, free of charge, to any person obtaining a copy of \n"+
         " this software and associated documentation files (the \"Software\"), to deal in \n"+
         " the Software without restriction, including without limitation the rights to \n"+
@@ -84,6 +85,7 @@ public class GenerateModel extends CodeGenerator {
         "*/ \n"+            "/** data Acees Object talks to DB **/\n"+
         "package org.javaWebGen.model;\n"+
         "import java.util.*;\n"+
+        "import javax.annotation.Generated;\n"+
         "import org.javaWebGen.data.bean.*;\n"+
         "import org.javaWebGen.*;\n"+
         "import org.javaWebGen.exception.WebAppException;\n"+
@@ -94,6 +96,7 @@ public class GenerateModel extends CodeGenerator {
         "* This class should not be modified, but may be extended to add required logic \n"+
         "* It will be regenerated if the database schema changes \n"+
         "*******************************************************************************/\n"+
+        "@Generated(value = { \"org.javaWebGen.generator.GenerateModel \" })\n"+
         "public abstract class ${javaWebGen.className} implements BusinessModel { \n"+
         "//begin private Vars\n"+
         "${javaWebGen.vars}\n"+
@@ -122,7 +125,7 @@ public class GenerateModel extends CodeGenerator {
            "*/ \n"+
         "package org.javaWebGen.model;\n\n"+
 
-
+		"import javax.annotation.Generated;\n"+
         "import org.javaWebGen.config.ConfigConst;\n"+
 		"import org.slf4j.Logger;\n"+
 		"import org.slf4j.LoggerFactory;\n"+
@@ -137,6 +140,7 @@ public class GenerateModel extends CodeGenerator {
         "* @author Kevin Scott                                                        \n"+
         "* @version $Revision: 1.00 $                                               \n"+
         "*******************************************************************************/\n"+
+        "@Generated(value = { \"org.javaWebGen.generator.GenerateModel\" })\n"+
         "public class ${javaWebGen.subClassName} extends ${javaWebGen.className} { \n"+
         "\t/** Model Logger */\n" +
         "@SuppressWarnings(\"unused\")\n"+
@@ -193,7 +197,7 @@ public class GenerateModel extends CodeGenerator {
 		
 		String text =null;
 		text = "\n\t/***************************************************\n"
-				+ "\t* Generated method. get a Databean with table data in it\n"
+				+ "\t* Get a Databean with table data in it\n"
 				+ "\t* @return databean with data\n"
 				+ "\t******************************************************/\n"
 				+ "\tpublic "
@@ -209,7 +213,7 @@ public class GenerateModel extends CodeGenerator {
 		if(primaryKeyTypes.length==1){
 			String javaType=DataMapper.getJavaTypeFromSQLType(primaryKeyTypes[0]);
 			text += "\n\t/***************************************************\n"
-					+ "\t* Generated method. get a Databean with table data in it\n"
+					+ "\t* Get a Databean with table data in it\n"
 					+ "\t* @return databean with data\n"
 					+ "\t******************************************************/\n"
 					+ "\tpublic "
@@ -224,10 +228,10 @@ public class GenerateModel extends CodeGenerator {
 		}else {
 			
 			
-			text += "\n\t/***************************************************\n"
-						+ "\t* Generated method. get a Databean with table data in it\n"
+			text += "\n\t/**\n"
+						+ "\t* Get a Databean with table data in it\n"
 						+ "\t* @return databean with data\n"
-						+ "\t******************************************************/\n"
+						+ "\t*/\n"
 						+ "\tpublic "
 						+ beanName
 						+ " getByIdParm( String "+DataMapper.formatVarName(primaryKeys[0]+"Str")+"";
@@ -275,10 +279,11 @@ public class GenerateModel extends CodeGenerator {
 		}
 		String javaType=DataMapper.getJavaTypeFromSQLType(pkeyTypes[0]);
 		String text = 
-			"\n\t/***************************************************\n"
-				+ "\t*Warning Generated method inserts new Databean \n"
+				"\n\t/***********************************************\n"
+				+ "\t*Inserts new Databean \n"
+				+ "\t@param bound Databean with data from data store"
 				+ "\t*\n"
-				+ "\t******************************************************/\n"
+				+ "\t************************************************/\n"
 				+ "\tpublic "+javaType+" create("
 				+ beanName
 				+ " bean) throws WebAppException{\n"
@@ -299,9 +304,9 @@ public class GenerateModel extends CodeGenerator {
 			 return "\t//Can only generate code for one Primary key per table \\nYou need to write custom code for this\n";
 		}
 		String beanName = DataMapper.formatClassName(getTableName() );
-		String text = "\n\t/***************************************************\n"
-				+ "\t* Warning Generated method updates the database with a Databean \n"
-				+ "\t* \n"
+		String text = "\n\t/***********************************************\n"
+				+ "\t*Updates the database with a Databean \n"
+				+ "\t*@param bound Databean to persist to data store"
 				+ "\t******************************************************/\n"
 				+ "\tpublic void save("
 				+ beanName
@@ -324,8 +329,8 @@ public class GenerateModel extends CodeGenerator {
 		}
 		String beanName = DataMapper.formatClassName(getTableName() );
 		String text = "\n\t/***************************************************\n"
-				+ "\t* Warning Generated method deletes record from the database based on a Databean \n"
-				+ "\t* \n"
+				+ "\t*Deletes record from the database based on a Databean \n"
+				+ "\t*@param bean from data store \n"
 				+ "\t******************************************************/\n"
 				+ "\tpublic void remove("
 				+ beanName
@@ -341,7 +346,7 @@ public class GenerateModel extends CodeGenerator {
      private String makeList(String[] colNames2, int[] colTypes2) {
 		String beanName = DataMapper.formatClassName(getTableName() );
 		String text = "\n\t/***************************************************\n"
-				+ "\t* Warning Generated method list of all records in a table \n"
+				+ "\t* List of all records in a table \n"
 				+ "\t* @return array of DataBeans\n"
 				+ "\t******************************************************/\n"
 				+ "\tpublic List<"+beanName+"> list() throws WebAppException{\n"
@@ -386,7 +391,7 @@ public class GenerateModel extends CodeGenerator {
      	valueMap.put("javaWebGen.update", update );   	
      	valueMap.put("javaWebGen.delete", delete );   	
      	valueMap.put("javaWebGen.list", list );   	
-     	StrSubstitutor sub = new StrSubstitutor(valueMap);
+     	StringSubstitutor sub = new StringSubstitutor(valueMap);
         
         //debug(classTemplate);
         //String classText = StringUtil.replace(classTemplate,p);
@@ -409,7 +414,7 @@ public class GenerateModel extends CodeGenerator {
      	valueMap.put("javaWebGen.subClassName", subClassName );
      	valueMap.put("javaWebGen.className", className );
   	
-     	StrSubstitutor sub = new StrSubstitutor(valueMap);
+     	StringSubstitutor sub = new StringSubstitutor(valueMap);
         return sub.replace(subClassTemplate);
     }
     

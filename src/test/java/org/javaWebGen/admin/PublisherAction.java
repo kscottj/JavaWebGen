@@ -11,6 +11,7 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 package org.javaWebGen.admin;
 
 import java.util.*;
+import javax.annotation.Generated;
 import org.javaWebGen.ServerAction;
 import org.javaWebGen.data.bean.*;
 import org.javaWebGen.webform.*;
@@ -27,27 +28,26 @@ import javax.servlet.http.HttpServletResponse;
 * @author Kevin Scott                                                        
 * @version $Revision: 1.00 $                                               
 *******************************************************************************/
+@Generated(value = { "org.javaWebGen.generator.GenerateController" })
 public class PublisherAction extends PublisherActionImpl { 
 @SuppressWarnings("unused")
  	private final Logger log=LoggerFactory.getLogger(PublisherActionImpl.class);//begin exec
-	/**
-	* Generated method  
+	/*****************************************************************
 	* retrieves all data from a table and displays it using a JSP 
 	*
 	*@return page(controller) or URI to jump to
-	*/
+	*********************************************************************/
 	public ServerAction list(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
 			List<Publisher> list =getModel().list();
 					req.setAttribute(WebConst.DATA_BEAN_LIST,list);
 	return ServerAction.viewAction("/admin/PublisherList.jsp");
 	}
 			//database table has primary KEY in it
-	/**
-*	 Generated method  
+	/******************************************************************************
 *	 retrieves all data from a datastore forwards to a view page to display it 
 *	
 *	@return page(controller) or URI to jump to
-*	*/
+*	******************************************************************************/
 	public ServerAction detail(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
 			Publisher dataBean= getModel().getByIdParm(req.getParameter("publisherId") );
 			PublisherForm  form= new PublisherForm(req);
@@ -55,10 +55,10 @@ public class PublisherAction extends PublisherActionImpl {
 			req.setAttribute(WebConst.FORM,form ) ; 
 			return ServerAction.viewAction("/admin/PublisherDetail.jsp");
 		}
-	/**
+	/*******************************************************************************
 	* Generated method  
 	* retrieves all data from a datastore forwards to a view page to display it 
-	*
+	********************************************************************************
 	*@return page(controller) or URI to jump to
 	*/
 	public ServerAction update(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
@@ -73,23 +73,21 @@ public class PublisherAction extends PublisherActionImpl {
 			return ServerAction.viewAction("/admin/PublisherDetail.jsp");
 		}
 	}
-	/**
-	* Generated method  
-	* retrieves all data from a datastore forwards to a view page to display it 
+	/**********************************************************************************
+	* Retrieves all data from a datastore forwards to a view page to display it 
 	*
 	*@return page(controller) or URI to jump to
-	*/
+	************************************************************************************/
 	public ServerAction delete(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
 		Publisher databean =getDataBean(req);
 		getModel().remove(databean);
 		return ServerAction.updateAction("/admin/Publisher/list");
 	}
-	/**
-	* Generated method  
-	* creates a new record 
+	/***************************************************************************************************
+	* Creates a new record 
 	*
 	*@return page(controller) or URI to jump to
-	*/
+	****************************************************************************************************/
 	public ServerAction create(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
 		PublisherForm form = new PublisherForm(req);
 		form.setData(new Publisher(), req);
@@ -101,12 +99,12 @@ public class PublisherAction extends PublisherActionImpl {
 			return ServerAction.viewAction("/admin/PublisherCreate.jsp");
 		}
 	}//end create
-	/**
+	/**********************************************************************************************
 	* Generated method  
 	* displays the CreateForm 
 	*
 	*@return page(controller) or URI to jump to
-	*/
+	***********************************************************************************************/
 	public ServerAction add(HttpServletRequest req, HttpServletResponse res) throws WebAppException{
 		PublisherForm form = new PublisherForm(req);
 		form.setData(req);

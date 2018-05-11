@@ -57,6 +57,7 @@ public class HtmlCurrencyField extends HtmlTextField{
 	 * 
 	 */
 	private static final long serialVersionUID = 5420957254673391794L;
+	@SuppressWarnings("unused")
 	private static final Logger log=LoggerFactory.getLogger(HtmlCurrencyField.class); 
 	public static final String INVALID_NUMBER_MESSAGE="Enter a valid Currency Amount";
 	public static final String INVALID_NUMBER_KEY="form.error.currency";
@@ -81,27 +82,14 @@ public class HtmlCurrencyField extends HtmlTextField{
 	@Override
 	public boolean validate(String value){
 		boolean val=super.validate(value);
-		//log.info(this+".validate("+value+")");
-		/*try{
-			new BigDecimal(this.getValue() );
-		}catch(NumberFormatException e){ //not a number
-			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
-			 
-			return false;
-		}*/
-		/*boolean isValid=BigDecimalValidator.getInstance().isValid(value);
-		if(!isValid){
-			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
+		if(val&&value!=null) { 
+			val=CurrencyValidator.getInstance().isValid(value);
+			if(!val){
+				this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
+				this.isFieldValid=false;
+			}
 		}
-		
-		return isValid;*/
-	 
-		val=CurrencyValidator.getInstance().isValid(value);
-		if(!val){
-			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
-			this.isFieldValid=false;
-		}
-		log.trace(this.getName()+".isValid()"+val);
+
 		return val;
 	}
 	/**

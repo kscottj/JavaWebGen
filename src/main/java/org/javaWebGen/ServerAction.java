@@ -40,6 +40,7 @@
 package org.javaWebGen;
 
 import org.javaWebGen.config.WebConst;
+import org.json.JSONObject;
 
 /**
  * Used by @see Dispatcher to route a request to the new a web controller or page
@@ -80,20 +81,57 @@ public class ServerAction {
 	/**
 	 * get a Instance of the ServerAction class for update actions (HTML FORMS)
 	 * 
-	 * @param url
+	 * @param url to redirect to
 	 * @return next Server action
 	 */
-	public static ServerAction updateAction(String text){
-		return new ServerAction(text);
+	public static ServerAction updateAction(String uri){
+		return new ServerAction(uri);
 	}
 	/**
 	 * get a Instance of the ServerAction class for update actions (REST action)
 	 * @param response output text of web service 
 	 * @return Server action
 	 */
-	public static ServerAction webService(String url){
-		return new ServerAction(url);
+	public static ServerAction response(String respText){
+		return new WebServiceAction(respText);
 	}
+	/**
+	 * get a Instance of the ServerAction class for update actions (REST action)
+	 * @param response output text of web service 
+	 * @return Server action
+	 */
+	public static ServerAction response(String respText,String contentType){
+		return new WebServiceAction(respText, contentType);
+	}
+	/**
+	 * get a Instance of the ServerAction class for update actions (REST action)
+	 * @param xmlText to return set content type to application/xml
+	 * @return Server action
+	 */
+	public static ServerAction xmlService(String xmlText){
+		return new WebServiceAction(xmlText,"application/xml");
+	}
+	/**
+	 * get a Instance of the ServerAction class for update actions (REST action)
+	 * @param jsonText output JSON of web service  set content type to application/json
+	 * @return Server action
+	 */
+	public static ServerAction jsonService(String jsonText){
+		return new WebServiceAction(jsonText,"application/json");
+	}
+	/**
+	 * get a Instance of the ServerAction class for update actions (REST action)
+	 * @param jsonText output JSON of web service  set content type to application/json
+	 * @return Server action
+	 */
+	public static ServerAction jsonService(JSONObject json){
+		if(json!=null) {
+			return new WebServiceAction(json.toString(),"application/json");
+		}else {
+			return new WebServiceAction("" ,"application/json");
+		}
+	}
+	
 	/**
 	 * get next page and return to current URL afterwords 
 	 * @param returnObj uri to return to IE controller

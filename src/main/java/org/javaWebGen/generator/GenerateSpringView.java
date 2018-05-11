@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import org.javaWebGen.config.WebConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * create Spring MVC Views(JSP) from the database configuration(torque)XML.
+ * @author Kevin scott
+ *
+ */
 public class GenerateSpringView extends GenerateView{
 
 	 private static final Logger log=LoggerFactory.getLogger(GenerateSpringView.class);

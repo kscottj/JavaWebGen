@@ -92,11 +92,14 @@ public class HtmlUrlField extends HtmlField{
 	
 	@Override
 	public boolean validate(String value){ 
-		boolean val= UrlValidator.getInstance().isValid(value);
-		
-		if(!val){
+		boolean val=super.validate(value);
+		if(val&&value!=null) { 
+			 val= UrlValidator.getInstance().isValid(value);
 			
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+			if(!val){
+				
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+			}
 		}
 		
 		return val;

@@ -56,7 +56,6 @@ import org.slf4j.LoggerFactory;
  * Helper object used by the code Generator classes to map db columns to java
  * object, methods, and variables
  * 
- * @version $Revision: 1.2 $
  * @author Kevin Scott
  ***********************************************************/
 public class DataMapper {
@@ -239,9 +238,10 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, Integer value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
+		String getMethod = 
+				"\n\t/**********************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
 				+ "\t***********************************************/\n"
 				+ "\tpublic int get"
 				+ formatMethodName(fieldName)
@@ -253,9 +253,10 @@ public class DataMapper {
 				+ "\t\t}\n"
 				+ "\t\treturn "
 				+ formatVarName(fieldName) + ".intValue();\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
 				+ "\t*************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
@@ -270,10 +271,11 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, Short value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
-				+ "\t***********************************************/\n"
+		String getMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic short get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -284,10 +286,11 @@ public class DataMapper {
 				+ "\t\t}\n"
 				+ "\t\treturn "
 				+ formatVarName(fieldName) + ".shortValue();\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(short value){\n"
@@ -301,10 +304,11 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, Byte value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
-				+ "\t***********************************************/\n"
+		String getMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t*************************************************/\n"
 				+ "\tpublic byte get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -315,10 +319,11 @@ public class DataMapper {
 				+ "\t\t}\n"
 				+ "\t\treturn "
 				+ formatVarName(fieldName) + ".byteValue();\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(byte value){\n"
@@ -332,10 +337,11 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, Float value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
-				+ "\t***********************************************/\n"
+		String getMethod =
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic float get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -346,10 +352,11 @@ public class DataMapper {
 				+ "\t\t}\n"
 				+ "\t\treturn "
 				+ formatVarName(fieldName) + ".floatValue();\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(float value){\n"
@@ -363,19 +370,21 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, Long value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
-				+ "\t***********************************************/\n"
+		String getMethod =
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t************************************************/\n"
 				+ "\tpublic Long get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
 				+ "\t\treturn "
 				+ formatVarName(fieldName) + ";\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(Long value){\n"
@@ -389,10 +398,11 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, String value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
-				+ "\t***********************************************/\n"
+		String getMethod =
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic String get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -406,9 +416,10 @@ public class DataMapper {
 				+ ";\n"
 				//+ "\t\t}\n"
 				+ "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
+		String setMethod =
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
 				+ "\t*************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
@@ -429,10 +440,11 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, java.util.Date value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from database column\n"
-				+ "\t***********************************************/\n"
+		String getMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic java.util.Date get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -441,9 +453,10 @@ public class DataMapper {
 				+ ";\n"
 				+ "\t}\n";
 
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
 				+ "\t*************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
@@ -457,10 +470,11 @@ public class DataMapper {
 	 * build getter setter
 	 */
 	public static String mapMethod(String fieldName, Boolean value) {
-		String getMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value from database column\n"
-				+ "\t*************************************************/\n"
+		String getMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t************************************************/\n"
 				+ "\tpublic boolean get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -472,10 +486,11 @@ public class DataMapper {
 				+ "\t\treturn "
 				+ formatVarName(fieldName)
 				+ ".booleanValue();\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for database column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(boolean value){\n"
@@ -489,10 +504,11 @@ public class DataMapper {
 	 *build getter setter
 	 */
 	public static String mapMethod(String fieldName, BigDecimal value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method gets value of field\n"
-				+ "\t*@return value from data base column\n"
-				+ "\t***********************************************/\n"
+		String getMethod =
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t************************************************/\n"
 				+ "\tpublic BigDecimal get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -500,10 +516,11 @@ public class DataMapper {
 				+ formatVarName(fieldName)
 				+ ";\n"
 				+ "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*@param value for data base column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(BigDecimal value){\n"
@@ -518,10 +535,11 @@ public class DataMapper {
 	 *build getter setter
 	 */
 	public static String mapMethod(String fieldName, Double value) {
-		String getMethod = "\n\t/********************************************\n"
-				+ "\t*Warning Generated method get value of field\n"
-				+ "\t*@return value from data base column\n"
-				+ "\t***********************************************/\n"
+		String getMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic double get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -533,10 +551,11 @@ public class DataMapper {
 				+ "\t\treturn "
 				+ formatVarName(fieldName)
 				+ ".doubleValue();\n" + "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method set field value\n"
-				+ "\t*@param value from data base column/\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(double value){\n"
@@ -551,11 +570,11 @@ public class DataMapper {
 	 * build getter setter for Blobs may not work!
 	 */
 	public static String mapMethod(String fieldName, Object value) {
-		String getMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*Warning seting BLOB is not tested\n"
-				+ "\t*@param value from database column\n"
-				+ "\t*************************************************/\n"
+		String getMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Get value from bound field "+fieldName+"\n"
+				+ "\t*@return value from bound data field\n"
+				+ "\t*/\n"
 				+ "\tpublic Object get"
 				+ formatMethodName(fieldName)
 				+ "() {\n"
@@ -563,11 +582,11 @@ public class DataMapper {
 				+ formatVarName(fieldName)
 				+ ";\n"
 				+ "\t}\n";
-		String setMethod = "\n\t/*********************************************\n"
-				+ "\t*Warning Generated method sets field value\n"
-				+ "\t*Warning seting BLOB is not tested\n"
-				+ "\t*@param value for database column\n"
-				+ "\t*************************************************/\n"
+		String setMethod = 
+				"\n\t/************************************************\n"
+				+ "\t*Set value to bound field "+fieldName+"\n"
+				+ "\t*@param value for  bound data field\n"
+				+ "\t**************************************************/\n"
 				+ "\tpublic void set"
 				+ formatMethodName(fieldName)
 				+ "(Object value){\n"
@@ -1103,8 +1122,8 @@ public class DataMapper {
 			case Types.CHAR:
 			case Types.VARCHAR:
 			case Types.LONGVARCHAR:
-				text += "@Persistent \n"
-						+ DataMapper.mapVar(cols[i], new String());
+				text += "\t@Persistent \n"
+						+"\t"+ DataMapper.mapVar(cols[i], new String());
 				break;
 			/*
 			 * not directly supported could serialize it case Types.BOOLEAN:
@@ -1114,34 +1133,34 @@ public class DataMapper {
 			case Types.TINYINT:
 			case Types.SMALLINT:
 			case Types.INTEGER:
-				text += "@Persistent \n"
-						+ DataMapper.mapVar(cols[i], new Integer(-1));
+				text += "\t@Persistent \n"
+						+"\t"+ DataMapper.mapVar(cols[i], new Integer(-1));
 				break;
 			case Types.BIGINT:
 				if(isKey[i]){
-					text += "@PrimaryKey\n@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)\n"+
-					DataMapper.mapVar(cols[i], new Long(-1));
+					text +=  "\t@PrimaryKey\n\t@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)\n"+
+							 "\t"+DataMapper.mapVar(cols[i], new Long(-1));
 				}else{
-					text += "@Persistent\n"+DataMapper.mapVar(cols[i], new Long(-1));
+					text += "\t@Persistent\n"+"\t"+DataMapper.mapVar(cols[i], new Long(-1));
 				}
 		
 				break;
 			case Types.REAL:
 			case Types.FLOAT:
 			case Types.DOUBLE:
-				text += "@Persistent \n"
-						+ DataMapper.mapVar(cols[i], new Double(-1.0));
+				text += "\t@Persistent \n"+
+						"\t"+ DataMapper.mapVar(cols[i], new Double(-1.0));
 				break;
 			case Types.NUMERIC:
 			case Types.DECIMAL:
 				log.debug("bigDecimal!!!");
-				text += "@Persistent \n"
-						+ DataMapper.mapVar(cols[i], new BigDecimal(-1));
+				text += "\t@Persistent \n"+
+						"\t"+ DataMapper.mapVar(cols[i], new BigDecimal(-1));
 				break;
 			case Types.DATE:
 			case Types.TIMESTAMP:
-				text += "@Persistent \n"
-						+ DataMapper.mapVar(cols[i], new java.util.Date());
+				text += "\t@Persistent \n"+
+						"\t"+ DataMapper.mapVar(cols[i], new java.util.Date());
 				break;
 			case Types.LONGVARBINARY:
 			case Types.BINARY:
@@ -1149,8 +1168,8 @@ public class DataMapper {
 			case Types.JAVA_OBJECT:
 			case Types.CLOB:
 			case Types.OTHER:
-				text += "@Persistent \n"
-						+ DataMapper.mapVar(cols[i], new Object());
+				text += "\t@Persistent \n"+
+						"\t"+DataMapper.mapVar(cols[i], new Object());
 				break;
 			}// end switch
 
@@ -1311,10 +1330,10 @@ public class DataMapper {
 				break;
 			case Types.BOOLEAN:
 			case Types.BIT:
-				text += "\t/****************************************\n"
-						+ "\t*set a boolean column(BIT) based on a string\n"
+				text += "\t/***********************************************\n"
+						+ "\t*Set a boolean column(BIT) based on a string\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t**********************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1322,10 +1341,10 @@ public class DataMapper {
 						+ "=new Boolean(input);\n" + "\t\t}\n" + "\t}\n";
 				break;
 			case Types.TINYINT:
-				text += "\t/****************************************\n"
-						+ "\t*set a byte column based on a string\n"
+				text += "\t/***********************************************\n"
+						+ "\t*set a byte column "+cols[i]+" \n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t**********************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1333,10 +1352,10 @@ public class DataMapper {
 						+ "=new Byte(input);\n" + "\t\t}\n" + "\t}\n";
 				break;
 			case Types.SMALLINT:
-				text += "\t/****************************************\n"
-						+ "\t*set a smallint column based on a string\n"
+				text += "\t/*******************************************************\n"
+						+ "\t*Set a smallint column "+cols[i]+" based on a String\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t******************************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1344,10 +1363,10 @@ public class DataMapper {
 						+ "=new Short(input);\n" + "\t\t}\n" + "\t}\n";
 				break;
 			case Types.INTEGER:
-				text += "\t/****************************************\n"
-						+ "\t*set a integer column based on a string\n"
+				text += "\t/*******************************************************\n"
+						+ "\t*Set a integer column "+cols[i]+" based on a string\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t******************************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1355,10 +1374,10 @@ public class DataMapper {
 						+ "=new Integer(input);\n" + "\t\t}\n" + "\t}\n";
 				break;
 			case Types.BIGINT:
-				text += "\t/****************************************\n"
-						+ "\t*set a long column based on a string\n"
+				text += "\t/*******************************************************\n"
+						+ "\t*Set a long column "+cols[i]+" based on a string\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t******************************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1366,8 +1385,8 @@ public class DataMapper {
 						+ "=new Long(input);\n" + "\t\t}\n" + "\t}\n";
 				break;
 			case Types.REAL:
-				text += "\t/****************************************\n"
-						+ "\t*set a Real(Float) column based on a string\n"
+				text += "\t/*******************************************************\n"
+						+ "\t*Set a Real(Float) column  "+cols[i]+" based on a string\n"
 						+ "\t*@param input String\n"
 						+ "\t*******************************************************/\n"
 						+ "\tpublic void set" + methodName
@@ -1378,10 +1397,10 @@ public class DataMapper {
 				break;
 			case Types.FLOAT:
 			case Types.DOUBLE:
-				text += "\t/****************************************\n"
-						+ "\t*set a Double column based on a string\n"
+				text +=  "\t/*******************************************************\n"
+						+ "\t*Set a Double column "+cols[i]+" based on a string\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t********************************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1391,10 +1410,10 @@ public class DataMapper {
 
 			case Types.NUMERIC:
 			case Types.DECIMAL:
-				text += "\t/****************************************\n"
-						+ "\t*set a DECIMAL or NUMERIC column based on a string\n"
+				text += "\t/*******************************************************\n"
+						+ "\t*Set a Decimal column "+cols[i]+" based on a string\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t********************************************************/\n"
 						+ "\tpublic void set" + methodName
 						+ "(String input) throws ParseException{\n"
 						+ "\t\tif(input!=null && input.trim().length()>0 ){\n"
@@ -1404,10 +1423,10 @@ public class DataMapper {
 						+ "=null;\n" + "\t\t}\n" + "\t}\n";
 				break;
 			case Types.DATE:
-				text += "\t/****************************************\n"
-					+ "\t*set a DATE or TIMESTAMP column based on a string\n"
+				text += "\t/*************************************************************************\n"
+					+ "\t*Attempt to set a DATE or TIMESTAMP column "+cols[i]+" based on a string\n"
 					+ "\t*@param input String\n"
-					+ "\t*******************************************************/\n"
+					+ "\t*****************************************************************************/\n"
 					+ "\tpublic void set"
 					+ methodName
 					+ "(String input) throws ParseException{\n"
@@ -1421,10 +1440,10 @@ public class DataMapper {
 					+ "\t}\n";
 				break;
 			case Types.TIMESTAMP:
-				text += "\t/****************************************\n"
+				text += "\t/**\n"
 						+ "\t*set a DATE or TIMESTAMP column based on a string\n"
 						+ "\t*@param input String\n"
-						+ "\t*******************************************************/\n"
+						+ "\t*/\n"
 						+ "\tpublic void set"
 						+ methodName
 						+ "(String input) throws ParseException{\n"

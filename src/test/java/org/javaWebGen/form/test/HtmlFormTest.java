@@ -33,6 +33,7 @@ public class HtmlFormTest {
 		log.debug("+++init form+++");
 		simpleForm.addField(new HtmlNumberField("id"));	
 		simpleForm.addField(new HtmlTextField("name"));
+		simpleForm.addField(new HtmlNumberField("testNumber",true));
 		simpleForm.setAction("/Controller/testForm");
 		bean= new SimpleDataBean();
 		 

@@ -429,7 +429,8 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		}else{
 			return this.value;
 		}*/
-		return this.value;	
+		return this.value;
+		 
 
 	}
 	/**
@@ -438,7 +439,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	 */
 	public void setValue(String value) {
 		this.reset();
-
+ 
 		this.value = value;
 	}
 	
@@ -481,6 +482,8 @@ public abstract class HtmlField implements  HtmlFieldAware{
 		}else {
 			if(this.required) {
 				isFieldValid = false;
+			}else {
+				isFieldValid = true;
 			}
 		}
 

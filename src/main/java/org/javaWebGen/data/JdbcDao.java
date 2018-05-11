@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author Kevin Scott
  ******************************************************************************/
 @Deprecated  
-public class JdbcDao extends DAO{
+public class JdbcDao extends DataSourceDAO{
 	/***************************************************************************
 	 * @param dataManager data manager to use to talk to the database
 	 **************************************************************************/

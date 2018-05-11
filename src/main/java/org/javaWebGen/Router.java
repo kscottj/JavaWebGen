@@ -86,6 +86,7 @@ public class Router  extends CsrfFilter{
 	private boolean isTestController=false;
 	/** not thread safe unit test only */
 	private String currentUrl=null;	
+
 	/**
 	 * filters URLs and calls a Dispatcher instance to process any controller URIs
 	 */
@@ -171,6 +172,8 @@ public class Router  extends CsrfFilter{
 		this.currentUrl=uri; //just saving for unit testing
 		//log.debug("action="+action+" method="+method);
 		Dispatcher.getInstance(this.prefix, isProd).dispatch(action, method, req, res);
+		 
+		
 	}
 	/**
 	 * route URL to webcontroller for processing
@@ -326,6 +329,7 @@ public class Router  extends CsrfFilter{
 	public String currentTestUrl( ){
 		return currentUrl;
 	}
+
 	/**
 	 * Warning use for unit testing only.  This is not thread safe
 	 * @return was URL filtered a controller
@@ -333,14 +337,13 @@ public class Router  extends CsrfFilter{
 	public boolean isTestController(){
 		return this.isTestController;
 	}
-	@Override
-	public void destroy() {
-	
-		//this.filterConfig = null;
-	}
 
 	public void setPrefix(String prefix) {
 		this.prefix=prefix;
+		
+	}
+	public String getPrefix() {
+		return this.prefix;
 		
 	}
 }

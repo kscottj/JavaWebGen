@@ -137,10 +137,8 @@ public class HtmlDateField extends HtmlField implements DateFieldAware{
 	public boolean validate(String value)  {
 		boolean val=super.validate(value);
 		log.debug("validate>"+value);
-		if(value!=null&&value.length()>1) { 
+		if(val&&value!=null) { 
 			try {
-			
-				
 				StringUtil.convertToDate(value) ;
 			
 			} catch (ParseException e) {

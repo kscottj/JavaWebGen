@@ -26,7 +26,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @version $Revision: 1.2 $
  *
  */
-public class GenerateJDBCTestCase extends CodeGenerator {
+public class GenerateJDBCTestCase extends TestCaseHelpers {
 	 private final static Logger log= LoggerFactory.getLogger(GenerateJDBCTestCase.class);
      public static final String VERSION="GenerateTestCase v2_05";
      public static final int DEFAULT_PRIMARYKEY_ID=-1;
@@ -46,7 +46,7 @@ public class GenerateJDBCTestCase extends CodeGenerator {
 
      private String classTemplate=
          "/*\n"+
-         "Copyright (c) 2012 Kevin Scott\n"+
+         "Copyright (c) 2018 Kevin Scott\n"+
          "Permission is hereby granted, free of charge, to any person obtaining a copy of \n"+
         " this software and associated documentation files (the \"Software\"), to deal in \n"+
         " the Software without restriction, including without limitation the rights to \n"+
@@ -332,7 +332,7 @@ public class GenerateJDBCTestCase extends CodeGenerator {
             valueMap.put("javaWebGen.vars", "");
             valueMap.put("javaWebGen.crud", crud);
             valueMap.put("javaWebGen.create", this.makeTable(colNames, colTypes) ) ;
-            StrSubstitutor sub= new StrSubstitutor(valueMap);
+            StringSubstitutor sub= new StringSubstitutor(valueMap);
             //String classText = this.getClassText(classTemplate,parm);
             return sub.replace(classTemplate);
         }else{
@@ -361,20 +361,7 @@ public class GenerateJDBCTestCase extends CodeGenerator {
      */
     @Override
     protected void postExecute() throws UtilException {
-        String fileName=getFilePath()+File.separator+"MockRequestTestCase"+".java";
-        File file = new File(fileName);
-        if(!file.exists() ){  //only write if file does not exist
-     	   try {
-         //if(true){  //only write if file does not exist
-         	PrintWriter out = new PrintWriter(file);
-  	        out.print(this.mockRequest);
-  	        out.flush();
-  	        out.close();
-     	   }catch(IOException e) {
-     		   throw new UtilException(UtilException.CODE_GENERATOR_EXEC,e);
-     	   }
-  	        log.info("---Write TestCase "+className);
-         }  
+       super.postExecute();
     	
     }
     /**

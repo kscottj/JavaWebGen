@@ -3,9 +3,7 @@ package org.javaWebGen.form.test;
 
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.javaWebGen.config.WebConst;
-import org.javaWebGen.form.CsrfForm;
 import org.javaWebGen.util.MockRequestHelper;
 import org.javaWebGen.util.StringUtil;
 import org.junit.Test;
@@ -18,7 +16,8 @@ import org.junit.Assert;
 public class CsrfTest {
 	
 	private HttpServletRequest req=null;
-	private HttpServletResponse res=null;
+	//private HttpServletResponse res=null;
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(CsrfTest.class);
 	
 

@@ -26,7 +26,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.io.*;
 
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -387,7 +387,7 @@ public class GenerateLookup extends CodeGenerator {
 		valueMap.put("javaWebGen.init", makeInit(colNames) );
 		valueMap.put("javaWebGen.findBy", makeFindByMethod(colNames, this.getColTypes() ) );
 		valueMap.put("javaWebGen.listAll", makeListAll(tableName) );
-		StrSubstitutor sub = new StrSubstitutor(valueMap);
+		StringSubstitutor sub = new StringSubstitutor(valueMap);
 		
 		//String classText =getClassText(classTemplate, p);
 

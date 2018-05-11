@@ -37,10 +37,13 @@ public class HtmlDecimalField extends HtmlNumberField{
 
 	@Override
 	public boolean validate(String value){
-		boolean val=BigDecimalValidator.getInstance().isValid(value);
-		if(!val){
-
-			this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+		boolean val=super.validate(value);
+		if(val&&value!=null) { 
+			val=BigDecimalValidator.getInstance().isValid(value);
+			if(!val){
+	
+				this.setErrorMessage(this.getProps(INVALID_MSG_KEY, INVALID_MESSAGE) );  
+			}
 		}
  
 		return val;

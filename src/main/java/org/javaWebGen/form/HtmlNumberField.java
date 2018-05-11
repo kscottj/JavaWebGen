@@ -89,7 +89,7 @@ public class HtmlNumberField extends HtmlField{
 			htmlBuffer.append(" />\n");
 
 			if(this.isFieldValid){
-					 
+				htmlBuffer.append("<!-- valid number "+this.getValue()+"-->");	 
 			}else{
 				htmlBuffer.append("<label class='help-block has-error' for='"+this.getName()+"'> "+this.getErrorMessage()+"</label>");
 	 
@@ -104,13 +104,16 @@ public class HtmlNumberField extends HtmlField{
 	public boolean validate(String value){
 		boolean val=super.validate(value);
 		log.info(this+".validate("+value+")");
-		try{
-			Long.parseLong(this.getValue() );
-		}catch(NumberFormatException e){ //not a number
-			this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
-			 
-			val=false;
-			this.isFieldValid=false;
+		if(val&&value!=null) { 
+			try{
+				Long.parseLong(value );
+			}catch(NumberFormatException e){ //not a number
+				log.info("not a number "+value );
+				this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
+				 
+				val=false;
+				this.isFieldValid=false;
+			}
 		}
 		return val;
 	}

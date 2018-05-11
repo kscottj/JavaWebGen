@@ -42,7 +42,7 @@ package org.javaWebGen.generator;
 import java.sql.Types;
 import java.util.*;
 import java.io.*;
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +94,7 @@ public class GenerateSpringController extends CodeGenerator {
 			+ "\n"
 			+ "package org.javaWebGen.controller;\n"
 			+ "import javax.servlet.http.*;\n"
+			+ "import javax.annotation.Generated;\n"
 			+ "import java.util.*;\n"
 			+ "import org.javaWebGen.data.bean.*;\n"
 			+ "import org.javaWebGen.WebController;\n"
@@ -120,6 +121,7 @@ public class GenerateSpringController extends CodeGenerator {
 			+ "* when the database schema is modified\n"
 			+ "* If you need to change the this code you should override main class with what you do not need.\n"
 			+ "*******************************************************************************/\n"
+			+ "@Generated(value = { \"org.javaWebGen.generator.GenerateSpringController\" })\n" 
 			+ "public abstract class ${javaWebGen.className} extends WebController { \n"
 			+ "@SuppressWarnings(\"unused\")\n"
 			+ "private static final Logger log=LoggerFactory.getLogger(${javaWebGen.className}.class);"
@@ -152,6 +154,7 @@ public class GenerateSpringController extends CodeGenerator {
 			+ "/* */\n"
 			+ "package org.javaWebGen.controller;\n\n"
 			+ "import javax.servlet.http.*;\n"
+			+ "import .annotation.Generated;\n"
 			+ "import javax.servlet.ServletException;\n"
 			+ "//import org.javaWebGen.config.*;\n"
 			+
@@ -169,6 +172,7 @@ public class GenerateSpringController extends CodeGenerator {
 			+ "* @author Kevin Scott                                                        \n"
 			+ "* @version $Revision: 1.00 $                                               \n"
 			+ "*******************************************************************************/\n"
+			+ "@Generated(value = { \"org.javaWebGen.generator.GenerateSpringController\" })\n" 
 			+ "@Controller\n"
 			+ "@RequestMapping(\"/admin\")\n"
 			+ "public class ${javaWebGen.subClassName} extends ${javaWebGen.className} { \n"
@@ -730,7 +734,7 @@ public class GenerateSpringController extends CodeGenerator {
 		valMap.put("javaWebGen.model",model);
 		valMap.put("javaWebGen.action",makeAction(colNames, colTypes) );
 		
-		StrSubstitutor sub = new StrSubstitutor(valMap);
+		StringSubstitutor sub = new StringSubstitutor(valMap);
 		
 		return sub.replace(classTemplate);
 	}
@@ -859,7 +863,7 @@ public class GenerateSpringController extends CodeGenerator {
 		valMap.put("javaWebGen.json",this.makeJSONWebService(getColNames(), getColTypes()) );
 		
 		
-		StrSubstitutor sub = new StrSubstitutor(valMap);
+		StringSubstitutor sub = new StringSubstitutor(valMap);
 
 		return sub.replace(subClassTemplate);
 	}
