@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Simplistic configuration class.  Read config properties file from classpath.
  * Will read main + specific configuration for environment.   
- * Property conf=dev determines environment properties(conf-dev.properties) to load.
+ * Property conf=dev determines environment properties(config-dev.properties) to load.
  * <ul>For example:<li>conf.properties</li>
  * <li>config-dev.propertes</li>
  * </ul>
