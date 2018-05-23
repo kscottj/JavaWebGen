@@ -53,10 +53,7 @@ import org.slf4j.LoggerFactory;
 
 public class AdminDispatcher extends Dispatcher{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4368718409126062439L;
+
 	private static final Logger log = LoggerFactory.getLogger(AdminDispatcher.class);
 	private static AdminDispatcher dispatcher=null;
 	private static String  classPrefix="org.javaWebGen";
@@ -73,7 +70,7 @@ public class AdminDispatcher extends Dispatcher{
 	 * @param config
 	 * @throws ServletException
 	 */
-	@Override
+	/*@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 	 
@@ -82,7 +79,7 @@ public class AdminDispatcher extends Dispatcher{
 		classPrefix=config.getInitParameter(PREFIX);
 		
 
-	}
+	}*/
 
 
 	/**
