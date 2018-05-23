@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Main application traffic controller that calls
  * on classes that implement the WebController class to do all the work. Example /Dispatcher/test/MockForm/detail would call
- * the class com.kscott.test.MockForm calling the method named detail.  If no controller is found it returns an HTTP 404.
+ * the class com.kscott.test.MockFormAction calling the method named detail.  If no controller is found it returns an HTTP 404.
  * Use with Router Filter class {@link Router} if you wish to direct all request to the framework to use more SEO friendly URLs
  * Someday will work more like the Python Django framework with a simple file defines URL mappings urls.properties 
  * 
@@ -306,7 +306,8 @@ public class Dispatcher  {
 			}
 	}
 	/**
-	 * Execute a method on a web controller Action class and transfer control to it.
+	 * Execute a method on a web controller Action class and transfer control to it.  Creates new instance before calling.
+	 * Webcontrollers should be considered thread safe.
 	 * @param req request
 	 * @param res response
 	 * @param controller to process request

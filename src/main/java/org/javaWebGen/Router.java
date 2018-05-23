@@ -172,8 +172,8 @@ public class Router  extends CsrfFilter{
 		this.currentUrl=uri; //just saving for unit testing
 		//log.debug("action="+action+" method="+method);
 		Dispatcher.getInstance(this.prefix, isProd).dispatch(action, method, req, res);
-		 
-		
+		//Dispatcher disp=new Dispatcher(this.prefix,isProd);  //get new instance for each thread
+		//disp.dispatch(action, method, req, res);           
 	}
 	/**
 	 * route URL to webcontroller for processing
