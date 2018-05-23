@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2006 Kevin Scott
+Copyright (c) 2018 Kevin Scott
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of 
 this software and associated documentation files (the "Software"), to deal in 
@@ -22,14 +22,9 @@ SOFTWARE.
 
 package org.javaWebGen.config;
 /**
- * Stores Command parameter constants
+ * Stores Web parameter constants
  * 
- * <p>Title: </p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2004</p>
- * <p>Company: </p>
- * @author not attributable
- * @version $Revision: 1.1.1.1 $
+ * @author Kevin Scott
  */
 public class WebConst {
 	public static final String ERROR="error";

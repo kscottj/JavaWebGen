@@ -22,15 +22,17 @@ SOFTWARE.
 
 package org.javaWebGen.generator;
 
-import java.sql.*;
 import java.util.*;
 import java.io.*;
+import java.sql.Types;
 
 import org.apache.commons.text.StringSubstitutor;
 
 import org.javaWebGen.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
 
 
 /**
@@ -43,7 +45,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateGaeDao extends CodeGenerator {
     
-    public static final String VERSION="GenerateGaeDao v0_55";
+    public static final String VERSION="GenerateGaeDao v0_58";
     private static final Logger log = LoggerFactory.getLogger(GenerateGaeDao.class);
     private String className=null;
     private String subClassName=null;   
@@ -119,7 +121,7 @@ public class GenerateGaeDao extends CodeGenerator {
         " AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER \n"+
         " LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, \n"+
         " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE \n"+
-        " SOFTWARE.\n "+
+        " SOFTWARE.*/\n "+
         "package org.javaWebGen.data.dao;\n\n"+
        
         "/******************************************************************************\n"+
@@ -262,14 +264,14 @@ public class GenerateGaeDao extends CodeGenerator {
 	        "\tpublic int update("+beanName+" bean) throws DBException{\n"+
 			"\t\tDatastoreService datastore = DatastoreServiceFactory.getDatastoreService();\r\n"+       
 	        "\t\tKey key = KeyFactory.createKey(\""+beanName+"\", bean."+getter+" );\r\n" + 
-	        "\t\tEntity entity;\r\n" + 
 	        "\t\ttry {\r\n" + 
-	        "\t\t\tentity = datastore.get(key);\r\n" +
+	        "\t\t\tEntity entity=datastore.get(key);\r\n" +
+	        "\t\t\tmapEntity(entity,bean);\r\n" +
+	        "\t\t\tdatastore.put(entity);\n"+
 	        "\t\t} catch (EntityNotFoundException e) {\r\n" + 
 	        "\t\t\t	throw new DBException(DBException.NOT_FOUND_ERROR,e);\r\n" + 
 	        "\t\t}\r\n" + 
-	        "\t\tdatastore.put(entity);\n"
-	        + "\t\treturn 1;\n"+
+	        "\t\treturn 1;\n"+
 	        ""+
 	        "\t}\n" ;
 
@@ -303,11 +305,9 @@ public class GenerateGaeDao extends CodeGenerator {
 	         "\tpublic int delete("+beanName+" bean) throws DBException{\n"+
 	         "\t\tDatastoreService datastore = DatastoreServiceFactory.getDatastoreService();\r\n"+    
 		        "\t\tKey key = KeyFactory.createKey(\""+beanName+"\", bean."+getter+" );\n" + 
-		        "\t\tEntity entity;\r\n" + 
 		        "\t\ttry {\r\n" + 
-		        "\t\t\tentity = datastore.get(key);\r\n" +
-		        "\t\t\tdatastore.delete(entity.getKey() );\n" +
-		        "\t\t} catch (EntityNotFoundException e) {\r\n" + 
+		        "\t\t\tdatastore.delete(key);\n" +
+		        "\t\t} catch (Exception e) {\r\n" + 
 		        "\t\t\t	throw new DBException(DBException.NOT_FOUND_ERROR,e);\r\n" + 
 		        "\t\t}\r\n" + 
 	 		 "\t\treturn 1;\n"+
@@ -510,12 +510,19 @@ public class GenerateGaeDao extends CodeGenerator {
 			  + "\t\t"+beanName+" bean = ("+beanName+") jtoBean;\n";
 				
 				for(int i=0;i<colNames.length;i++) {
+					int type=colTypes[i];
 					String name=DataMapper.formatClassName(colNames[i].toString() );
-					String varValue=DataMapper.formatVarName(colNames[i]); //need to use this to match JDO nameing standards
+					String varValue=DataMapper.formatVarName(colNames[i]); //need to use this to match JDO naming standards
 					if(this.getIsKeyArray()[i]) {
 						text+="\t\t//key "+varValue+" no need to update value\n";
 					}else {
-						text+="\t\tentity.setProperty(\""+varValue+"\",bean.get"+name+"() );\r\n";
+						if(type==Types.DATE||type==Types.TIMESTAMP) { //bug work around so GAE can use JDO enhanced JTO beans with an update
+							text+="\t\tif( bean.get"+name+"()!=null) {\n	"
+								+ "\t\t\tentity.setProperty(\""+varValue+"\", new java.util.Date( bean.get"+name+"().getTime() )  );\r\n"
+								+ "\t\t}\n";
+						}else{
+							text+="\t\tentity.setProperty(\""+varValue+"\",bean.get"+name+"() );\r\n";
+						}
 					}
 					
 	                

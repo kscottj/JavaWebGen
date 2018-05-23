@@ -115,6 +115,11 @@ public class Conf {
 				try {
 					String confNameClass=confName+".properties";
 					in =Conf.class.getClassLoader().getResourceAsStream(confNameClass);
+					if(in==null) {
+						log.error(confName+".properties File not Found!  Main Properties can not be loaded.");
+						return mainProp;
+					}
+					
 					mainProp.load(in);
 					
 					log.debug("load "+confName+" from classpath size=" +mainProp.size() );
@@ -130,6 +135,10 @@ public class Conf {
 						String envConfName=confName+"-"+envProp+".properties";
 					
 						in=Conf.class.getClassLoader().getResourceAsStream(envConfName);
+						if(in==null) {
+							log.error(envProp+".properties File not Found!  Envirment Properties will not be loaded.");
+							return mainProp;
+						}
 						
 						
 						mainProp.load(in );

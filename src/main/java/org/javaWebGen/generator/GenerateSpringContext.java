@@ -58,7 +58,7 @@ import org.apache.commons.text.StringSubstitutor;
  */
 public class GenerateSpringContext extends CodeGenerator{
 	public boolean useJDO=true;
-    public static final String VERSION="GenerateSpringContext v1_06";
+    public static final String VERSION="GenerateSpringContext v1_07";
     private static final Logger log = LoggerFactory.getLogger(GenerateSpringContext.class);
     private String springContextTemplate="/*\n"+
             "Copyright (c) 2018 Kevin Scott All rights  reserved.\n"+

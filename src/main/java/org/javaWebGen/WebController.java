@@ -1,6 +1,6 @@
 /*
  * =================================================================== *
- * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ * Copyright (c) 2018 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -50,6 +50,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.javaWebGen.config.WebConst;
+import org.javaWebGen.data.FormBeanAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,13 +58,16 @@ import org.slf4j.LoggerFactory;
  * <p>Title: WebController</p>
  * <p>Description: Generic Web based controller that should be extended to
  * process web forms using the correct model classes for the business logic</p>
+ * This class should be thread safe.  Each thread should work with new a Web Controller instance. 
  * @author Kevin Scott
- * @version $Revision: 1.0 $
  */
 public abstract class WebController {
 	private static final Logger log = LoggerFactory.getLogger(WebController.class);
 	private static String jspRoot="/WEB-INF/jsp";
 
+  /**
+   * 
+   */
   public WebController() {}
 
 /**
@@ -113,22 +117,6 @@ public abstract class WebController {
     return login;
   }
 
-  /**
-   * get WebSession object from session
-   * @param req HTTP request
-   * @return web session
-   */
-  @Deprecated
-  protected WebSession getWebSession(HttpServletRequest req) {
-	 // HttpSession session=getSession(req);
-	  Object temp=req.getAttribute(WebConst.WEB_SESSION);
-	  if(temp!=null){
-		  return (WebSession) temp;
-	  }else{
-		  
-		  return new WebSession();
-	  }
-  }
   /**
    * return current session
    * @param req HTTP request
@@ -227,14 +215,19 @@ public abstract class WebController {
   }
  
   /*******************************************************************************
-   *Get the request page on the request
+   *Get the data bound JTO bean in the request
    *@param req request
-   *@return page string
+   *@return JTO bean
    *******************************************************************************/
-   protected static Object getFormBean(HttpServletRequest req){
-   	Object obj=req.getAttribute(WebConst.FORM_BEAN);
-   	return obj;
+   protected static FormBeanAware getFormBean(HttpServletRequest req){
+	   FormBeanAware  bean=(FormBeanAware) req.getAttribute(WebConst.FORM_BEAN);
+	   return bean;
    }
+   /**
+    * Get current web form
+    * @param req request
+    * @return web form
+    */
    protected static HtmlForm getForm(HttpServletRequest req){
 	   HtmlForm form = (HtmlForm) req.getAttribute(WebConst.FORM);
 	   	return form;

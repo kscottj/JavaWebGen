@@ -82,8 +82,8 @@ public class GenerateModel extends CodeGenerator {
         " LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, \n"+
         " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE \n"+
         " SOFTWARE.\n "+
-        "*/ \n"+            "/** data Acees Object talks to DB **/\n"+
-        "package org.javaWebGen.model;\n"+
+        "*/ \n"+  
+        "package org.javaWebGen.model;\n\n"+
         "import java.util.*;\n"+
         "import javax.annotation.Generated;\n"+
         "import org.javaWebGen.data.bean.*;\n"+
@@ -163,7 +163,7 @@ public class GenerateModel extends CodeGenerator {
        // String beanName=DataMapper.formatClassName(tableName);
         String daoName=DataMapper.formatClassName(getTableName() )+"DAO";
         String text=
-           "\t\n/** data bean for this object **/;\n"+
+//           "\t\n/** data bean for this object **/;\n"+
 //            "\tprivate "+beanName+" dataBean;\n"+
        	"\tprivate "+daoName+" dao= new "+daoName+"();\n";
     

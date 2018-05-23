@@ -22,29 +22,22 @@ SOFTWARE.
 
 package org.javaWebGen.generator;
 
-
-import java.io.*;
 import java.util.HashMap;
-
 import org.apache.commons.text.StringSubstitutor;
-import org.javaWebGen.exception.UtilException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Generated database aware JavaBean JTO objects based on database configuration(torque)XML. 
  * Generated objects are generic.
  * @author Kevin scott
  *
  */
-public class GenerateDataBean extends CodeGenerator {
-	@SuppressWarnings("unused")
-	private boolean useJDO=true;
+public class GenerateDataBean extends GenerateJDBCDataBean {
+
+	 
 
 
    
-	public static final String VERSION="GenerateDataBean v1_01";
-		private final static Logger log= LoggerFactory.getLogger(GenerateDataBean.class);
+	public static final String VERSION="GenerateDataBean v1_02";
+		//private final static Logger log= LoggerFactory.getLogger(GenerateDataBean.class);
      	private String classTemplate=
          "/*\n"+
         "Copyright (c) 2018 Kevin Scott\n"+
@@ -107,75 +100,6 @@ public class GenerateDataBean extends CodeGenerator {
     	classTemplate=getTemplate(classTemplate);
     }
 
-    /************************
-    * list of list of column types
-    ****************************/
-    protected String makeTypes(String[] cols, int[] types){
-        String text =
-        "\t/*****************************************************\n"+
-        "\t*Get an array of column types that match DB table\n"+
-        "\t*@return array of Types\n"+
-        "\t******************************************************/\n"+
-        "\tpublic int[] getDataTypes(){\n"+
-        "\t\tif(types == null){\n"+
-        "\t\t types = new int["+types.length+"];\n";
-            for(int i=0;i<types.length;i++){
-                    text+="\t\t\t types["+i+"]="+types[i]+";\n";
-            }
-            text+="\t\t} //end if\n";
-    
-            text+="\treturn types;\n";
-            text+="\t}\n\n";
-            return text;
-    }
-
-    /**
-    * gen xml for databean
-    */
-    protected String makeXML(String tableName, String[] cols, int[] types) throws Exception{
-
-        String text=
-        "\n\t/********************************************\n"+
-        "\t*Builds an XML String based on object data\n"+
-        "\t*@return XML value of bound data\n"+
-        "\t***********************************************/\n"+
-        "\tpublic String toXML(){\n"+
-        "\t\tString xml=\"<"+tableName+" ";
-        for( int i=0;i<cols.length;i++){
-        	text+=
-        		DataMapper.formatVarName(cols[i])+"=\\\""+"\"+get"+
-        		DataMapper.formatMethodName(cols[i])+"()+\"\\\" ";
-//        		DataMapper.formatVarName(cols[i])+">\"+\n";
-        }
-        //text+="\t\t\t\t\"</"+tableName+">\\n\";\n"+
-        text+="/>\\n\";\n";
-        text+="\t\treturn xml;\n\t}//end toXML()\n";
-        return text;
-    }
-
-
-    /**
-    *gen insert sql
-    */
-    public String makeInsertSQL(String[] cols){
-        String sql=
-        "\n\t/****************************************************\n"+
-        "\t*Build SQL insert statement without a where clause \n"+
-        "\t*@return sqle  \n"+       
-        "\t*\n"+
-        "\t*******************************************************/ \n"+
-        "\tpublic static final String getInsertSQL(){\n"+
-        "\t\tString sql = \"";
-        if(DataMapper.useUpCaseTableName){
-        	sql+=DataMapper.mapInsertSQL(cols,getTableName().toUpperCase() )+"\";\n";
-        }else{
-        	sql+=DataMapper.mapInsertSQL(cols,getTableName() )+"\";\n";
-        }
-        sql+="\t\treturn sql;\n";
-        sql+="\t}\n";
-        return sql;
-    }
-
     /************************************************8**
     *build class based on template
     ********************************************************/
@@ -187,7 +111,7 @@ public class GenerateDataBean extends CodeGenerator {
         if( colNames!=null &&  colTypes !=null){
             String xml = makeXML(DataMapper.formatClassName(getTableName() ), colNames, colTypes);
             String getsSets = DataMapper.makeGettersSetters( colNames, colTypes);
-           // getsSets+=DataMapper.makeOverloadSetters( colNames, colTypes);
+           getsSets+=DataMapper.makeOverloadSetters( colNames, colTypes);
             //Object[] keys= this.getPrimaryKeys().toArray();
             //int[] types=this.getPrimaryKeyTypes();
 
@@ -225,121 +149,6 @@ public class GenerateDataBean extends CodeGenerator {
         
     }
 
-    protected String makeOverides(String[] colNames, int[] colTypes) {
-		String text=
-				  "\t@Override\n"
-				+ "\t/***********************************************\n"
-				+ "\t* Check value of data bound object.   \n"
-				+ "\t*@param object to check value of\n"
-				+ "\t************************************************/\n"
-				+ "\tpublic boolean equals(Object o){\n"
-				+ "\t\tif( o!=null && o instanceof FormBeanAware){\n"
-				+ "\t\t\tFormBeanAware bean =(FormBeanAware) o;\n"
-				+ "\t\t\treturn bean.toXML().equals(bean.toXML() );\n"
-				+ "\t\t}else{\n"
-				+ "\t\t\treturn false;\n"
-				+ "\t\t}\n"
-				+ "\t}\n";
-		return text;
-	}
-
-	protected String makeSetData(String[] colNames, int[] colTypes) {
-		String text=
-	        "\n\t/*****************************************************************\n"+
-	         "\t*Populates object with data\n"+
-	         "\t*@param data matching the data from a table\n"+
-	         "\t*@see org.javaWebGen.data.DAO\n"+
-	         "\t*@see org.javaWebGen.data.DbResult\n"+
-	         "\t*******************************************************************/\n"+
-	         "\tpublic void setData(Object[] data) throws IllegalArgumentException{\n"+
-	         "\t\tif( data.length != "+colNames.length+"){\n"+
-	         "\t\t\tthrow new IllegalArgumentException(\"query return wrong number of rows \"+data.length);\n"+
-	         "\t\t} //end if\n\n"+       
-             DataMapper.makeSetDataMethod(colNames,colTypes)+
-            
-             "\t}//end setData\n";
-
-			
-		return text;
-	}
-
-	protected String makeGetData(String[] colNames, int[] colTypes) {
-        String text=
-            "\n\t/************************************************\n"+
-            "\t*Get all data Objects bound to data bean  \n"+
-            "\t*@return data from object as array of objects \n"+
-            "\t****************************************************/\n"+
-            "\tpublic Object[] getData()"+
-            "{\n"+
-            "\t\tObject[] data = new Object["+colNames.length+"];\n"+
-            DataMapper.mapGetDataMethod(colNames,colTypes)+
-            "\t\treturn data;\n"+
-            "\t} //end getData\n";
-		return text;
-	}
-	   /**
-	    * gen JSON for databean
-	    */
-	    protected String makeJSON( String[] cols, int[] types) throws Exception{
-	    	String beanName = DataMapper.formatClassName(getTableName() );
-	        String text=
-	        "\n\t/*********************************************\n"+
-	        "\t*Builds a JSON String based on object data\n"+
-	        "\t*@return JSON text string\n"+
-	        "\t************************************************/\n"+
-	        "\tpublic String toJSON() {\n"+
-	        "\n\t\tJSONObject jo = new JSONObject();\n"+
-	        "\t\ttry{\n";
-
-	        for( int i=0;i<cols.length;i++){
-		        text+="\t\t\tjo.append(\""+DataMapper.formatVarName(cols[i])+"\",get"+DataMapper.formatMethodName(cols[i])+"() );\n"; 
-	        }
-	        text+=
-    		"\t\t\treturn jo.toString();\n "+
-           "\t\t}catch(JSONException je){\n"+
-     	   "\t\t\treturn \" "+beanName+"{exception:'\"+je.getMessage()+\"}'\";\n "+
-    	   "\t\t}\n"+
-    	   "\t} //end to Json\n";
-	      
-	       
-	        return text;
-	    }
-	
-	/**
-    * exec write Java class
-    * 
-    */
-    @Override
-    protected void execute() throws UtilException{
-        try {
-			writeJavaClass(buldClass() );
-		} catch (Exception e) {
-			throw new UtilException(UtilException.CODE_GENERATOR_EXEC,e);
-		}
-    }
-    /**
-     * process stuff after main execute loop has finished 
-     * processing tables
-     */
-    @Override
-    protected void postExecute() throws UtilException {
-    	 
-    	
-    }
-    /**
-    *Write out generated class
-    */
-   
-    protected void writeJavaClass(String text) throws IOException{
-        String name = DataMapper.formatClassName(getTableName() );
-        String fileName=getFilePath()+File.separator+name+".java";
-        FileWriter file = new FileWriter(fileName);
-        PrintWriter out = new PrintWriter(file);
-        out.print(text);
-        out.flush();
-        out.close();
-        log.info("---wrote file="+fileName+"---");
-    }
 
 	/**
      * main

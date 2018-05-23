@@ -258,6 +258,9 @@ public class UtilTestHarness extends TestCase{
 		Assert.assertTrue(value.equals("jdbc.testDB"));
 		value=prop.getProperty("test","default");
 		Assert.assertTrue(value.equals("1"));
+		prop = Conf.getConfig("empty");//non existing properties file
+		value=prop.getProperty("webGen.db.jndi");
+		Assert.assertTrue(value==null);
 	}
 	@Test
 	public void testStringUtil()   {

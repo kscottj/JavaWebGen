@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateController extends CodeGenerator {
     private static final Logger log=LoggerFactory.getLogger(GenerateController.class);
-    public static final String VERSION="GenerateController v4_07";
+    public static final String VERSION="GenerateController v4_08";
      
 	private String className=null;
 	private String subClassName=null;
@@ -698,16 +698,18 @@ public class GenerateController extends CodeGenerator {
 		"\t*Get the correct model class\n"+
 		"\t*@return model class\n"+
 		"\t************************************/\n"+
-		"\tprotected synchronized "+beanName+"Model getModel() throws WebAppException{\n"+
+		"\tprotected "+beanName+"Model getModel() throws WebAppException{\n"+
 		
-		"\t\tif (model==null){\n"+
+		/*"\t\tif (model==null){\n"+
 		//"\t\t\tsynchronized(model){\n" +
 		"\t\t\tif(model==null){\n" +
 		"\t\t\t\tmodel = new " +beanName+"Model();\n"+
 		"\t\t\t}\n" +
 		//"\t\t}\n"+
 		"\t\t}\n"+
-		"\t\treturn model;\n\t}//end getModel\n\n";
+		"\t\treturn model;\n\t}//end getModel\n\n";*/
+		"\t\treturn new " +beanName+"Model();\n"
+		+ "\t}\n";
 		return text;
 	}
 

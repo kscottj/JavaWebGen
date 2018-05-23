@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateSpringController extends CodeGenerator {
 	private final static Logger log = LoggerFactory.getLogger(GenerateSpringController.class);
-	public static final String VERSION = "GenerateSpringController v2_022";
+	public static final String VERSION = "GenerateSpringController v2_024";
 
 	private String className = null;
 	private String subClassName = null;
@@ -90,7 +90,6 @@ public class GenerateSpringController extends CodeGenerator {
 			+ " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE \n"
 			+ " SOFTWARE.\n "
 			+ "*/ \n"
-			+ "/* data Acees Object talks to DB */"
 			+ "\n"
 			+ "package org.javaWebGen.controller;\n"
 			+ "import javax.servlet.http.*;\n"
@@ -154,12 +153,9 @@ public class GenerateSpringController extends CodeGenerator {
 			+ "/* */\n"
 			+ "package org.javaWebGen.controller;\n\n"
 			+ "import javax.servlet.http.*;\n"
-			+ "import .annotation.Generated;\n"
 			+ "import javax.servlet.ServletException;\n"
 			+ "//import org.javaWebGen.config.*;\n"
-			+
-
-			"//import org.slf4j.Logger;\n"
+			+"//import org.slf4j.Logger;\n"
 			+ "//import org.slf4j.LoggerFactory;\n"
 			+ "import org.springframework.stereotype.Controller;\n"
 			+ "import org.springframework.web.bind.annotation.RequestMapping;\n"
@@ -170,9 +166,7 @@ public class GenerateSpringController extends CodeGenerator {
 			+ "* This class <b>should</b> be modified.   This class will <b>NOT</b> get\n"
 			+ "* regenerated and is just generated as a place holder.\n"
 			+ "* @author Kevin Scott                                                        \n"
-			+ "* @version $Revision: 1.00 $                                               \n"
-			+ "*******************************************************************************/\n"
-			+ "@Generated(value = { \"org.javaWebGen.generator.GenerateSpringController\" })\n" 
+			+ "*******************************************************************************/\n" 
 			+ "@Controller\n"
 			+ "@RequestMapping(\"/admin\")\n"
 			+ "public class ${javaWebGen.subClassName} extends ${javaWebGen.className} { \n"

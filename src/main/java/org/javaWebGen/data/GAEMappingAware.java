@@ -1,6 +1,5 @@
 package org.javaWebGen.data;
 
-import org.javaWebGen.data.bean.Author;
 
 import com.google.appengine.api.datastore.Entity;
 

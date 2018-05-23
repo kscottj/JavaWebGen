@@ -1,6 +1,6 @@
 /*
  * =================================================================== *
- * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ * Copyright (c) 2018 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -43,7 +43,6 @@ import javax.servlet.http.*;
 import javax.servlet.*;
 import java.util.*;
 import javax.servlet.ServletException;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -54,7 +53,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Main application Servlet Controller is a traffic controller that calls
+ * Main application traffic controller that calls
  * on classes that implement the WebController class to do all the work. Example /Dispatcher/test/MockForm/detail would call
  * the class com.kscott.test.MockForm calling the method named detail.  If no controller is found it returns an HTTP 404.
  * Use with Router Filter class {@link Router} if you wish to direct all request to the framework to use more SEO friendly URLs
@@ -64,12 +63,8 @@ import org.slf4j.LoggerFactory;
 
  * 
  */
+public class Dispatcher  {
 
-public class Dispatcher extends HttpServlet {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6151861766667956551L;
 	private static final Logger log = LoggerFactory.getLogger(Dispatcher.class);
 	
 	public static final String ERROR_PAGE = "/error.jsp";
@@ -78,185 +73,109 @@ public class Dispatcher extends HttpServlet {
 	public static final String JSP_ROOT = "jspRoot";
 	public static final String DEFAULT_CLASS_PREFIX = "org.javaWebGen";
 	public static final boolean DEFAULT_IS_PROD = false;
-	
+	public static final String DEFAULT_JSP_ROOT = "/WEB-INF/jsp";
 	protected HashMap <String,WebController> mapping = new HashMap <String,WebController>();
-	protected HashMap <String,Method> methodMap = new HashMap <String,Method>();
-
 	private boolean isProd=DEFAULT_IS_PROD;
-	//private static final WebSession defaultWebSession = new WebSession();
 	private String classPrefix = DEFAULT_CLASS_PREFIX;
-	private String jspRoot="/WEB-INF/jsp";
+	private String jspRoot=DEFAULT_JSP_ROOT;
 	
-	/**unit test only*/
+	/**user for unit test only*/
 	private String currentUrl=null;
-	/**unit test only*/
+	/**unit for test only*/
 	private WebController currentController=null;
 	private static Dispatcher dispatcher=null;  //instance
 	private Properties urlProp=null;
+	private HashMap<String,String> prodMapping=null;
 	 
+	/**
+	 * Constructor
+	 */
 	public Dispatcher( ) {
 		urlProp=this.findUrlProp();
+		init();
 
 	}
+
+	/**
+	 * 
+	 * @param classPrefix package name prefix IE org.javawebgen
+	 * @param isProd
+	 */
 	public Dispatcher(String classPrefix, boolean isProd) {
 		this.urlProp=this.findUrlProp();
 		this.classPrefix=classPrefix;
 		this.isProd=isProd;
+		init();
 	}
+	
+
+	
+	/**
+	 *  Get Dispatcher instance
+	 * @param classPrefix class prefix
+	 * @param isProd
+	 * @return instance to dispatcher
+	 */
+	public  static  synchronized  Dispatcher  getInstance (String classPrefix,boolean isProd){
  
-	public void setProd(boolean isProd) {
-		this.isProd = isProd;
-	}
-
-
-	public void setClassPrefix(String classPrefix) {
-		this.classPrefix = classPrefix;
-	}
-
-
-	protected boolean requiresAdmin(String url){
-		return true;
-	}
-	/**
-	 * read config file location if it exists xml file location
-	 * 
-	 * @param config
-	 * @throws ServletException
-	 */
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		String isProdStr=config.getInitParameter(IS_PROD);
-		
-		if( isProdStr!=null && isProdStr.equals("true") ){
-			this.isProd=true;
-		}else{
-			this.isProd=false;
+		if(dispatcher==null){
+			dispatcher= new Dispatcher(classPrefix,isProd);
 		}
-		String prefix=config.getInitParameter(PREFIX);
-		
-		if( prefix!=null && prefix.length()>1 ){
-			this.classPrefix=prefix;
-		}
-		String jsproot=config.getInitParameter(JSP_ROOT);
-		log.info("parm from web.xml jsproot="+jsproot);
-		if( jsproot!=null  && jsproot.length()>0){
-			this.jspRoot=jsproot;
-		}
-		log.info(this+".init()");
-		log.info(this+".init() prefix="+this.classPrefix);
-		log.info(this+".init() JSP Root="+this.jspRoot);
-	}
-	/**
-	 * 
-	 */
-	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
-		serviceRequest( req,  res);
-	}
-	/**
-	 * 
-	 */
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		serviceRequest( req,  res);
-	}
-	/**
-	 * Main web controller entry point calls a registered Web Controller based
-	 * on the URLjumps to a URL returned by the WebController
-	 * 
-	 * @param req request
-	 * @param res response
-	 * @throws ServletException generic error
-	 * @throws IOException RW error
-	 */
-	private void serviceRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		//String page = req.getParameter("page");
-		/*log.debug("queryStr="+req.getQueryString());
-		log.debug("user="+req.getUserPrincipal() );
-		log.debug("req.uri="+req.getRequestURI() );
-		log.debug("req.ContextPath="+req.getContextPath() );
-		log.debug("req.getPathInfo="+req.getPathInfo() );
-		log.debug("req.getServletPath="+req.getServletPath() );*/
-		//log.debug("req.getPathInfo="+req.getPathInfo() ); 
-		
-		String uri = req.getPathInfo();
-		log.debug(">>>serviceRequest.uri="+uri);
-		
-		if(uri==null){
-			String page=req.getParameter("page");
-			//String cmd=req.getParameter("cmd");
-			if(page==null){
-				
-				page="Home";
-			}
 			
-			log.warn("Legacy Webcontroller call exec method.  Should convert SEO freindly URL");
-			dispatch(page,"exec",req,res);
-		}else{
-			String action="";
-			String cmd=null;
-			if(uri.endsWith("/index.jsp") ){
-				this.jump(req, res, ServerAction.viewAction(uri));
-				return;
-			}
-			if(uri.endsWith("/") ){
-				log.debug("default to index method");
-				uri+="index";
-			}
+		return dispatcher;
+	}
+	/**
+	 * Get Dispatcher instance
+	 * @return instance to dispatcher
+	 */
+	public  static  synchronized  Dispatcher  getInstance (){
+ 
+		if(dispatcher==null){
+			dispatcher= new Dispatcher(Dispatcher.DEFAULT_CLASS_PREFIX,Dispatcher.DEFAULT_IS_PROD);
+		}
 			
-			String parms[]=uri.split("/");
-			//String queryStr=req.getQueryString();
-			//log.debug("prarm[0]="+uri);
+		return dispatcher;
+	}
 	
-			if(parms.length==2)  { //single slash default to home
-				//log.debug("default to Home");
-				action="Home";
-				cmd="index";
-			}else{
-				cmd=parms[parms.length-1];
-				
-				if(parms.length>1){
-					action+=parms[0];
-				}
-				
-				for (int i=1;i<parms.length-1;i++){
-					if(i==1){
-						action+=parms[i];
-					}else{
-						action+="."+parms[i];
-					}
-				}
-				if(req.getParameter("page")!=null && req.getParameter("cmd")!=null ){
-					log.warn("legacy cmd update this to SEO friendly page="+req.getParameter("page")+"&cmd="+req.getParameter("cmd") );
-					dispatch(req.getParameter("page"),req.getParameter("cmd"),req,res);
-				}
-			
-			}
-			dispatch(action,cmd,req,res);
+	/**
+	 * load URLs and methods into methodMap
+	 */
+	private void loadUrls() {
+		Enumeration<Object> ke=urlProp.keys();
+		while(ke.hasMoreElements()) {
+			String key=ke.nextElement()+"";
+			String value=urlProp.getProperty(key.toString() );
+				prodMapping.put(key, value);
 		}
-		//log.debug("action="+action+"&cmd="+cmd);
-	
-
+		
 	}
 
+	public void init() {
+		loadUrls();
+	}
 	/**
 	 * Dispatch to correct web controller
-	 * @param page controller name to call
-	 * @param cmd command IE method to run
-	 * @param req 
-	 * @param res 
+	 * @param webName controller name to call
+	 * @param method to run
+	 * @param req http
+	 * @param res http
 	 * @throws IOException IO error
 	 * @throws ServletException generic error
 	 */
-	protected void dispatch(String page,String cmd,HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+	protected void dispatch(String webName,String method,HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 		
 		ServerAction action = null;
-	
 		String hash =req.getParameter(WebConst.LINK_HASH);
-		if(hash!=null)
-			req.setAttribute("hash",hash); 
-		//log.debug(req.getServletPath());
+		String controllerClass=null;
+		if(hash!=null) {
+			req.setAttribute("hash",hash);
+		}
+ 
+		if(isProd) {
+			controllerClass =this.prodMapping.get(webName);
+		}else {
+			controllerClass=this.classPrefix+"."+webName+"Action";
+		}
 		if(req.getServletPath().endsWith("/")) {
 			this.jump(req, res, ServerAction.viewAction(req.getServletPath()+"index.jsp"));
 			return;
@@ -264,12 +183,12 @@ public class Dispatcher extends HttpServlet {
 			this.jump(req, res, ServerAction.viewAction(req.getServletPath() ));
 			return;			
 		}
-		try {			 
-			String controllerClass=this.classPrefix+"."+page+"Action";
+				 
+		try {
 			WebController controller = this.getController(controllerClass);
 			this.currentController = controller;//only used for unittesting
 			//action = controller.exec(req, res);
-			action =invokeWebController(req,res,controller,cmd);
+			action =invokeWebController(req,res,controller,method);
 			if(action==null){ //just return controller will handle response
 				log.debug("WebController will handle response");
 				return;
@@ -297,7 +216,7 @@ public class Dispatcher extends HttpServlet {
 				jump(req, res, action);
 			}
 		} catch (WebAppException wae){//unable to call web controller return 404
-			log.info("WebController NOT found|"+page+"#"+cmd  );
+			log.info("WebController NOT found|"+webName+"#"+method);
 			res.sendError(HttpServletResponse.SC_NOT_FOUND);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {// error calling controller method
 			Throwable t= e.getCause(); //try to get real cause if any
@@ -308,8 +227,9 @@ public class Dispatcher extends HttpServlet {
 				log.error("calling WebController|"+e.getMessage() );
 				throw new ServletException(e);
 			}
-		} 
+		}
 	}
+
 	/**
 	 *  Safest method to call another page.  Use when processing an HTML FORM.  Use after a POST or any 
 	 *  action that might modify data
@@ -367,22 +287,23 @@ public class Dispatcher extends HttpServlet {
 	private void mapController(String className) throws WebAppException {
 
 		 
-		try {
-			//log.debug("try to create Instance of classname=" + className);
-			Class<?>  cl =  Class.forName(className)  ;
-			Object obj = cl.newInstance();
-			if(	obj instanceof WebController){
-				//log.debug("map "+obj.getClass() );
-				WebController wc = (WebController) obj;
-				wc.setJspRoot(this.jspRoot);
-				mapping.put(className, wc);
-			}else{
-				log.error(className+" is not a WebControler ignoring");
+			try {
+				//log.debug("try to create Instance of classname=" + className);
+				Class<?>  cl =  Class.forName(className)  ;
+				Object obj = cl.newInstance();
+				if(	obj instanceof WebController){
+					//log.debug("map "+obj.getClass() );
+					
+					//wc.setJspRoot(this.jspRoot);
+					WebController wc = (WebController) obj;
+					mapping.put(className, wc);
+				}else{
+					log.error(className+" is not a WebControler ignoring");
+				}
+				
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				log.info("Error calling Controller:"+className+" exception="+e);
 			}
-			
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			log.info("Error calling Controller:"+className+" exception="+e);
-		}
 	}
 	/**
 	 * Execute a method on a web controller Action class and transfer control to it.
@@ -396,25 +317,24 @@ public class Dispatcher extends HttpServlet {
 	 * @throws IllegalAccessException error invoking controller
 	 * @throws WebAppException could not find correct class and method
 	 */
-	private ServerAction invokeWebController(HttpServletRequest req, HttpServletResponse res, WebController controller, String methodName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, WebAppException {
+	private ServerAction invokeWebController(HttpServletRequest req, HttpServletResponse res, WebController controller, String methodName) throws IllegalAccessException, IllegalArgumentException,InvocationTargetException,WebAppException {
 		log.debug("Invoke "+controller+"#"+methodName);
-		if(controller==null || methodName==null){
+	 
+		if(controller==null || methodName==null ){
 			throw new WebAppException (WebAppException.Controller_ERROR,"");
 		}
-		Method m=methodMap.get(methodName);
+		
 		Object o;
- 
 		try {
-			m = controller.getClass().getMethod(methodName,HttpServletRequest.class, HttpServletResponse.class );
-		} catch (NoSuchMethodException | SecurityException e) {
+			WebController wc = (WebController) controller.getClass().newInstance();
+			wc.setJspRoot(this.jspRoot);		
+			Method m = wc.getClass().getMethod(methodName,HttpServletRequest.class, HttpServletResponse.class );
+			o=m.invoke(wc, req, res);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException  e) {
 			throw new WebAppException (WebAppException.Controller_ERROR,e);
 		}
-			
-		if(m!=null && this.isProd  ){
-			methodMap.put(methodName, m);
-		}
 		//log.debug("!!!invoke "+controller.getClass()+" ."+cmdStr) ;
-		o=m.invoke(controller, req, res);
+		
 		//log.debug("!!!invoked returned = "+o ) ;
 		return (ServerAction) o;
 
@@ -434,20 +354,7 @@ public class Dispatcher extends HttpServlet {
 		return control;
 	}
 
-	/**
-	 * Warning use for unit testing only.  This is not thread safe
-	 * @return current URL the router will return.  W
-	 */
-	public String currentTestUrl(){
-		return this.currentUrl;
-	}
-	/**
-	 * Warning use for unit testing only.  This is not thread safe
-	 * @return current WebController the router will return.  W
-	 */
-	public WebController currentCorntroller(){
-		return this.currentController;
-	}
+
 
 	/**
 	 * find URL mapping
@@ -466,39 +373,42 @@ public class Dispatcher extends HttpServlet {
 		return urlProp;
 		
 	}
-	 /**
-	   * return current session. If new session set the following
-	   * <ul><li>random seed</li>
-	   * 	<li>IP</li>
-	   * 	<li>"User-Agent</li></ul>
-	   * @param req HTTP
-	   * @return current session
-	   */
-
-	/**
-	 * 
-	 * @param classPrefix class prefix
-	 * @param isProd
-	 * @return instance to dispatcher
-	 */
-	public  static  synchronized  Dispatcher  getInstance (String classPrefix,boolean isProd){
- 
-		if(dispatcher==null){
-			dispatcher= new Dispatcher(classPrefix,isProd);
-		}
-			
-		return dispatcher;
+	public String getJspRoot() {
+		return jspRoot;
+	}
+	public void setJspRoot(String jspRoot) {
+		this.jspRoot = jspRoot;
+	}
+	public boolean isProd() {
+		return isProd;
 	}
 	/**
-	 * 
-	 * @return instance to dispatcher
+	 * Warning use for unit testing only.  This is not thread safe
+	 * @return current URL the router will return.  W
 	 */
-	public  static  synchronized  Dispatcher  getInstance (){
- 
-		if(dispatcher==null){
-			dispatcher= new Dispatcher(Dispatcher.DEFAULT_CLASS_PREFIX,Dispatcher.DEFAULT_IS_PROD);
-		}
-			
-		return dispatcher;
+	public String currentTestUrl(){
+		return this.currentUrl;
+	}
+	/**
+	 * Warning use for unit testing only.  This is not thread safe
+	 * @return current WebController the router will return.  W
+	 */
+	public WebController currentCorntroller(){
+		return this.currentController;
+	}
+
+	public Properties getUrlProp() {
+		return urlProp;
+	}
+	public void setProd(boolean isProd) {
+		this.isProd = isProd;
+	}
+
+	public void setClassPrefix(String classPrefix) {
+		this.classPrefix = classPrefix;
+	}
+
+	protected boolean requiresAdmin(String url){
+		return true;
 	}
 }

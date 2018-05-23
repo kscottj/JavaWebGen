@@ -1,6 +1,6 @@
 /*
  * =================================================================== *
- * Copyright (c) 2017 Kevin Scott All rights  reserved.
+ * Copyright (c) 2018 Kevin Scott All rights  reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -41,12 +41,7 @@ package org.javaWebGen.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.text.StringEscapeUtils;
-import org.javaWebGen.WebSession;
-import org.javaWebGen.config.WebConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
  
@@ -198,29 +193,7 @@ public class HtmlUtil{
 
 	}
 
-	  /**
-	   * get WebSession object from the request
-	   * @param req 
-	   * @return web session from request
-	   */
-	  @Deprecated
 
-	  public static WebSession getWebSession(HttpServletRequest req) {
-		 if(req==null) {
-			 return null;
-		 }
-	    Object temp = req.getAttribute(WebConst.WEB_SESSION);
-	    WebSession ws = null;
-	    if (temp != null) {
-	      ws = (WebSession) temp;
-	      ws.clearError();
-	      //log.debug("ws="+ws.toXml() );
-	    }else{
-	    	ws = new WebSession();
-	    	req.setAttribute(WebConst.WEB_SESSION,ws);
-	    }
-	    return ws;
-	  }
 	  /**
 	   * get WebSession object from session
 	   * @param session
