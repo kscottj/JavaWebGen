@@ -150,13 +150,19 @@ ${form.updateBy.tableTag}
 
 ## Code Generator 
 
-Collection of Ant build script that can generate a compled CRUD application including webforms clases based on a Torque XML file.
+Collection of Ant build script that can generate a complete CRUD (MVC) application including based on the Data store schema(defined by a standard XML file).
+The following code generates are included:
+* WebFom and JTO JavaBeans generator
+* Spring MVC Framework(MVC) web application
+* Google AppEngine(MVC) web application
+* Normal JDBC web MVC Application
+
 
 ## XMLHelper
 
-Static class helps deal with XML DOM API.  IMHO Java should provide somthing like this.
+Static class helps deal with XML DOM API.  IMHO Java should provide something like this.
 
 ## Simple embeded Web framework
 
 Servlet Filter will route traffic to correct WebController method based on the URI.  Simple and initializes fast.  
-I wrote this because Spring MVC takes too long to start in a cloud envirement that has dynamic instances.
+I wrote this because Spring MVC takes too long to start in a cloud environment that has dynamic instances.
