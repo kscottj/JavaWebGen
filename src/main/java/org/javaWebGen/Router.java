@@ -66,6 +66,7 @@ import org.slf4j.LoggerFactory;
         initParams = {
         	@WebInitParam(name = "prefix", value = "org.javaWebGen"),
         	@WebInitParam(name = "adminUri", value = "/admin"),	
+        	@WebInitParam(name = "prodMode", value = "false"),	
         }
 )
 public class Router  extends CsrfFilter{

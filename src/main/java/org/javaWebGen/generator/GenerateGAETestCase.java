@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Generated database aware UNIT test objects based on database configuration(torque)XML. 
  * @author Kevin scott
- * @version $Revision: 1.2 $
  *
  */
 public class GenerateGAETestCase extends TestCaseHelpers {

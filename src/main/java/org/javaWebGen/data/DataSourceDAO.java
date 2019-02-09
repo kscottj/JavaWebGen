@@ -35,6 +35,9 @@ import javax.sql.DataSource;
 
 public abstract class DataSourceDAO implements DaoAware{
 	public static final String DB_JNDI="webGen.db.jndi";
+	public static final String DB_JNDI_ENV_CONTEXT="webGen.db.jndi.env.context";
+	public static final String DB_JNDI_ENV_CONTEXT_DEFAULT="java:/comp/env";
+	
 	private DataSource datasource=null;
 		
 	 

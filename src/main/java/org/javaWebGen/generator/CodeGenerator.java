@@ -50,15 +50,18 @@ import java.util.HashMap;
 import java.util.List;
 import org.javaWebGen.exception.UtilException;
 import org.javaWebGen.exception.WebAppException;
-import org.javaWebGen.util.ColMeta;
 import org.javaWebGen.xml.DOMHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-/**
- * Base Code generator class that handles common functions among the code generators
+/** 
+ * Base Code generator class that handles common functions among the code generators.  Inspired by Apache  torque.
+ * http://db.apache.org/torque/torque-4.0/status.html
+ * Generates a base class and implementation class(peer in torque).  Implementation class will change every time schema is changed and 
+ * should not be changed after running the code generator.  
+ * @TODO convert to actual Torque generators classes but still allow all layers of the application(IE not just the DB) to be generated
  *
  * @author Kevin Scott
  *
@@ -186,7 +189,7 @@ public abstract class CodeGenerator {
 			ArrayList<Integer> pkeyTypeList  = new ArrayList<Integer>();
 			//primaryKeys = DataMapper.getPrimaryKeys(con, tableName);
 			for (int i = 0; i < colList.size(); i++) {
-				ColMeta meta=new ColMeta();
+				ColumnTorque meta=new ColumnTorque();
 				Element colEl=  colList.get(i);
 				colNames[i] = DOMHelper.getAttribute(colEl,"name");
 				meta.colName=DOMHelper.getAttribute(colEl,"name");

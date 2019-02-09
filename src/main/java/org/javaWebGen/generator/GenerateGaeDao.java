@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateGaeDao extends CodeGenerator {
     
-    public static final String VERSION="GenerateGaeDao v0_58";
+    public static final String VERSION="GenerateGaeDao v1_01";
     private static final Logger log = LoggerFactory.getLogger(GenerateGaeDao.class);
     private String className=null;
     private String subClassName=null;   

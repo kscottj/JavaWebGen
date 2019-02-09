@@ -108,9 +108,10 @@ public class AdminDispatcher extends Dispatcher{
 	protected void dispatch(String page,String cmd,HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 		super.dispatch(page, cmd, req, res);
 		log.info("User "+req.getUserPrincipal()+" is attenpting to use admin pages IP="+req.getRemoteAddr()+" proxy IP="+req.getHeader("X-FORWARDED-FOR") );
-		if(req.getUserPrincipal()==null) {  
+		/* TODO should i enable this check? It verifies you have a logged in user
+		 * if(req.getUserPrincipal()==null) {  
 			throw new ServletException("Admin page accessed without login user page="+page+" cmd="+cmd+"IP="+req.getRemoteAddr()+" proxy IP="+req.getHeader("X-FORWARDED-FOR") );
-		}
+		}*/
 		if(this.isProdMode) {
 			throw new ServletException("Admin pages should not be deployed to run in prod mode="+page+" cmd="+cmd+"IP="+req.getRemoteAddr()+" proxy IP="+req.getHeader("X-FORWARDED-FOR") );
 		}

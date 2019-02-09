@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 public class GenerateJdbcDao extends CodeGenerator {
     
-    public static final String VERSION="GenerateJdbcDao v1_53";
+    public static final String VERSION="GenerateJdbcDao v1_54";
     private static final Logger log = LoggerFactory.getLogger(GenerateJdbcDao.class);
     private String className=null;
     private String subClassName=null;   
@@ -51,7 +51,7 @@ public class GenerateJdbcDao extends CodeGenerator {
 
     private String classTemplate=
         "/*\n"+
-        "Copyright (c) 2018 Kevin Scott All rights  reserved."+
+        "Copyright (c) 2019 Kevin Scott All rights  reserved."+
         " Permission is hereby granted, free of charge, to any person obtaining a copy of \n"+
         " this software and associated documentation files (the \"Software\"), to deal in \n"+
         " the Software without restriction, including without limitation the rights to \n"+
@@ -99,8 +99,8 @@ public class GenerateJdbcDao extends CodeGenerator {
         "\tContext initContext;\n"+
 		"\ttry {\n"+
 		"\t	initContext = new InitialContext();\n"+
-		"\t	this.setDataSource( (DataSource) initContext.lookup(Conf.getConfig().getProperty(DataSourceDAO.DB_JNDI, \"jdbc.testDB\") ) );\n"+
-		"\t	\n"+
+		"\t	Context envContext = (Context) initContext.lookup(Conf.getConfig().getProperty(DB_JNDI_ENV_CONTEXT, DB_JNDI_ENV_CONTEXT_DEFAULT ) );\n"+
+		"\t	this.setDataSource( (DataSource) envContext.lookup(Conf.getConfig().getProperty(DataSourceDAO.DB_JNDI, \"jdbc.testDB\") ) );\n"+
 		"\t  } catch (NamingException e) {\n"+
 		"\t	   throw new RuntimeException(e);\n"+
 		"\t  }\n"+
@@ -480,7 +480,6 @@ public class GenerateJdbcDao extends CodeGenerator {
 		String text=
 			  "\tprivate final static class DataBeanResultSetHandler implements ResultSetHandler<List<"+beanName+"> > {\n"
 			+"\n"	
-			+ "\t\t@Override\n" 
 			+ "\t\tpublic List<"+beanName+"> handle(ResultSet rs) throws SQLException {	\n" 		
 			+ "\t\t\t	List<"+beanName+"> list = new ArrayList<"+beanName+">();\n"
 			+ "\t\t\twhile (rs.next()) {\n"
