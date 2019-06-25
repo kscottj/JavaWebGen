@@ -25,7 +25,7 @@ if(form.isValid() ){  //check for valid input
 This class will provide the following features without adding extra code to your project:
 * JavaScript Client validations(using JQuery validate)
 * Server Validation (using Apache Commons validate)
-* Checks if a field is Required (Client and servers baseed)
+* Checks if a field is Required (Client and server based)
 * renders a DatePicker(uses bootstrap-datepicker)
 * renders a TimePicker(uses bootstrap-timepicker)
 * renders Read only fields
