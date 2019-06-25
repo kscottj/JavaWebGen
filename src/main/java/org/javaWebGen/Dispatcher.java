@@ -202,6 +202,11 @@ public class Dispatcher  {
 				res.setCharacterEncoding("UTF-8");
 				res.setContentLength(size);
 				res.setContentType(wsa.getContentType() );
+				HashMap<String,String> hmap= wsa.getAdditionalHeaders();
+				for(String key:hmap.keySet()) {
+					String value=hmap.get(key);
+					res.setHeader(key, value);
+				}
 				res.getWriter().print(wsa.getResponse());
 			}else if(action.getPostURL()!=null){
 				res.setHeader("P3P", WebConst.P3P_HEADER_VALUE);

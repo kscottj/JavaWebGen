@@ -463,7 +463,7 @@ static{
 	}
  
 	/**
-	 * list of data baound JavaBeans to xml
+	 * list of data bound JavaBeans to xml
 	 * @param list data bound JavaBeans
 	 * @return xml of beans
 	 */

@@ -96,7 +96,7 @@ public class HtmlEmailField extends HtmlField{
 	@Override
 	public boolean validate(String value){ //maybe check for odd encoding?
 		boolean val=super.validate(value);
-		if(val&&value!=null) { 
+		if(val&&value!=null&&value.length()>0) { 
 			val= EmailValidator.getInstance().isValid(value);
 			if (!val){
 				this.isFieldValid=false;

@@ -41,10 +41,6 @@ package org.javaWebGen.form;
 
 public class HtmlCheckboxField extends HtmlField{
 	 
- 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1734562497037842429L;
 	private static final String INPUT_TYPE="type='checkbox'";
 	private boolean isChecked = false;

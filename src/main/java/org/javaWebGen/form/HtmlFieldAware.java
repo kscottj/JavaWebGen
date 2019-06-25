@@ -40,7 +40,11 @@
 package org.javaWebGen.form;
 
 import java.io.Serializable;
-
+/**
+ * Object that can display their content with HTML.
+ * @author kevin
+ *
+ */
 public interface HtmlFieldAware extends  Serializable{
 	/**
 	 * Custom field validation

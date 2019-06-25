@@ -62,8 +62,9 @@ import org.slf4j.LoggerFactory;
  */
 public class GenerateView extends CodeGenerator {
 
-     public static final String VERSION="4_18";
-     public static final String DTD="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+     public static final String VERSION="4_20";
+     //public static final String DTD="<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+     public static final String DTD="<!doctype html>\n";
      public static final String ADMIN_JSP="/WEB-INF/jsp/admin/";
      public static final String adminPrefix="/admin";
      private String detailTemplate=null;
@@ -123,7 +124,8 @@ public class GenerateView extends CodeGenerator {
 			+"	    <link rel='shortcut icon' href='<c:url value=\"/static/favicon.ico\"/>'>\n"
 			+"	    <!-- <meta name='viewport' content='width=device-width, initial-scale=1'>    -->\n"
 			+"<!-- Bootstrap -->\n"
-		    +"	<link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css'	rel='stylesheet'>\n"
+			+"	<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\r\n"  
+			+"	<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\r\n" 
 		    +"  <link href='<c:url value=\"/static/css/bootstrap-datepicker.min.css\"/>'	rel='stylesheet'>"
 		    +"  <link href='<c:url value=\"/static/css/bootstrap-timepicker.min.css\"/>' rel='stylesheet'>\n"
 		    +"	<link href='<c:url value=\"/static/css/webApp.css\"/>' rel='stylesheet'>\n"	
@@ -161,23 +163,22 @@ public class GenerateView extends CodeGenerator {
 			+" </div><!--/.nav-collapse -->\n"
 			+" </div>\n"
 			+"</div>\n"
-			+"<!--end menu-->  \n"
-	    	+"<div class='container'>\n"
-	    	+"<div class='col-m'>	\n"		
-	    	+"	<div class='webApp'><jsp:doBody/></div>	 \n"
-	    	+"</div>	\n" 
-	    	+"</div>\n"
-	    	+"<footer class='navbar navbar-fixed-bottom'><div class=\"container\">\n"
-	    	+"\n<jsp:include page='/inc/footer.jsp' flush='false'/>\n"
-	    	+"</div></footer>\n"
-	    	+"</div><!-- /.container --> \n"
-	    	+"<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->\n"
-	    	+"<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>\n"
-	    		+"<!-- Include all compiled plugins (below), or include individual files as needed -->\n"
-	    	+"<script src=\"https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js\"></script>\n"
-	    	+"<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'></script>\n"
-	    	+"<script src='<c:url value=\"/static/js/bootstrap-datepicker.min.js\"/>'></script>"
-	    	+"<script src='<c:url value=\"/static/js/bootstrap-timepicker.min.js\"/>'></script>"
+			+"<!--end menu-->\n"
+			+"<div class='container'>"
+			+"	<div class='col-m'>"
+			+"		<div class='webApp'><jsp:doBody/></div>"
+			+"	</div>"
+			+"</div><!-- /.container -->"
+			+"<footer class='footer'>"
+			+"<div class='container'><span class='text-muted'><jsp:include page='/inc/footer.jsp' flush='false'/></span>\n"
+			+"</div></footer>\n"
+	    	+"<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->\n"    		
+	    	+"<script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\n"
+	    	+"<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>\n"
+	    	+"<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\" integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\" crossorigin=\"anonymous\"></script>\n"
+	    	+"<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js'></script>\n"
+	    	+"<script src='<c:url value=\"/static/js/bootstrap-datepicker.min.js\"/>'></script>\n"
+	    	+"<script src='<c:url value=\"/static/js/bootstrap-timepicker.min.js\"/>'></script>\n"
 	    	+"<script>\n"
 	    	+"<jsp:invoke fragment='bodyScript'/> \n"
 	    	+"</script>\n"
@@ -185,8 +186,7 @@ public class GenerateView extends CodeGenerator {
         	+"<!--end base template "+VERSION+"-->\n"
 	    	+"</html>";
 	
-        detailTemplate=
-        	
+        detailTemplate=DTD+
         	 "<%@taglib prefix=\"t\" tagdir=\"/WEB-INF/tags/admin/\" %> \n"
         	+"<%@taglib prefix=\"c\" uri=\"http://java.sun.com/jsp/jstl/core\"%>\n"
         	+"<%@taglib prefix=\"fmt\" uri=\"http://java.sun.com/jsp/jstl/fmt\"%>\n" 
@@ -444,7 +444,7 @@ public class GenerateView extends CodeGenerator {
 		 
          "function updateClick(dataForm){\n" +
          //"alert('Are you sure you want to delete this record?');\n" +
-         "\tdataForm.action='/admin/"+beanName+"/"+WebConst.SAVE_CMD+"';\n"+
+         "\tdataForm.action='/admin/"+beanName+"/"+WebConst.UPDATE_CMD+"';\n"+
          "\tdataForm.submit();\n" +
 		 "} //end update function\n";
 

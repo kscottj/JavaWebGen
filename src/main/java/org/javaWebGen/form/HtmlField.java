@@ -54,11 +54,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class HtmlField implements  HtmlFieldAware{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6827077450538291650L;
-	@SuppressWarnings("unused")
 	private static final Logger log=LoggerFactory.getLogger(HtmlField.class);
 	public static final String MESSAGE_BUNDLE="messages";
 	private static final PropertiesReader reader=PropertiesReader.getReader(MESSAGE_BUNDLE);
@@ -247,7 +243,7 @@ public abstract class HtmlField implements  HtmlFieldAware{
 	 */
 	public String getValueAttribute(){
 		if(this.value==null ){
-			return EMPTY;
+			return "value=\"\" ";
 		}else{
 			return " value=\""+this.value+"\" ";
 			

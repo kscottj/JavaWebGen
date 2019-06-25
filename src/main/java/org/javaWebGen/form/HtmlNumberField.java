@@ -45,7 +45,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
  
-
+/**
+ * renders <input type='number'> most browsers will require a value be entered like 0.  If
+ * the field can be empty this will not work you 
+ * @see HtmlNumberAsTextFeild sub classe renders input as text IE <input type='text'>
+ * Validates that it contains a valid number both server and client side.
+ * @author kevin
+ *
+ */
 public class HtmlNumberField extends HtmlField{
  
 	/**
@@ -72,7 +79,6 @@ public class HtmlNumberField extends HtmlField{
 	public HtmlNumberField(String fieldName,boolean required,String label,String attributes){
 		super(fieldName,required,label,attributes);
 	}
- 
 
 	public String getField(){
 		StringBuffer htmlBuffer=new StringBuffer();
@@ -104,7 +110,7 @@ public class HtmlNumberField extends HtmlField{
 	public boolean validate(String value){
 		boolean val=super.validate(value);
 		log.info(this+".validate("+value+")");
-		if(val&&value!=null) { 
+		if(val&&value!=null&&value.length()>0) { 
 			try{
 				Long.parseLong(value );
 			}catch(NumberFormatException e){ //not a number
@@ -133,6 +139,8 @@ public class HtmlNumberField extends HtmlField{
 		json.append("    number:true,\n");
 		if(this.isRequired() ){
 			json.append("    required:true,\n");
+		}else {
+			json.append("    required:false,\n");
 		}
 		json.append("},\n");
 		return json.toString();

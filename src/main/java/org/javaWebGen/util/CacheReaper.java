@@ -28,8 +28,7 @@ package org.javaWebGen.util;
    *********************************************/
  
 	@Deprecated
-   public final class CacheReaper extends Thread
-   {
+   public final class CacheReaper extends Thread{
        private CacheManager manager;
        private long sleepTime;
         private boolean running=true;

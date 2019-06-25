@@ -39,12 +39,17 @@
  */
 package org.javaWebGen;
 
+import java.util.HashMap;
+
 public class WebServiceAction extends ServerAction {
 	public static String XML_MIME_TYPE="application/xml";
 	public static String DEFAULT_MIME_TYPE="text/html";
+	public static String BINARY="Application/Octet-Stream";
 	public static String HTML_MIME_TYPE=DEFAULT_MIME_TYPE;
 	private String message=null;
 	private String contentType=null;
+	private HashMap<String,String> headers = new HashMap<String,String>();
+	
 	/**
 	 * Return with a message to print by dispatcher
 	 * @param response to print by dispatcher
@@ -62,12 +67,24 @@ public class WebServiceAction extends ServerAction {
 		this.message=response;
 		this.contentType=contentType;
 	}
+	/**
+	 * Set HTTP Response Header
+	 * @param key header name
+	 * @param value header value
+	 */
+	public void addRespHeader(String key,String value) {
+		headers.put(key,value);
+	}
  
 	public String getResponse(){
 		return message;
 	}
 	public String getContentType(){
 		return this.contentType;
+	}
+
+	public HashMap<String,String> getAdditionalHeaders() {
+		return headers;
 	}
 	public static WebServiceAction respMessage(String msg){
 		return new WebServiceAction(msg);

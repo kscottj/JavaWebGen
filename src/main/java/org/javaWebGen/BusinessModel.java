@@ -22,7 +22,7 @@ SOFTWARE.
 package org.javaWebGen;
 
 /**
- * Business Model objects should be implemented this class.  They should contain logic rules for the appliction
+ * Business Model objects should be implemented this class.  They should contain logic rules for the application
  * All Business Model Classes must implement it
  * @author kevin
  *

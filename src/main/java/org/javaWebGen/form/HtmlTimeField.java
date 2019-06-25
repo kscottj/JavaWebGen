@@ -134,7 +134,7 @@ public class HtmlTimeField extends HtmlField implements DateFieldAware{
 	 
 		
 		boolean val=super.validate(value);
-		if(val&&value!=null) { 
+		if(val&&value!=null&&value.length()>0) { 
 			log.debug(">is valid time="+value+"="+ val);
 			
 				try {

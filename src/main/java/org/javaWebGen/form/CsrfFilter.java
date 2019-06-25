@@ -44,7 +44,7 @@ public class CsrfFilter implements Filter{
 	 * @param req
 	 */
 	protected void  setupSession(HttpServletRequest req) {
-		log.debug("========setupSession=========");
+		//log.debug("========setupSession=========");
 		if (req == null) {
 			return ;
 		}

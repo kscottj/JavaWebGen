@@ -82,7 +82,7 @@ public class HtmlCurrencyField extends HtmlTextField{
 	@Override
 	public boolean validate(String value){
 		boolean val=super.validate(value);
-		if(val&&value!=null) { 
+		if(val&&value!=null&&value.length()>0) { 
 			val=CurrencyValidator.getInstance().isValid(value);
 			if(!val){
 				this.setErrorMessage(this.getProps(INVALID_NUMBER_KEY, INVALID_NUMBER_MESSAGE) ); 
